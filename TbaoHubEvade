@@ -1,0 +1,199 @@
+
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+
+local PhantomForcesWindow = Library:NewWindow("Tbao Hub | Evade")
+
+local KillingCheats = PhantomForcesWindow:NewSection("Main")
+
+
+KillingCheats:CreateButton("esp player", function()
+print("HI")
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Blissful4992/ESPs/main/UniversalSkeleton.lua"))()
+
+
+local Skeletons = {}
+for _, Player in next, game.Players:GetChildren() do
+	table.insert(Skeletons, Library:NewSkeleton(Player, true));
+end
+game.Players.PlayerAdded:Connect(function(Player)
+	table.insert(Skeletons, Library:NewSkeleton(Player, true));
+end) 
+end)
+
+KillingCheats:CreateButton("Sever hop", function()
+print("HI")
+local Http = game:GetService("HttpService")
+local TPS = game:GetService("TeleportService")
+local Api = "https://games.roblox.com/v1/games/"
+
+local _place = game.PlaceId
+local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
+function ListServers(cursor)
+   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+   return Http:JSONDecode(Raw)
+end
+
+local Server, Next; repeat
+   local Servers = ListServers(Next)
+   Server = Servers.data[1]
+   Next = Servers.nextPageCursor
+until Server
+
+TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
+end)
+
+
+KillingCheats:CreateButton("No lag (no fog)", function()
+print("HI")
+local ToDisable = {
+	Textures = false,
+	VisualEffects = true,
+	Parts = true,
+	Particles = true,
+	Sky = true
+}
+
+local ToEnable = {
+	FullBright = false
+}
+
+local Stuff = {}
+
+for _, v in next, game:GetDescendants() do
+	if ToDisable.Parts then
+		if v:IsA("Part") or v:IsA("Union") or v:IsA("BasePart") then
+			v.Material = Enum.Material.SmoothPlastic
+			table.insert(Stuff, 1, v)
+		end
+	end
+	
+	if ToDisable.Particles then
+		if v:IsA("ParticleEmitter") or v:IsA("Smoke") or v:IsA("Explosion") or v:IsA("Sparkles") or v:IsA("Fire") then
+			v.Enabled = false
+			table.insert(Stuff, 1, v)
+		end
+	end
+	
+	if ToDisable.VisualEffects then
+		if v:IsA("BloomEffect") or v:IsA("BlurEffect") or v:IsA("DepthOfFieldEffect") or v:IsA("SunRaysEffect") then
+			v.Enabled = false
+			table.insert(Stuff, 1, v)
+		end
+	end
+	
+	if ToDisable.Textures then
+		if v:IsA("Decal") or v:IsA("Texture") then
+			v.Texture = ""
+			table.insert(Stuff, 1, v)
+		end
+	end
+	
+	if ToDisable.Sky then
+		if v:IsA("Sky") then
+			v.Parent = nil
+			table.insert(Stuff, 1, v)
+		end
+	end
+end
+
+game:GetService("TestService"):Message("Effects Disabler Script : Successfully disabled "..#Stuff.." assets / effects. Settings :")
+
+for i, v in next, ToDisable do
+	print(tostring(i)..": "..tostring(v))
+end
+
+if ToEnable.FullBright then
+    local Lighting = game:GetService("Lighting")
+    
+    Lighting.FogColor = Color3.fromRGB(255, 255, 255)
+    Lighting.FogEnd = math.huge
+    Lighting.FogStart = math.huge
+    Lighting.Ambient = Color3.fromRGB(255, 255, 255)
+    Lighting.Brightness = 5
+    Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
+    Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
+    Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
+    Lighting.Outlines = true
+end
+end)
+
+KillingCheats:CreateButton("infinitejump", function()
+print("HI")
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BsGlitch/-nfJumps/main/BsGlitch"))()
+end)
+
+
+KillingCheats:CreateButton("Noclip", function()
+print("HI")
+local Noclip = nil
+local Clip = nil
+
+function noclip()
+ Clip = false
+ local function Nocl()
+  if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+   for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+    if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+     v.CanCollide = false
+    end
+   end
+  end
+  wait(0.21) -- basic optimization
+ end
+ Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+end
+
+function clip()
+ if Noclip then Noclip:Disconnect() end
+ Clip = true
+end
+
+noclip() -- to toggle noclip() and clip()
+end)
+
+local KillingCheats = PhantomForcesWindow:NewSection("Farm")
+
+getgenv().Revive = false
+
+KillingCheats:CreateToggle("Auto Farm [Afk]", function(value)
+        getgenv().Autofarm = value
+ 
+if getgenv().Autofarm == true then
+while getgenv().Autofarm == true do
+wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(7000, 5000, 6000)
+end
+end
+end)
+ 
+
+KillingCheats:CreateToggle("Auto Respawn", function(value)
+getgenv().Revive = value
+ 
+if getgenv().Revive == true then
+while getgenv().Revive == true do
+wait()
+game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+end
+end
+end)
+
+
+
+getgenv().God = false
+ 
+KillingCheats:CreateToggle("God Mode [No Nextbots]", function(value)
+getgenv().God = value
+ 
+if getgenv().God == true then
+while getgenv().God == true do
+wait()
+game:GetService("Players").LocalPlayer.Character.Humanoid.Health = 100
+end
+end
+end)
+
+KillingCheats:CreateTextbox("Max Health Enter", function(value)
+game.Players.LocalPlayer.Character.Humanoid.Health = value
+wait()
+end)

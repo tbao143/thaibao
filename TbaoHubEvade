@@ -197,3 +197,13 @@ KillingCheats:CreateTextbox("Max Health Enter", function(value)
 game.Players.LocalPlayer.Character.Humanoid.Health = value
 wait()
 end)
+
+KillingCheats:CreateTextbox("Walk Speed Enter", function(value)
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value 
+wait()
+end)
+
+KillingCheats:CreateTextbox("Jump Power Enter", function(value)
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
+wait()
+end)

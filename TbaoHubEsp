@@ -192,4 +192,4 @@ game.Players.PlayerAdded:Connect(function(v)
        task.wait(0.33)
        ApplyESP(v)
    end)
-end
+end)

@@ -1,50 +1,53 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
-local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+local Window = OrionLib:MakeWindow({Name = "Tbao Hub | Evade", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local Tab = Window:MakeTab({
+	Name = "✅ Main",
+	Icon = "rbxassetid://",
+	PremiumOnly = false
+})
+Tab:AddButton({
+	Name = "Esp player [box]",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubEsp"))()
+      		print("button pressed")
+  	end    
+})
 
-local PhantomForcesWindow = Library:NewWindow("Tbao Hub | Evade")
+Tab:AddButton({
+	Name = "No clip",
+	Callback = function()
+local Noclip = nil
+local Clip = nil
 
-local KillingCheats = PhantomForcesWindow:NewSection("Main")
-
-
-KillingCheats:CreateButton("esp player", function()
-print("HI")
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Blissful4992/ESPs/main/UniversalSkeleton.lua"))()
-
-
-local Skeletons = {}
-for _, Player in next, game.Players:GetChildren() do
-	table.insert(Skeletons, Library:NewSkeleton(Player, true));
+function noclip()
+ Clip = false
+ local function Nocl()
+  if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+   for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+    if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+     v.CanCollide = false
+    end
+   end
+  end
+  wait(0.21) -- basic optimization
+ end
+ Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
 end
-game.Players.PlayerAdded:Connect(function(Player)
-	table.insert(Skeletons, Library:NewSkeleton(Player, true));
-end) 
-end)
 
-KillingCheats:CreateButton("Sever hop", function()
-print("HI")
-local Http = game:GetService("HttpService")
-local TPS = game:GetService("TeleportService")
-local Api = "https://games.roblox.com/v1/games/"
-
-local _place = game.PlaceId
-local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
-function ListServers(cursor)
-   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
-   return Http:JSONDecode(Raw)
+function clip()
+ if Noclip then Noclip:Disconnect() end
+ Clip = true
 end
 
-local Server, Next; repeat
-   local Servers = ListServers(Next)
-   Server = Servers.data[1]
-   Next = Servers.nextPageCursor
-until Server
+noclip() -- to toggle noclip() and clip()
+      		print("button pressed")
+  	end   
+})
 
-TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
-end)
-
-
-KillingCheats:CreateButton("No lag (no fog)", function()
-print("HI")
+Tab:AddButton({
+	Name = "No Fog",
+	Callback = function()
 local ToDisable = {
 	Textures = false,
 	VisualEffects = true,
@@ -95,67 +98,217 @@ for _, v in next, game:GetDescendants() do
 		end
 	end
 end
+      		print("button pressed")
+  	end   
+})
 
-game:GetService("TestService"):Message("Effects Disabler Script : Successfully disabled "..#Stuff.." assets / effects. Settings :")
-
-for i, v in next, ToDisable do
-	print(tostring(i)..": "..tostring(v))
-end
-
-if ToEnable.FullBright then
-    local Lighting = game:GetService("Lighting")
-    
-    Lighting.FogColor = Color3.fromRGB(255, 255, 255)
-    Lighting.FogEnd = math.huge
-    Lighting.FogStart = math.huge
-    Lighting.Ambient = Color3.fromRGB(255, 255, 255)
-    Lighting.Brightness = 5
-    Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
-    Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
-    Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
-    Lighting.Outlines = true
-end
-end)
-
-KillingCheats:CreateButton("infinitejump", function()
-print("HI")
+Tab:AddButton({
+	Name = "Infinite jump",
+	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/BsGlitch/-nfJumps/main/BsGlitch"))()
-end)
+      		print("button pressed")
+  	end   
+})
 
+Tab:AddButton({
+	Name = "Sever hop [low player]",
+	Callback = function()
+local Http = game:GetService("HttpService")
+local TPS = game:GetService("TeleportService")
+local Api = "https://games.roblox.com/v1/games/"
 
-KillingCheats:CreateButton("Noclip", function()
-print("HI")
-local Noclip = nil
-local Clip = nil
-
-function noclip()
- Clip = false
- local function Nocl()
-  if Clip == false and game.Players.LocalPlayer.Character ~= nil then
-   for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-    if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
-     v.CanCollide = false
-    end
-   end
-  end
-  wait(0.21) -- basic optimization
- end
- Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+local _place = game.PlaceId
+local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
+function ListServers(cursor)
+   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+   return Http:JSONDecode(Raw)
 end
 
-function clip()
- if Noclip then Noclip:Disconnect() end
- Clip = true
+local Server, Next; repeat
+   local Servers = ListServers(Next)
+   Server = Servers.data[1]
+   Next = Servers.nextPageCursor
+until Server
+
+TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
+      		print("button pressed")
+  	end      
+})
+
+Tab:AddSlider({
+	Name = "WalkSpeed",
+	Min = 1,
+	Max = 1000,
+	Default = 96,
+	Color = Color3.fromRGB(70,255,255),
+	Increment = 1,
+	ValueName = "Speed",
+	Callback = function(value)
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value 
+		print(value)
+	end    
+})
+
+
+Tab:AddSlider({
+	Name = "JumpPower",
+	Min = 1,
+	Max = 1000,
+	Default = 96,
+	Color = Color3.fromRGB(70,255,255),
+	Increment = 1,
+	ValueName = "Jump",
+	Callback = function(value)
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
+		print(value)
+	end    
+})
+
+Tab:AddButton({
+	Name = "Fly gui speed hack",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
+      		print("button pressed")
+  	end   
+})
+
+Tab:AddButton({
+	Name = "Fps boost",
+	Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubfpsboost"))()
+      		print("button pressed")
+  	end   
+})
+
+Tab:AddButton({
+	Name = "Full night [fix]",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BsGlitch/-nfJumps/main/BsGlitch"))()
+      		print("button pressed")
+  	end   
+})
+
+local Tab = Window:MakeTab({
+	Name = "✅ Esp",
+	Icon = "rbxassetid://",
+	PremiumOnly = false
+})
+  	
+Tab:AddButton({
+	Name = "Esp name",
+	Callback = function()
+local c = workspace.CurrentCamera
+local ps = game:GetService("Players")
+local lp = ps.LocalPlayer
+local rs = game:GetService("RunService")
+
+local function esp(p,cr)
+	local h = cr:WaitForChild("Humanoid")
+	local hrp = cr:WaitForChild("Head")
+
+	local text = Drawing.new("Text")
+	text.Visible = false
+	text.Center = true
+	text.Outline = false 
+	text.Font = 3
+	text.Size = 16.16
+	text.Color = Color3.new(65,255,0)
+
+	local conection
+	local conection2
+	local conection3
+
+	local function dc()
+		text.Visible = false
+		text:Remove()
+		if conection then
+			conection:Disconnect()
+			conection = nil 
+		end
+		if conection2 then
+			conection2:Disconnect()
+			conection2 = nil 
+		end
+		if conection3 then
+			conection3:Disconnect()
+			conection3 = nil 
+		end
+	end
+
+	conection2 = cr.AncestryChanged:Connect(function(_,parent)
+		if not parent then
+			dc()
+		end
+	end)
+
+	conection3 = h.HealthChanged:Connect(function(v)
+		if (v<=0) or (h:GetState() == Enum.HumanoidStateType.Dead) then
+			dc()
+		end
+	end)
+
+	conection = rs.RenderStepped:Connect(function()
+		local hrp_pos,hrp_onscreen = c:WorldToViewportPoint(hrp.Position)
+		if hrp_onscreen then
+			text.Position = Vector2.new(hrp_pos.X, hrp_pos.Y - 27)
+			text.Text = "[ "..p.Name.." ]"
+			text.Visible = true
+		else
+			text.Visible = false
+		end
+	end)
 end
 
-noclip() -- to toggle noclip() and clip()
-end)
+local function p_added(p)
+	if p.Character then
+		esp(p,p.Character)
+	end
+	p.CharacterAdded:Connect(function(cr)
+		esp(p,cr)
+	end)
+end
 
-local KillingCheats = PhantomForcesWindow:NewSection("Farm")
+for i,p in next, ps:GetPlayers() do 
+	if p ~= lp then
+		p_added(p)
+	end
+end
+
+ps.PlayerAdded:Connect(p_added)
+      		print("button pressed")
+  	end   
+})
+
+
+Tab:AddButton({
+	Name = "Esp skeleton",
+	Callback = function()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Blissful4992/ESPs/main/UniversalSkeleton.lua"))()
+
+
+local Skeletons = {}
+for _, Player in next, game.Players:GetChildren() do
+	table.insert(Skeletons, Library:NewSkeleton(Player, true));
+end
+game.Players.PlayerAdded:Connect(function(Player)
+	table.insert(Skeletons, Library:NewSkeleton(Player, true));
+end)
+      		print("button pressed")
+  	end   
+})
+
+
+local Tab = Window:MakeTab({
+	Name = "✅ Farm",
+	Icon = "rbxassetid://",
+	PremiumOnly = false
+})
+
+
 
 getgenv().Revive = false
-
-KillingCheats:CreateToggle("Auto Farm [Afk]", function(value)
+Tab:AddToggle({
+	Name = "Fram Afk",
+	Callback = function(value)
         getgenv().Autofarm = value
  
 if getgenv().Autofarm == true then
@@ -164,10 +317,13 @@ wait()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(7000, 5000, 6000)
 end
 end
-end)
- 
+      		print("button pressed")
+  	end   
+})
 
-KillingCheats:CreateToggle("Auto Respawn", function(value)
+Tab:AddToggle({
+	Name = "Auto Respawn",
+	Callback = function(value)
 getgenv().Revive = value
  
 if getgenv().Revive == true then
@@ -176,34 +332,74 @@ wait()
 game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
 end
 end
-end)
-
-
-
+      		print("button pressed")
+  	end   
+})
 getgenv().God = false
- 
-KillingCheats:CreateToggle("God Mode [No Nextbots]", function(value)
+
+Tab:AddToggle({
+	Name = "God Mode",
+	Callback = function(value)
 getgenv().God = value
  
 if getgenv().God == true then
 while getgenv().God == true do
 wait()
-game:GetService("Players").LocalPlayer.Character.Humanoid.Health = 100
+game:GetService("Players").LocalPlayer.Character.Humanoid.Health = 1000
 end
 end
-end)
+      		print("button pressed")
+  	end   
+})
 
-KillingCheats:CreateTextbox("Max Health Enter", function(value)
-game.Players.LocalPlayer.Character.Humanoid.Health = value
-wait()
-end)
-
-KillingCheats:CreateTextbox("Walk Speed Enter", function(value)
+Tab:AddTextbox({
+	Name = "Walk Speed Enter",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(value)
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value 
-wait()
-end)
+		print(value)
+	end	  
+})
 
-KillingCheats:CreateTextbox("Jump Power Enter", function(value)
+Tab:AddTextbox({
+	Name = "Jump Power Enter",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(value)
 game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
-wait()
-end)
+		print(value)
+	end
+})
+
+Tab:AddTextbox({
+	Name = "Max Health Enter",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(value)
+game.Players.LocalPlayer.Character.Humanoid.Health = value
+		print(value)
+	end
+})
+
+local Tab = Window:MakeTab({
+	Name = "✅ Script maker",
+	Icon = "rbxassetid://",
+	PremiumOnly = false
+})
+
+Tab:AddParagraph("Tbao Hub","Roblox thaibao7444 VietNam")
+
+local Tab = Window:MakeTab({
+	Name = "✅ Gui",
+	Icon = "rbxassetid://",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+	Name = "Delete gui",
+	Callback = function()
+OrionLib:Destroy()
+      		print("button pressed")
+  	end   
+})

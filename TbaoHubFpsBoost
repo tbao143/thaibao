@@ -1,4 +1,4 @@
-
+setfpscap(999999999)
 for _,v in next,game:GetService("Workspace"):GetDescendants() do
     if v and v:IsA("Model") then
       v.LevelOfDetail = "Disabled"
@@ -101,4 +101,4 @@ for _,v in next,game:GetService("Workspace"):GetDescendants() do
     addedshit:Destroy()
          end
        end)
-     end
+     end)

@@ -186,6 +186,20 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/BsGlitch/-nfJumps/mai
   	end   
 })
 
+Tab:AddButton({
+	Name = "Rejoin",
+	Callback = function()
+local ts = game:GetService("TeleportService")
+
+local p = game:GetService("Players").LocalPlayer
+
+ 
+
+ts:Teleport(game.PlaceId, p)
+      		print("button pressed")
+  	end   
+})
+
 local Tab = Window:MakeTab({
 	Name = "Esp",
 	Icon = "rbxassetid://12442731398",
@@ -298,7 +312,7 @@ end)
 
 local Tab = Window:MakeTab({
 	Name = "Farm",
-	Icon = "rbxassetid://",
+	Icon = "rbxassetid://12442731398",
 	PremiumOnly = false
 })
 
@@ -393,12 +407,4 @@ local Tab = Window:MakeTab({
 	Name = "Gui",
 	Icon = "rbxassetid://12442731398",
 	PremiumOnly = false
-})
-
-Tab:AddButton({
-	Name = "Delete gui",
-	Callback = function()
-OrionLib:Destroy()
-      		print("button pressed")
-  	end   
 })

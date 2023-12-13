@@ -1,24 +1,35 @@
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local Window = OrionLib:MakeWindow({Name = "Tbao Hub | Evade", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
-local Tab = Window:MakeTab({
-	Name = "Main",
-	Icon = "rbxassetid://",
-	PremiumOnly = false
-})
-Tab:AddButton({
-	Name = "Esp player [box]",
-	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubEsp"))()
-      		print("button pressed")
-  	end    
-})
 
-Tab:AddButton({
-	Name = "No clip",
-	Callback = function()
+loadstring(game:HttpGet(("https://raw.githubusercontent.com/REDzHUB/LibraryV2/main/redzLib")))()
+MakeWindow({
+  Hub = {
+    Title = "Tbao Hub | Evade",
+    Animation = "by thaibao7444"
+  },
+  Key = {
+    KeySystem = false,
+    Title = "Key System",
+    Description = "",
+    KeyLink = "",
+    Keys = {"1234"},
+    Notifi = {
+    }
+  }
+})
+local Main = MakeTab({Name = "Main"})
+
+local Toggle = AddButton(Main, {
+  Name = "Fly gui speed",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()    
+  end
+})
+local Toggle = AddButton(Main, {
+  Name = "No clip",
+  Default = false,
+  Callback = function(Value)
 local Noclip = nil
 local Clip = nil
-
 function noclip()
  Clip = false
  local function Nocl()
@@ -33,20 +44,84 @@ function noclip()
  end
  Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
 end
-
 function clip()
  if Noclip then Noclip:Disconnect() end
  Clip = true
 end
-
 noclip() -- to toggle noclip() and clip()
-      		print("button pressed")
-  	end   
+  end
 })
+local Toggle = AddButton(Main, {
+  Name = "Full night",
+  Default = false,
+  Callback = function(Value)
+local light = Instance.new("PointLight", Character.HumanoidRootPart)
+    light.Brightness = .3
+    light.Range = 10000
+    Lighting.TimeOfDay = "14:00:00"
+    Lighting.FogEnd = 10000;
+    Lighting.Brightness = 2;
+    Lighting.Ambient = Color3.fromRGB(255,255,255)
+    Lighting.FogColor = Color3.fromRGB(255,255,255)
+  end
+})
+local Toggle = AddButton(Main, {
+  Name = "No fog [fix]",
+  Default = false,
+  Callback = function(Value)
+  end
+})
+local Toggle = AddButton(Main, {
+  Name = "Fps boost",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubfpsboost"))()
+  end
+})
+local Toggle = AddButton(Main, {
+  Name = "Infinite jump",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BsGlitch/-nfJumps/main/BsGlitch"))()
+  end
+})
+local Toggle = AddButton(Main, {
+  Name = "Sever hop [low player]",
+  Default = false,
+  Callback = function(Value)
+local Http = game:GetService("HttpService")
+local TPS = game:GetService("TeleportService")
+local Api = "https://games.roblox.com/v1/games/"
 
-Tab:AddButton({
-	Name = "No Fog",
-	Callback = function()
+local _place = game.PlaceId
+local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
+function ListServers(cursor)
+   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+   return Http:JSONDecode(Raw)
+end
+
+local Server, Next; repeat
+   local Servers = ListServers(Next)
+   Server = Servers.data[1]
+   Next = Servers.nextPageCursor
+until Server
+
+TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
+  end
+})
+local Toggle = AddButton(Main, {
+  Name = "Rejoin",
+  Default = false,
+  Callback = function(Value)
+local ts = game:GetService("TeleportService")
+local p = game:GetService("Players").LocalPlayer
+ts:Teleport(game.PlaceId, p)
+  end
+})
+local Toggle = AddButton(Main, {
+  Name = "Remove textures",
+  Default = false,
+  Callback = function(Value)
 local ToDisable = {
 	Textures = false,
 	VisualEffects = true,
@@ -97,118 +172,49 @@ for _, v in next, game:GetDescendants() do
 		end
 	end
 end
-      		print("button pressed")
-  	end   
+  end
+})
+local Toggle = AddButton(Main, {
+  Name = "No Camera Shake",
+  Default = false,
+  Callback = function(Value)
+task.spawn(function()
+    while task.wait() do
+        if No_CamShake then
+            Player.PlayerScripts:WaitForChild("CameraShake", 1234).Value = CFrame.new(0,0,0) * CFrame.Angles(0,0,0);
+        end
+    end
+end)
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Max health",
+  Default = false,
+  Callback = function(value)
+game.Players.LocalPlayer.Character.Humanoid.Health = 1000
+ end
 })
 
-Tab:AddButton({
-	Name = "Infinite jump",
-	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/BsGlitch/-nfJumps/main/BsGlitch"))()
-      		print("button pressed")
-  	end   
-})
+local Main = MakeTab({Name = "Esp"})
 
-Tab:AddButton({
-	Name = "Sever hop [low player]",
-	Callback = function()
-local Http = game:GetService("HttpService")
-local TPS = game:GetService("TeleportService")
-local Api = "https://games.roblox.com/v1/games/"
-
-local _place = game.PlaceId
-local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
-function ListServers(cursor)
-   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
-   return Http:JSONDecode(Raw)
+local Toggle = AddButton(Main, {
+  Name = "Esp skeleton",
+  Default = false,
+  Callback = function(value)
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Blissful4992/ESPs/main/UniversalSkeleton.lua"))()
+local Skeletons = {}
+for _, Player in next, game.Players:GetChildren() do
+	table.insert(Skeletons, Library:NewSkeleton(Player, true));
 end
-
-local Server, Next; repeat
-   local Servers = ListServers(Next)
-   Server = Servers.data[1]
-   Next = Servers.nextPageCursor
-until Server
-
-TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
-      		print("button pressed")
-  	end      
+game.Players.PlayerAdded:Connect(function(Player)
+	table.insert(Skeletons, Library:NewSkeleton(Player, true));
+end)
+  end
 })
-
-Tab:AddSlider({
-	Name = "WalkSpeed",
-	Min = 1,
-	Max = 1000,
-	Default = 96,
-	Color = Color3.fromRGB(70,255,255),
-	Increment = 1,
-	ValueName = "Speed",
-	Callback = function(value)
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value 
-		print(value)
-	end    
-})
-
-
-Tab:AddSlider({
-	Name = "JumpPower",
-	Min = 1,
-	Max = 1000,
-	Default = 96,
-	Color = Color3.fromRGB(70,255,255),
-	Increment = 1,
-	ValueName = "Jump",
-	Callback = function(value)
-game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
-		print(value)
-	end    
-})
-
-Tab:AddButton({
-	Name = "Fly gui speed hack",
-	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
-      		print("button pressed")
-  	end   
-})
-
-Tab:AddButton({
-	Name = "Fps boost",
-	Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubfpsboost"))()
-      		print("button pressed")
-  	end   
-})
-
-Tab:AddButton({
-	Name = "Full night [fix]",
-	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/BsGlitch/-nfJumps/main/BsGlitch"))()
-      		print("button pressed")
-  	end   
-})
-
-Tab:AddButton({
-	Name = "Rejoin",
-	Callback = function()
-local ts = game:GetService("TeleportService")
-
-local p = game:GetService("Players").LocalPlayer
-
- 
-
-ts:Teleport(game.PlaceId, p)
-      		print("button pressed")
-  	end   
-})
-
-local Tab = Window:MakeTab({
-	Name = "Esp",
-	Icon = "rbxassetid://",
-	PremiumOnly = false
-})
-  	
-Tab:AddButton({
-	Name = "Esp name",
-	Callback = function()
+local Toggle = AddButton(Main, {
+  Name = "Esp name",
+  Default = false,
+  Callback = function(value)
 local c = workspace.CurrentCamera
 local ps = game:GetService("Players")
 local lp = ps.LocalPlayer
@@ -287,123 +293,294 @@ for i,p in next, ps:GetPlayers() do
 end
 
 ps.PlayerAdded:Connect(p_added)
-      		print("button pressed")
-  	end   
+ end
 })
+local Toggle = AddButton(Main, {
+  Name = "Esp box",
+  Default = false,
+  Callback = function(value)
+-- Settings
+local Settings = {
+    Box_Color = Color3.fromRGB(255, 0, 0),
+    Box_Thickness = 2,
+    Team_Check = false,
+    Team_Color = false,
+    Autothickness = true
+}
 
+--Locals
+local Space = game:GetService("Workspace")
+local Player = game:GetService("Players").LocalPlayer
+local Camera = Space.CurrentCamera
 
-Tab:AddButton({
-	Name = "Esp skeleton",
-	Callback = function()
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Blissful4992/ESPs/main/UniversalSkeleton.lua"))()
-
-
-local Skeletons = {}
-for _, Player in next, game.Players:GetChildren() do
-	table.insert(Skeletons, Library:NewSkeleton(Player, true));
+-- Locals
+local function NewLine(color, thickness)
+    local line = Drawing.new("Line")
+    line.Visible = false
+    line.From = Vector2.new(0, 0)
+    line.To = Vector2.new(0, 0)
+    line.Color = color
+    line.Thickness = thickness
+    line.Transparency = 1
+    return line
 end
-game.Players.PlayerAdded:Connect(function(Player)
-	table.insert(Skeletons, Library:NewSkeleton(Player, true));
+
+local function Vis(lib, state)
+    for i, v in pairs(lib) do
+        v.Visible = state
+    end
+end
+
+local function Colorize(lib, color)
+    for i, v in pairs(lib) do
+        v.Color = color
+    end
+end
+
+local Black = Color3.fromRGB(0, 0, 0)
+
+local function Rainbow(lib, delay)
+    for hue = 0, 1, 1/30 do
+        local color = Color3.fromHSV(hue, 0.6, 1)
+        Colorize(lib, color)
+        wait(delay)
+    end
+    Rainbow(lib)
+end
+--Main Draw Function
+local function Main(plr)
+    repeat wait() until plr.Character ~= nil and plr.Character:FindFirstChild("Humanoid") ~= nil
+    local R15
+    if plr.Character.Humanoid.RigType == Enum.HumanoidRigType.R15 then
+        R15 = true
+    else 
+        R15 = false
+    end
+    local Library = {
+        TL1 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
+        TL2 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
+
+        TR1 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
+        TR2 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
+
+        BL1 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
+        BL2 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
+
+        BR1 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
+        BR2 = NewLine(Settings.Box_Color, Settings.Box_Thickness)
+    }
+    coroutine.wrap(Rainbow)(Library, 0.15)
+    local oripart = Instance.new("Part")
+    oripart.Parent = Space
+    oripart.Transparency = 1
+    oripart.CanCollide = false
+    oripart.Size = Vector3.new(1, 1, 1)
+    oripart.Position = Vector3.new(0, 0, 0)
+    --Updater Loop
+    local function Updater()
+        local c 
+        c = game:GetService("RunService").RenderStepped:Connect(function()
+            if plr.Character ~= nil and plr.Character:FindFirstChild("Humanoid") ~= nil and plr.Character:FindFirstChild("HumanoidRootPart") ~= nil and plr.Character.Humanoid.Health > 0 and plr.Character:FindFirstChild("Head") ~= nil then
+                local Hum = plr.Character
+                local HumPos, vis = Camera:WorldToViewportPoint(Hum.HumanoidRootPart.Position)
+                if vis then
+                    oripart.Size = Vector3.new(Hum.HumanoidRootPart.Size.X, Hum.HumanoidRootPart.Size.Y*1.5, Hum.HumanoidRootPart.Size.Z)
+                    oripart.CFrame = CFrame.new(Hum.HumanoidRootPart.CFrame.Position, Camera.CFrame.Position)
+                    local SizeX = oripart.Size.X
+                    local SizeY = oripart.Size.Y
+                    local TL = Camera:WorldToViewportPoint((oripart.CFrame * CFrame.new(SizeX, SizeY, 0)).p)
+                    local TR = Camera:WorldToViewportPoint((oripart.CFrame * CFrame.new(-SizeX, SizeY, 0)).p)
+                    local BL = Camera:WorldToViewportPoint((oripart.CFrame * CFrame.new(SizeX, -SizeY, 0)).p)
+                    local BR = Camera:WorldToViewportPoint((oripart.CFrame * CFrame.new(-SizeX, -SizeY, 0)).p)
+
+                    if Settings.Team_Check then
+                        if plr.TeamColor == Player.TeamColor then
+                            Colorize(Library, Color3.fromRGB(0, 255, 0))
+                        else 
+                            Colorize(Library, Color3.fromRGB(255, 0, 0))
+                        end
+                    end
+
+                    if Settings.Team_Color then
+                        Colorize(Library, plr.TeamColor.Color)
+                    end
+
+                    local ratio = (Camera.CFrame.p - Hum.HumanoidRootPart.Position).magnitude
+                    local offset = math.clamp(1/ratio*750, 2, 300)
+
+                    Library.TL1.From = Vector2.new(TL.X, TL.Y)
+                    Library.TL1.To = Vector2.new(TL.X + offset, TL.Y)
+                    Library.TL2.From = Vector2.new(TL.X, TL.Y)
+                    Library.TL2.To = Vector2.new(TL.X, TL.Y + offset)
+
+                    Library.TR1.From = Vector2.new(TR.X, TR.Y)
+                    Library.TR1.To = Vector2.new(TR.X - offset, TR.Y)
+                    Library.TR2.From = Vector2.new(TR.X, TR.Y)
+                    Library.TR2.To = Vector2.new(TR.X, TR.Y + offset)
+
+                    Library.BL1.From = Vector2.new(BL.X, BL.Y)
+                    Library.BL1.To = Vector2.new(BL.X + offset, BL.Y)
+                    Library.BL2.From = Vector2.new(BL.X, BL.Y)
+                    Library.BL2.To = Vector2.new(BL.X, BL.Y - offset)
+
+                    Library.BR1.From = Vector2.new(BR.X, BR.Y)
+                    Library.BR1.To = Vector2.new(BR.X - offset, BR.Y)
+                    Library.BR2.From = Vector2.new(BR.X, BR.Y)
+                    Library.BR2.To = Vector2.new(BR.X, BR.Y - offset)
+
+                    Vis(Library, true)
+
+                    if Settings.Autothickness then
+                        local distance = (Player.Character.HumanoidRootPart.Position - oripart.Position).magnitude
+                        local value = math.clamp(1/distance*100, 1, 4) --0.1 is min thickness, 6 is max
+                        for u, x in pairs(Library) do
+                            x.Thickness = value
+                        end
+                    else 
+                        for u, x in pairs(Library) do
+                            x.Thickness = Settings.Box_Thickness
+                        end
+                    end
+                else 
+                    Vis(Library, false)
+                end
+            else 
+                Vis(Library, false)
+                if game:GetService("Players"):FindFirstChild(plr.Name) == nil then
+                    for i, v in pairs(Library) do
+                        v:Remove()
+                        oripart:Destroy()
+                    end
+                    c:Disconnect()
+                end
+            end
+        end)
+    end
+    coroutine.wrap(Updater)()
+end
+
+-- Draw Boxes
+for i, v in pairs(game:GetService("Players"):GetPlayers()) do
+    if v.Name ~= Player.Name then
+      coroutine.wrap(Main)(v)
+    end
+end
+
+game:GetService("Players").PlayerAdded:Connect(function(newplr)
+    coroutine.wrap(Main)(newplr)
 end)
-      		print("button pressed")
-  	end   
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Esp nextbox [fix]",
+  Default = false,
+  Callback = function(Value)
+ end
 })
 
-
-local Tab = Window:MakeTab({
-	Name = "Farm",
-	Icon = "rbxassetid://",
-	PremiumOnly = false
-})
-
-
+local Main = MakeTab({Name = "Player"})
 
 getgenv().Revive = false
-Tab:AddToggle({
-	Name = "Fram Afk",
-	Callback = function(value)
-        getgenv().Autofarm = value
- 
+local Toggle = AddToggle(Main, {
+  Name = "Auto farm [afk]",
+  Default = false,
+  Callback = function(value)
+getgenv().Autofarm = value 
 if getgenv().Autofarm == true then
 while getgenv().Autofarm == true do
 wait()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(7000, 5000, 6000)
 end
 end
-      		print("button pressed")
-  	end   
+ end
 })
-
-Tab:AddToggle({
-	Name = "Auto Respawn",
-	Callback = function(value)
-getgenv().Revive = value
- 
+local Toggle = AddToggle(Main, {
+  Name = "Auto respawn",
+  Default = false,
+  Callback = function(value)
+getgenv().Revive = value 
 if getgenv().Revive == true then
 while getgenv().Revive == true do
 wait()
 game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
 end
 end
-      		print("button pressed")
-  	end   
+ end
 })
 getgenv().God = false
-
-Tab:AddToggle({
-	Name = "God Mode",
-	Callback = function(value)
+local Toggle = AddToggle(Main, {
+  Name = "God mode [antinextbot]",
+  Default = false,
+  Callback = function(value)
 getgenv().God = value
- 
 if getgenv().God == true then
 while getgenv().God == true do
 wait()
 game:GetService("Players").LocalPlayer.Character.Humanoid.Health = 1000
 end
 end
-      		print("button pressed")
-  	end   
+ end
 })
-
-Tab:AddTextbox({
-	Name = "Walk Speed Enter",
-	Default = "",
-	TextDisappear = true,
-	Callback = function(value)
+AddTextBox(Main, {
+  Name = "Speed enter",
+  Default = "",
+  PlaceholderText = "",
+  ClearText = true,
+  Callback = function(value)
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value 
-		print(value)
-	end	  
+  end
 })
-
-Tab:AddTextbox({
-	Name = "Jump Power Enter",
-	Default = "",
-	TextDisappear = true,
-	Callback = function(value)
+AddTextBox(Main, {
+  Name = "Jump enter",
+  Default = "",
+  PlaceholderText = "",
+  ClearText = true,
+  Callback = function(Value)
 game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
-		print(value)
-	end
+  end
+})
+local Toggle = AddButton(Main, {
+  Name = "Alpha Skin",
+  Default = false,
+  Callback = function(value)
+Events.UI.Purchase:InvokeServer("Skins", "AlphaTester")
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Boombox Skin",
+  Default = false,
+  Callback = function(value)
+Events.UI.Purchase:InvokeServer("Skins", "Boombox")
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Dev Test Emote",
+  Default = false,
+  Callback = function(value)
+Events.UI.Purchase:InvokeServer("Emotes", "Test")
+ end
 })
 
-Tab:AddTextbox({
-	Name = "Max Health Enter",
-	Default = "",
-	TextDisappear = true,
-	Callback = function(value)
-game.Players.LocalPlayer.Character.Humanoid.Health = value
-		print(value)
-	end
+local Main = MakeTab({Name = "Gui"})
+
+local Toggle = AddButton(Main, {
+  Name = "Delete gui",
+  Default = false,
+  Callback = function(Value)
+DestroyScript()
+ end
 })
 
-local Tab = Window:MakeTab({
-	Name = "Script maker",
-	Icon = "rbxassetid://",
-	PremiumOnl)
+local Main = MakeTab({Name = "Credits"})
 
-Tab:AddParagraph("Tbao Hub","Roblox thaibao7444 VietNam")
-
-local Tab = Window:MakeTab({
-	Name = "Gui",
-	Icon = "rbxassetid://",
-	PremiumOnly = false
+local Toggle = AddButton(Main, {
+  Name = "Me ?",
+  Default = false,
+  Callback = function(Value)
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "Tbao Hub";
+	Text = "by thaibao7444";
+	Icon = "rbxthumb://type=Asset&id=15485121479&w=150&h=150"})
+Duration = 5
+ end
 })

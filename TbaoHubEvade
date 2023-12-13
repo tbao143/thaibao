@@ -2,7 +2,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Window = OrionLib:MakeWindow({Name = "Tbao Hub | Evade", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 local Tab = Window:MakeTab({
 	Name = "Main",
-	Icon = "rbxassetid://12442731398",
+	Icon = "rbxassetid://",
 	PremiumOnly = false
 })
 Tab:AddButton({
@@ -202,7 +202,7 @@ ts:Teleport(game.PlaceId, p)
 
 local Tab = Window:MakeTab({
 	Name = "Esp",
-	Icon = "rbxassetid://12442731398",
+	Icon = "rbxassetid://",
 	PremiumOnly = false
 })
   	
@@ -312,7 +312,7 @@ end)
 
 local Tab = Window:MakeTab({
 	Name = "Farm",
-	Icon = "rbxassetid://12442731398",
+	Icon = "rbxassetid://",
 	PremiumOnly = false
 })
 
@@ -397,14 +397,13 @@ game.Players.LocalPlayer.Character.Humanoid.Health = value
 
 local Tab = Window:MakeTab({
 	Name = "Script maker",
-	Icon = "rbxassetid://12442731398",
-	PremiumOnly = false
-})
+	Icon = "rbxassetid://",
+	PremiumOnl)
 
 Tab:AddParagraph("Tbao Hub","Roblox thaibao7444 VietNam")
 
 local Tab = Window:MakeTab({
 	Name = "Gui",
-	Icon = "rbxassetid://12442731398",
+	Icon = "rbxassetid://",
 	PremiumOnly = false
 })

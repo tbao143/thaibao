@@ -6,11 +6,11 @@ MakeWindow({
     Animation = "by thaibao7444"
   },
   Key = {
-    KeySystem = false,
+    KeySystem = true,
     Title = "Key System",
     Description = "",
-    KeyLink = "",
-    Keys = {"1234"},
+    KeyLink = "https://pastebin.com/x3dDjCXk",
+    Keys = {"EVADE"},
     Notifi = {
     }
   }

@@ -1,3 +1,23 @@
+loadstring(game:HttpGet(("https://raw.githubusercontent.com/REDzHUB/LibraryV2/main/redzLib")))()
+MakeWindow({
+  Hub = {
+    Title = "Tbao Hub | Legends of speed",
+    Animation = "by thaibao7444"
+  },
+  Key = {
+    KeySystem = false,
+    Title = "Key System",
+    Description = "",
+    KeyLink = "",
+    Keys = {"1234"},
+    Notifi = {
+      Notifications = true,
+      CorrectKey = "Running the Script...",
+      Incorrectkey = "The key is incorrect",
+      CopyKeyLink = "Copied to Clipboard"
+    }
+  }
+})
 getgenv().collectHoopsToggle = false
 getgenv().collectOrbsToggle = false
 getgenv().autoRebirth = false
@@ -170,35 +190,166 @@ spawn(function() -- Anti AFK
     end) 
 end)
 
-local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
-
-local PhantomForcesWindow = Library:NewWindow("Tbao Hub | Legends of speed")
-
-local KillingCheats = PhantomForcesWindow:NewSection("Main")
-
-KillingCheats:CreateToggle("Auto Hoops", function(bool)
-print(value)
-    getgenv().collectHoopsToggle = bool
-    print(shared.toggle)
-    if bool then
-        collectHoopsToggle()
-    end
-end)
-
-KillingCheats:CreateToggle("Auto Collect", function(bool)
-print(value)
-getgenv().collectOrbsToggle = bool
-    print(shared.toggle)
-    if bool then
-        collectOrbsToggle()
-    end
-end)
-
-KillingCheats:CreateToggle("Auto Rebirth", function(bool)
-print(value)
+ Main = MakeTab({Name = "Main"})
+local Toggle = AddToggle(Main, {
+  Name = "Auto Rebirth",
+  Default = false,
+  Callback = function(bool)
 getgenv().autoRebirth = bool
     print(shared.toggle)
     if bool then
         autoRebirth()
     end
-end)
+ end
+})
+local Toggle = AddToggle(Main, {
+  Name = "Auto Collect",
+  Default = false,
+  Callback = function(bool)
+getgenv().collectOrbsToggle = bool
+    print(shared.toggle)
+    if bool then
+        collectOrbsToggle()
+    end
+ end
+})
+local Toggle = AddToggle(Main, {
+  Name = "Auto Hoops",
+  Default = false,
+  Callback = function(bool)
+getgenv().collectHoopsToggle = bool
+    print(shared.toggle)
+    if bool then
+        collectHoopsToggle()
+    end
+ end
+})
+AddTextBox(Main, {
+  Name = "Speed enter",
+  Default = "",
+  PlaceholderText = "",
+  ClearText = true,
+  Callback = function(value)
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value     
+  end
+})
+local Toggle = AddButton(Main, {
+  Name = "Auto exp",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptpastebin/raw/main/17"))()
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Auto lever",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptpastebin/raw/main/17"))()
+ end
+})
+
+ Main = MakeTab({Name = "Teleport"})
+
+local Toggle = AddButton(Main, {
+  Name = "Highway legends",
+  Default = false,
+  Callback = function(Value)
+local plr = game.Players.LocalPlayer
+            local char = plr.Character
+            char.HumanoidRootPart.CFrame = CFrame.new(3682.60254, 71.5308151, 5592.50879, -0.0193620101, 3.62180188e-08, -0.999812543, 4.99353519e-08, 1, 3.52577771e-08, 0.999812543, -4.92433294e-08, -0.0193620101)
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Snow city",
+  Default = false,
+  Callback = function(Value)
+local plr = game.Players.LocalPlayer
+            local char = plr.Character
+            char.HumanoidRootPart.CFrame = CFrame.new(-866.386841, 4.00088787, 2165.70654, -0.499959469, -9.93534854e-08, -0.866048813, -4.44803661e-08, 1, -8.90424445e-08, 0.866048813, -5.99544503e-09, -0.499959469)
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Magma city",
+  Default = false,
+  Callback = function(Value)
+local plr = game.Players.LocalPlayer
+            local char = plr.Character
+            char.HumanoidRootPart.CFrame = CFrame.new(1616.82739, 4.05089617, 4330.65283, 7.86637156e-06, -4.15036254e-08, -1, -6.3789912e-08, 1, -4.15041264e-08, 1, 6.37902389e-08, 7.86637156e-06)  
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "City",
+  Default = false,
+  Callback = function(Value)
+local plr = game.Players.LocalPlayer
+            local char = plr.Character
+            char.HumanoidRootPart.CFrame = CFrame.new(-537.767456, 3.95088959, 386.226837, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+ end
+})
+
+ Main = MakeTab({Name = "Misc"})
+
+local Toggle = AddButton(Main, {
+  Name = "No clip",
+  Default = false,
+  Callback = function(Value)
+local Noclip = nil
+local Clip = nil
+function noclip()
+ Clip = false
+ local function Nocl()
+  if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+   for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+    if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+     v.CanCollide = false
+    end
+   end
+  end
+  wait(0.21) -- basic optimization
+ end
+ Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+end
+function clip()
+ if Noclip then Noclip:Disconnect() end
+ Clip = true
+end
+noclip() -- to toggle noclip() and clip(
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Sever hop",
+  Default = false,
+  Callback = function(Value)
+local Http = game:GetService("HttpService")
+local TPS = game:GetService("TeleportService")
+local Api = "https://games.roblox.com/v1/games/"
+local _place = game.PlaceId
+local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
+function ListServers(cursor)
+   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+   return Http:JSONDecode(Raw)
+end
+local Server, Next; repeat
+   local Servers = ListServers(Next)
+   Server = Servers.data[1]
+   Next = Servers.nextPageCursor
+until Server
+TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Rejoin",
+  Default = false,
+  Callback = function(Value)
+local ts = game:GetService("TeleportService")
+local p = game:GetService("Players").LocalPlayer
+ts:Teleport(game.PlaceId, p)
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Delete gui",
+  Default = false,
+  Callback = function(Value)
+DestroyScript()
+ end
+})

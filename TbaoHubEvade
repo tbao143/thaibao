@@ -7,7 +7,7 @@ MakeWindow({
   },
   Key = {
     KeySystem = true,
-    Title = "Key System",
+    Title = "Tbao Hub | Evade",
     Description = "",
     KeyLink = "https://pastebin.com/x3dDjCXk",
     Keys = {"EVADE"},

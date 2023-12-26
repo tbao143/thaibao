@@ -622,7 +622,7 @@ local plr = game.Players.LocalPlayer
 
 gui.Name = "ESP";
 gui.ResetOnSpawn = false
-gui.AlwaysOnTop = false;
+gui.AlwaysOnTop = true;
 gui.LightInfluence = 0;
 gui.Size = UDim2.new(1.75, 0, 1.75, 0);
 esp.BackgroundColor3 = Color3.fromRGB(255, 255, 255);

@@ -607,9 +607,10 @@ end)
  end
 })
 local Toggle = AddButton(Main, {
-  Name = "Esp nextbox [fix]",
+  Name = "Esp nextbox",
   Default = false,
-  Callback = function(Value)
+  Callback = function(value)
+
  end
 })
 

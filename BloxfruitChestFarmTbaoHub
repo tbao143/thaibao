@@ -1,4 +1,3 @@
-
 highChestOnly = true
 godsChalicSniper = false
 repeat task.wait(4) until game:IsLoaded()
@@ -91,20 +90,20 @@ end)
 local AllowRunService = true
 local AllowRunServiceBind = Instance.new("BindableFunction")
 function AllowRunServiceBind.OnInvoke(args)
-    if args == "Enable" then
+    if args == "ON" then
         AllowRunService = true
-    elseif args == "Disable" then
+    elseif args == "OFF" then
         AllowRunService = false
     end
     local CoreGui = game:GetService("StarterGui")
     CoreGui:SetCore("SendNotification", {
-        Title = "ChestFarm",
-        Text = "By thaibao",
-        Icon = "rbxthumb://type=Asset&id=5215883542&w=150&h=150",
+        Title = "Chest Farm",
+        Text = "by thaibao7444 ",
+        Icon = "rbxthumb://type=Asset&id=15485121479&w=150&h=150",
         Duration = math.huge,
         Callback = AllowRunServiceBind,
-        Button1 = "Enable",
-        Button2 = "Disable",
+        Button1 = "ON",
+        Button2 = "OFF",
     })
 end
 
@@ -123,13 +122,13 @@ end)
 
 local CoreGui = game:GetService("StarterGui")
 CoreGui:SetCore("SendNotification", {
-    Title = "ChestFarm",
-    Text = "By thaibao",
-    Icon = "rbxthumb://type=Asset&id=5215883542&w=150&h=150",
+    Title = "Chest Farm",
+    Text = "by thaibao7444",
+    Icon = "rbxthumb://type=Asset&id=15485121479&w=150&h=150",
     Duration = math.huge,
     Callback = AllowRunServiceBind,
-    Button1 = "Enable",
-    Button2 = "Disable",
+    Button1 = "ON",
+    Button2 = "OFF",
 })
 task.spawn(function()
     while true and task.wait(.5) do

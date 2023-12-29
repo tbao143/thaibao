@@ -20,6 +20,34 @@ print("HI")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/chillz-workshop/main/Arceus%20Aimbot.lua"))()
 end)
 
+KillingCheats:CreateDropdown("Player",{"Head", "Torso", "Random"}, 2, function(text)
+print(text)
+function GetAimPart()
+    if OrionLib.Flags["AimPart"].Value == "Head" then
+        return "Head", 1
+    elseif OrionLib.Flags["AimPart"].Value == "Torso" then
+        return "LowerTorso", 0
+    elseif OrionLib.Flags["AimPart"].Value == "Random" then
+        if math.random(1, 4) == 1 then
+            return "Head", 1
+        else
+            return "LowerTorso", 0
+        end
+    end
+end
+end)
+
+KillingCheats:CreateToggle("Team check", function(value)
+print(value)
+function TeamCheck(v)
+    if v.Team ~= game.Players.LocalPlayer.Team or game.ReplicatedStorage.wkspc.FFA.Value then
+        return true
+    end
+    return false
+end
+end)
+
+
 local KillingCheats = PhantomForcesWindow:NewSection("Esp")
 
 KillingCheats:CreateButton("Esp player", function()

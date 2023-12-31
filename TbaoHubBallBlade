@@ -319,6 +319,33 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Hosvile/Refinement/ma
 })
 
 local section = AddSection(Main, {"by thaibao7444 ower Tbao Hub"})
+local section = AddSection(Main, {"Spam vip 👑"})
+
+local Toggle = AddButton(Main, {
+  Name = "Spam 1",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/DonGabrielle/AutoDetectV4/main/MainBalls"))()
+ end
+})
+
+local Toggle = AddButton(Main, {
+  Name = "Spam 2",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://pastebin.com/raw/t2391h1A"))()
+ end
+})
+
+local Toggle = AddButton(Main, {
+  Name = "Spam 3",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://pastebin.com/raw/HPNBFGSf"))()
+ end
+})
+
+
 
  Main = MakeTab({Name = "Misc"})
 

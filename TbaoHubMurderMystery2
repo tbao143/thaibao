@@ -1,0 +1,344 @@
+
+loadstring(game:HttpGet(("https://raw.githubusercontent.com/REDzHUB/LibraryV2/main/redzLib")))()
+MakeWindow({
+  Hub = {
+    Title = "Tbao Hub | Murder mystery 2",
+    Animation = "by thaibao7444"
+  },
+  Key = {
+    KeySystem = false,
+    Title = "Key System",
+    Description = "",
+    KeyLink = "",
+    Keys = {"1234"},
+    Notifi = {
+      Notifications = true,
+      CorrectKey = "Running the Script...",
+      Incorrectkey = "The key is incorrect",
+      CopyKeyLink = "Copied to Clipboard"
+    }
+  }
+})
+
+
+
+  Main = MakeTab({Name = "Main"})
+
+AddTextBox(Main, {
+  Name = "Speed",
+  Default = "",
+  PlaceholderText = "",
+  ClearText = true,
+  Callback = function(value)
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value     
+ end
+})
+
+AddTextBox(Main, {
+  Name = "Jump",
+  Default = "",
+  PlaceholderText = "",
+  ClearText = true,
+  Callback = function(value)
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = value    
+  end
+})
+
+AddTextBox(Main, {
+  Name = "Fov",
+  Default = "",
+  PlaceholderText = "",
+  ClearText = true,
+  Callback = function(value)
+local FovNumber = value
+local Camera = workspace.CurrentCamera
+Camera.FieldOfView = FovNumber  
+  end
+})
+
+local Toggle = AddButton(Main, {
+  Name = "No clip",
+  Default = false,
+  Callback = function(Value)
+local Noclip = nil
+local Clip = nil
+function noclip()
+ Clip = false
+ local function Nocl()
+  if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+   for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+    if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+     v.CanCollide = false
+    end
+   end
+  end
+  wait(0.21) -- basic optimization
+ end
+ Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+end
+function clip()
+ if Noclip then Noclip:Disconnect() end
+ Clip = true
+end
+noclip() -- to toggle noclip() and clip(
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Sever hop",
+  Default = false,
+  Callback = function(Value)
+local Http = game:GetService("HttpService")
+local TPS = game:GetService("TeleportService")
+local Api = "https://games.roblox.com/v1/games/"
+local _place = game.PlaceId
+local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
+function ListServers(cursor)
+   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+   return Http:JSONDecode(Raw)
+end
+local Server, Next; repeat
+   local Servers = ListServers(Next)
+   Server = Servers.data[1]
+   Next = Servers.nextPageCursor
+until Server
+TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Rejoin",
+  Default = false,
+  Callback = function(Value)
+local ts = game:GetService("TeleportService")
+local p = game:GetService("Players").LocalPlayer
+ts:Teleport(game.PlaceId, p)
+ end
+})
+local Toggle = AddButton(Main, {
+  Name = "Delete gui",
+  Default = false,
+  Callback = function(Value)
+DestroyScript()
+ end
+})
+
+local Toggle = AddButton(Main, {
+  Name = "Infinite jump",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BsGlitch/-nfJumps/main/BsGlitch"))()
+ end
+})
+
+local Toggle = AddButton(Main, {
+  Name = "Remove textures",
+  Default = false,
+  Callback = function(Value)
+local ToDisable = {
+	Textures = false,
+	VisualEffects = true,
+	Parts = true,
+	Particles = true,
+	Sky = true
+}
+
+local ToEnable = {
+	FullBright = false
+}
+
+local Stuff = {}
+
+for _, v in next, game:GetDescendants() do
+	if ToDisable.Parts then
+		if v:IsA("Part") or v:IsA("Union") or v:IsA("BasePart") then
+			v.Material = Enum.Material.SmoothPlastic
+			table.insert(Stuff, 1, v)
+		end
+	end
+	
+	if ToDisable.Particles then
+		if v:IsA("ParticleEmitter") or v:IsA("Smoke") or v:IsA("Explosion") or v:IsA("Sparkles") or v:IsA("Fire") then
+			v.Enabled = false
+			table.insert(Stuff, 1, v)
+		end
+	end
+	
+	if ToDisable.VisualEffects then
+		if v:IsA("BloomEffect") or v:IsA("BlurEffect") or v:IsA("DepthOfFieldEffect") or v:IsA("SunRaysEffect") then
+			v.Enabled = false
+			table.insert(Stuff, 1, v)
+		end
+	end
+	
+	if ToDisable.Textures then
+		if v:IsA("Decal") or v:IsA("Texture") then
+			v.Texture = ""
+			table.insert(Stuff, 1, v)
+		end
+	end
+	
+	if ToDisable.Sky then
+		if v:IsA("Sky") then
+			v.Parent = nil
+			table.insert(Stuff, 1, v)
+		end
+	end
+end
+ end
+})
+
+
+ Main = MakeTab({Name = "Misc"})
+
+
+local Toggle = AddButton(Main, {
+  Name = "Esp all",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet('https://raw.githubusercontent.com/kelve123/Ken_Murder_Mystery_esp/main/Ken%20Murder%20Mystery%202%20Esp'))()
+ end
+})
+
+local Toggle = AddButton(Main, {
+  Name = "Tp click item",
+  Default = false,
+  Callback = function(Value)
+mouse = game.Players.LocalPlayer:GetMouse()
+tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Click TP"
+tool.Activated:connect(function()
+local pos = mouse.Hit+Vector3.new(0,2.5,0)
+pos = CFrame.new(pos.X,pos.Y,pos.Z)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+end)
+tool.Parent = game.Players.LocalPlayer.Backpack
+ end
+})
+
+local Toggle = AddButton(Main, {
+  Name = "Invisible toggle",
+  Default = false,
+  Callback = function(Value)
+loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Invisible%20Gui'))()
+ end
+})
+
+local Toggle = AddButton(Main, {
+  Name = "God mode",
+  Default = false,
+  Callback = function(Value)
+
+ end
+})
+
+local Toggle = AddButton(Main, {
+  Name = "Tp player keyboard esp",
+  Default = false,
+  Callback = function(Value)
+getgenv().Keys = {
+"q",
+"e",
+"r",
+"t",
+"y",
+"u",
+"i",
+"o",
+"p",
+"f",
+"g",
+"h",
+"j",
+"k",
+"l",
+"z",
+"x",
+"c",
+"v",
+"b",
+"n",
+"m"
+}
+
+local usedKeys = {}
+
+local function addKeyValueToCharacter(char)
+    local keyValue = Instance.new("StringValue")
+    local randomKey = nil
+
+    repeat
+        randomKey = getgenv().Keys[math.random(1, #getgenv().Keys)]
+    until not usedKeys[randomKey]
+
+    keyValue.Name = "KeyValue"
+    keyValue.Value = randomKey
+    keyValue.Parent = char
+    usedKeys[randomKey] = true
+
+    local billboardGui = Instance.new("BillboardGui")
+    billboardGui.Name = "KeyBillboard"
+    billboardGui.Adornee = char.Head
+    billboardGui.AlwaysOnTop = true
+    billboardGui.LightInfluence = 0
+    billboardGui.Size = UDim2.new(2, 0, 2, 0) 
+    billboardGui.StudsOffset = Vector3.new(0, 3, 0) 
+    billboardGui.Parent = char.Head
+
+    local keyLabel = Instance.new("ImageLabel")
+    keyLabel.BackgroundTransparency = 1
+    keyLabel.Size = UDim2.new(1, 0, 1, 0)
+    keyLabel.Image = "https://www.roblox.com/asset-thumbnail/image?assetId=13045815860&width=420&height=420"
+    keyLabel.Parent = billboardGui
+
+    local textLabel = Instance.new("TextLabel")
+    textLabel.BackgroundTransparency = 1
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.Position = UDim2.new(0, 0, -0.05, 0)
+    textLabel.Font = Enum.Font.SourceSansBold
+    textLabel.TextColor3 = Color3.new(0, 0, 0)
+    textLabel.TextScaled = true
+    textLabel.Text = randomKey:upper()
+    textLabel.Parent = keyLabel
+end
+
+local function checkForNewCharacter(player)
+    if player.Character and player ~= game.Players.LocalPlayer then
+        addKeyValueToCharacter(player.Character)
+    end
+    player.CharacterAdded:Connect(addKeyValueToCharacter)
+end
+
+game.Players.PlayerAdded:Connect(function(player)
+    checkForNewCharacter(player)
+end)
+
+for _, player in ipairs(game.Players:GetPlayers()) do
+    checkForNewCharacter(player)
+end
+
+local userInputService = game:GetService("UserInputService")
+local textInputFocused = false
+
+userInputService.TextBoxFocused:Connect(function()
+    textInputFocused = true
+end)
+
+userInputService.TextBoxFocusReleased:Connect(function()
+    textInputFocused = false
+end)
+
+userInputService.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Keyboard and not textInputFocused then
+        local keyPressed = input.KeyCode
+
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("KeyValue") then
+                if player.Character.KeyValue.Value == keyPressed.Name:lower() then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame
+                end
+            end
+        end
+    end
+end)
+ end
+}

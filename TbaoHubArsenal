@@ -132,6 +132,12 @@ end
 ps.PlayerAdded:Connect(p_added)
 end)
 
+KillingCheats:CreateButton("Tracker", function()
+print("HI")
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Tracers-Script/main/Tracers.lua"))()
+end)
+
+
 local KillingCheats = PhantomForcesWindow:NewSection("Misc")
 
 KillingCheats:CreateButton("No clip", function()

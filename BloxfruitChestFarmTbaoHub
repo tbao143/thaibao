@@ -1,7 +1,5 @@
-
 require(game.ReplicatedStorage.Notification).new("<Color=Red>Auto chest farm vui lòng chời 5 giây by thaibao7444 owner Tbao Hub <Color=/>"):Display()
     wait(.24)
-
 highChestOnly = true
 godsChalicSniper = false
 repeat task.wait(4) until game:IsLoaded()
@@ -192,3 +190,5 @@ task.spawn(function()
         end
     end
 end)
+require(game.ReplicatedStorage.Notification).new("<Color=Red>Auto chest farm vui lòng chời 5 giây by thaibao7444 owner Tbao Hub <Color=/>"):Display()
+    wait(.24)

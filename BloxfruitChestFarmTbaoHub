@@ -1,5 +1,4 @@
-require(game.ReplicatedStorage.Notification).new("<Color=Yellow>Hãy sử dụng Fluxus để có trải nghiệm tốt!!<Color=/>"):Display()
-wait(.24)
+
 highChestOnly = true
 godsChalicSniper = false
 repeat task.wait(4) until game:IsLoaded()

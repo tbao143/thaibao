@@ -83,14 +83,9 @@ RunService.RenderStepped:Connect(function()
 end)
 end)
 
-KillingCheats:CreateToggle("Team check", function(v)
+KillingCheats:CreateToggle("Team check", function(state)
 print(value)
-function TeamCheck(v)
-    if v.Team ~= game.Players.LocalPlayer.Team or game.ReplicatedStorage.wkspc.FFA.Value then
-        return true
-    end
-    return false
-end
+getgenv().TeamCheck = state
 end)
 
 KillingCheats:CreateToggle("Hitbox ", function(v)

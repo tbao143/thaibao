@@ -1517,4 +1517,4 @@ end)
 end
 })
 
-OrionLib:Init(
+OrionLib:Init()

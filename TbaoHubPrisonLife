@@ -1516,4 +1516,36 @@ Players.PlayerRemoving:Connect(function(plr)
 end)
 end
 })
+Tab: AddButton({
+	Name = "Tools item",
+	Callback = function(value)
+backpack = game:GetService("Players").LocalPlayer.Backpack
+
+hammer = Instance.new("HopperBin")
+hammer.Name = "Hammer"
+hammer.BinType = 4
+hammer.Parent = backpack
+
+cloneTool = Instance.new("HopperBin")
+cloneTool.Name = "Clone"
+cloneTool.BinType = 3
+cloneTool.Parent = backpack
+end
+})
+Tab: AddButton({
+	Name = "Tools tp",
+	Callback = function(value)
+mouse = game.Players.LocalPlayer:GetMouse()
+tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Click TP"
+tool.Activated:connect(function()
+local pos = mouse.Hit+Vector3.new(0,2.5,0)
+pos = CFrame.new(pos.X,pos.Y,pos.Z)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+end)
+tool.Parent = game.Players.LocalPlayer.Backpack
+end
+})
+
 OrionLib:Init()

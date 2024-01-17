@@ -1,4 +1,5 @@
-
+--by thaibao7444
+-- Version: 3.2
 
 -- Instances:
 local Flymguiv2 = Instance.new("ScreenGui")
@@ -164,13 +165,13 @@ Unfly.MouseButton1Click:Connect(function()
 	HumanoidRP:FindFirstChildOfClass("BodyGyro"):Destroy()
 end)
 
-Vfly.Name = "Fly car"
+Vfly.Name = "Vfly"
 Vfly.Parent = Drag
 Vfly.BackgroundColor3 = Color3.fromRGB(0, 150, 191)
 Vfly.BorderSizePixel = 0
 Vfly.Size = UDim2.new(0, 57, 0, 27)
 Vfly.Font = Enum.Font.SourceSans
-Vfly.Text = "Fly car"
+Vfly.Text = "Car fly"
 Vfly.TextColor3 = Color3.fromRGB(255, 255, 255)
 Vfly.TextScaled = true
 Vfly.TextSize = 14.000

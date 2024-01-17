@@ -1547,4 +1547,11 @@ end)
 tool.Parent = game.Players.LocalPlayer.Backpack
 end
 })
+
+Tab: AddButton({
+	Name = "Car fly",
+	Callback = function(value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/Carflylol"))()
+end
+})
 OrionLib:Init()

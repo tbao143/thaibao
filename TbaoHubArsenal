@@ -82,7 +82,7 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 end)
-
+getgenv().TeamCheck = false
 KillingCheats:CreateToggle("Team check", function(state)
 print(value)
 getgenv().TeamCheck = state

@@ -564,7 +564,7 @@ local Section = Tab:AddSection({
 
 
 Tab: AddButton({
-	Name = "Noclip",
+	Name = "No clip",
 	Callback = function(value)
 local Noclip = nil
 local Clip = nil

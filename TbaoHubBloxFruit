@@ -26,7 +26,7 @@ local Tabs = {
 local Options = Fluent.Options
 
 do
---------------------------------------------------------------------------------------------------------------------------------------------
+
     repeat wait() until game.Players
     repeat wait() until game.Players.LocalPlayer
     repeat wait() until game.ReplicatedStorage
@@ -35,8 +35,7 @@ do
     repeat wait() until game.Players.LocalPlayer.PlayerGui:FindFirstChild("Main");
     repeat wait() until game:GetService("Players")
     repeat wait() until game:GetService("Players").LocalPlayer.Character:FindFirstChild("Energy")
-------// BLOX FRUIT
---// Sea world
+
 First_Sea = false
 Second_Sea = false
 Third_Sea = false
@@ -49,7 +48,7 @@ elseif placeId == 7449423635 then
 Third_Sea = true
 end
 
---// Check Quest
+
 function CheckLevel()
 local Lv = game:GetService("Players").LocalPlayer.Data.Level.Value
 if First_Sea then
@@ -671,7 +670,7 @@ end
 end
 end
 
---// Select Monster
+
 if First_Sea then
 tableMon = {
   "Bandit","Monkey","Gorilla","Pirate","Brute","Desert Bandit","Desert Officer","Snow Bandit","Snowman","Chief Petty Officer","Sky Bandit","Dark Master","Prisoner", "Dangerous Prisoner","Toga Warrior","Gladiator","Military Soldier","Military Spy","Fishman Warrior","Fishman Commando","God's Guard","Shanda","Royal Squad","Royal Soldier","Galley Pirate","Galley Captain"
@@ -684,7 +683,7 @@ tableMon = {
 }
 end
 
---// Select Island
+
 if First_Sea then
 AreaList = {
   'Jungle', 'Buggy', 'Desert', 'Snow', 'Marine', 'Sky', 'Prison', 'Colosseum', 'Magma', 'Fishman', 'Sky Island', 'Fountain'
@@ -697,7 +696,7 @@ AreaList = {
 }
 end
 
---// Check Boss Quest
+
 function CheckBossQuest()
 if First_Sea then
 if SelectBoss == "The Gorilla King" then
@@ -1948,13 +1947,13 @@ for i,v in pairs(game:GetService("Workspace").Map.MysticIsland:GetChildren()) do
 end
 end
 
-----------Tween
+
 
 
 
 
     
-        --// Tween Island
+        
         function TP2(P1)
         local Distance = (P1.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
         if Distance >= 1 then
@@ -2023,7 +2022,7 @@ end
     end
 
  
---select weapon
+
 function EquipTool(ToolSe)
 		if game.Players.LocalPlayer.Backpack:FindFirstChild(ToolSe) then
 			local tool = game.Players.LocalPlayer.Backpack:FindFirstChild(ToolSe)
@@ -2033,7 +2032,7 @@ function EquipTool(ToolSe)
 	end
 
 
-    --aimbot mastery
+    
 	spawn(function()
 		local gg = getrawmetatable(game)
 		local old = gg.__namecall
@@ -2061,7 +2060,7 @@ function EquipTool(ToolSe)
 		  end)
 		end)
 	  
---Equip Gun
+
 spawn(function()
   pcall(function()
     while task.wait() do
@@ -2078,7 +2077,7 @@ spawn(function()
 
 
 
--- [Body Gyro]
+
    spawn(function()
 			while task.wait() do
 				pcall(function()
@@ -2098,7 +2097,7 @@ spawn(function()
 		end)
 
 	
---//No CLip Auto Farm
+
 spawn(function()
   pcall(function()
     game:GetService("RunService").Stepped:Connect(function()
@@ -2114,7 +2113,7 @@ spawn(function()
   end)
 
 
---Check Material
+
 function CheckMaterial(matname)
 for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
 if type(v) == "table" then
@@ -2128,7 +2127,7 @@ end
 return 0
 end
 
------Click
+
 
 function Click()
 	if not _G.FastAttack then
@@ -2144,7 +2143,7 @@ function Click()
 	end
 end
 
---Sword Weapon
+
 function GetWeaponInventory(Weaponname)
 for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
 if type(v) == "table" then
@@ -2161,7 +2160,7 @@ end
 
 
 
----Method Wait Mob
+
 Type11 = 1
 spawn(function()
     while wait(.1) do
@@ -2183,7 +2182,7 @@ spawn(function()
 end)
 
 
----Method Farm
+
 Type1 = 1
 spawn(function()
     while wait(.1) do
@@ -2269,9 +2268,7 @@ function BTP(p)
 		end)
 	end
 
---------------------------------------------------------------------------------------------------------------------------------------------
 
----Close gui
 local ScreenGui = Instance.new("ScreenGui")
 local ImageButton = Instance.new("ImageButton")
 local UICorner = Instance.new("UICorner")
@@ -2286,7 +2283,7 @@ ImageButton.Parent = ScreenGui
 ImageButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 ImageButton.Position = UDim2.new(0.10615778, 0, 0.16217947, 0)
 ImageButton.Size = UDim2.new(0.0627121851, 0, 0.107579626, 0)
-ImageButton.Image = "rbxassetid://15485121479"
+ImageButton.Image = "rbxassetid://15338990777"
 
 UICorner.CornerRadius = UDim.new(0, 30)
 UICorner.Parent = ImageButton
@@ -2348,14 +2345,11 @@ local function YTZCAJC_fake_script()
 		game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.End,false,game)
 	end)
 end
-coroutine.wrap(YTZCAJC_fake_script)()
---------------------------------------------------------------------------------------------------------------------------------------------
--- Hehe
+
 local posX = 0
 local posY = 60
 local posZ = 0
---------------------------------------------------------------------------------------------------------------------------------------------
---Create Tabs
+
     Tabs.Main:AddParagraph({
         Title = "Farming",
         Content = "Auto Farm"
@@ -2592,8 +2586,7 @@ local posZ = 0
         end
     end
 
---------------------------------------------------------------------------------------------------------------------------------------------
---Mastery
+
     Tabs.Main:AddParagraph({
         Title = "Mastery Farm",
         Content = "Auto farm your mastery"
@@ -4543,8 +4536,7 @@ ToggleF:OnChanged(function(Value)
     end)
 Options.ToggleF:SetValue(true)
 
---------------------------------------------------------------------------------------------------------------------------------------------
---Stats
+
 local ToggleMelee = Tabs.Stats:AddToggle("ToggleMelee", {Title = "Auto Melee", Default = false })
 ToggleMelee:OnChanged(function(Value)
     _G.Auto_Stats_Melee = Value
@@ -4655,8 +4647,7 @@ spawn(function()
         end
     end
 end)
---------------------------------------------------------------------------------------------------------------------------------------------
---Player
+
 
 local Playerslist = {}
 for i,v in pairs(game:GetService("Players"):GetChildren()) do
@@ -4715,8 +4706,7 @@ end)
 Options.ToggleQuanSat:SetValue(false)
 
 
------------------------------------------------------------------------------------------------------------------------------------------------
---Teleport
+
 Tabs.Teleport:AddParagraph({
     Title = "World",
     Content = "Sea1 & Sea2 & Sea3"
@@ -4942,8 +4932,7 @@ function BTPZ(Point)
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Point
         end
 
---------------------------------------------------------------------------------------------------------------------------------------------
---Fruit
+
 
 local Remote_GetFruits = game.ReplicatedStorage:FindFirstChild("Remotes").CommF_:InvokeServer("GetFruits");
 Table_DevilFruitSniper = {}
@@ -5218,8 +5207,7 @@ end)
 
 
 
---------------------------------------------------------------------------------------------------------------------------------------------
---Raid
+
 
 
 
@@ -5584,8 +5572,6 @@ spawn(function()
     end)
 end)
 
---------------------------------------------------------------------------------------------------------------------------------------------
---RaceV4
 
 
 Tabs.Race:AddButton({
@@ -5869,8 +5855,7 @@ while wait() do
 end
 end)
 
---------------------------------------------------------------------------------------------------------------------------------------------
---shop
+
 
 local ToggleRandomBone = Tabs.Shop:AddToggle("ToggleRandomBone", {Title = "Random Bone", Default = false })
 ToggleRandomBone:OnChanged(function(Value)  
@@ -6035,8 +6020,7 @@ Tabs.Shop:AddButton({
 		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Reroll","2")
 	end
 })
---------------------------------------------------------------------------------------------------------------------------------------------
---misc
+
 
 Tabs.Misc:AddButton({
 	Title = "Rejoin Server",

@@ -704,7 +704,7 @@ end)
 
 
 
-local KillingCheats = PhantomForcesWindow:NewSection("Player")
+local KillingCheats = PhantomForcesWindow:NewSection("Gun")
 
 local replicationstorage = game.ReplicatedStorage
 

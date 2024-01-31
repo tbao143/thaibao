@@ -84,72 +84,11 @@ RunService.RenderStepped:Connect(function()
 end)
 end)
 
-KillingCheats:CreateButton("Aimbot", function()
+
+local aimbotEnabled = false
+KillingCheats:CreateToggle("Aimbot", function(Value)
 print("HI")
-local fov = 500
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-local Players = game:GetService("Players")
-local Cam = game.Workspace.CurrentCamera
-
-local FOVring = Drawing.new("Circle")
-FOVring.Visible = false
-FOVring.Thickness = 2
-FOVring.Color = Color3.fromRGB(128, 0, 128) -- Purple color
-FOVring.Filled = false
-FOVring.Radius = fov
-FOVring.Position = Cam.ViewportSize / 100000
-
-local function updateDrawings()
-    local camViewportSize = Cam.ViewportSize
-    FOVring.Position = camViewportSize / 10000
-end
-
-local function onKeyDown(input)
-    if input.KeyCode == Enum.KeyCode.Delete then
-        RunService:UnbindFromRenderStep("FOVUpdate")
-        FOVring:Remove()
-    end
-end
-
-UserInputService.InputBegan:Connect(onKeyDown)
-
-local function lookAt(target)
-    local lookVector = (target - Cam.CFrame.Position).unit
-    local newCFrame = CFrame.new(Cam.CFrame.Position, Cam.CFrame.Position + lookVector)
-    Cam.CFrame = newCFrame
-end
-
-local function getClosestPlayerInFOV(trg_part)
-    local nearest = nil
-    local last = math.huge
-    local playerMousePos = Cam.ViewportSize / 2
-
-    for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= Players.LocalPlayer then
-            local part = player.Character and player.Character:FindFirstChild(trg_part)
-            if part then
-                local ePos, isVisible = Cam:WorldToViewportPoint(part.Position)
-                local distance = (Vector2.new(ePos.x, ePos.y) - playerMousePos).Magnitude
-
-                if distance < last and isVisible and distance < fov then
-                    last = distance
-                    nearest = player
-                end
-            end
-        end
-    end
-
-    return nearest
-end
-
-RunService.RenderStepped:Connect(function()
-    updateDrawings()
-    local closest = getClosestPlayerInFOV("Head")
-    if closest and closest.Character:FindFirstChild("Head") then
-        lookAt(closest.Character.Head.Position)
-    end
-end)
+aimbotEnabled = Value
 end)
 
 getgenv().TeamCheck = false
@@ -750,3 +689,65 @@ for i, v in pairs(replicationstorage.Weapons:GetDescendants()) do
    end
 end
 end)
+
+game:GetService("RunService").RenderStepped:Connect(function()
+    if espEnabled then
+        for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+            if player ~= game.Players.LocalPlayer and player.Team ~= game.Players.LocalPlayer.Team and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local rootPart = player.Character:FindFirstChild("HumanoidRootPart")
+                local espBox = espBoxTable[player]
+                if espBox then
+                    espBox.Size = rootPart.Size + Vector3.new(5, 5, 5) -- Aumente o tamanho da caixa
+                    espBox.Adornee = rootPart
+                else
+                    espBox = Instance.new("BoxHandleAdornment", rootPart)
+                    espBoxTable[player] = espBox
+                    espBox.Size = rootPart.Size + Vector3.new(5, 5, 5)
+                    espBox.AlwaysOnTop = true
+                    espBox.ZIndex = 10
+                    espBox.Transparency = 0.5
+                    espBox.Color3 = Color3.new(0, 0, 1) -- Cor do ESP (azul)
+                end
+            end
+        end
+
+        -- Remova ESPs de jogadores que não estão mais no seu time
+        for player, espBox in pairs(espBoxTable) do
+            if player.Team == game.Players.LocalPlayer.Team or not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then
+                espBox:Remove()
+                espBoxTable[player] = nil
+            end
+        end
+    end
+
+    if aimbotEnabled then
+        local closest = getClosestPlayerToCursor("Head")
+        if closest and closest.Character and closest.Character:FindFirstChild("HumanoidRootPart") and closest.Team ~= game.Players.LocalPlayer.Team then
+            lookAt(workspace.CurrentCamera.CFrame.p, closest.Character:FindFirstChild("Head").Position)
+        end
+    end
+end)
+
+function lookAt(target, eye)
+    workspace.CurrentCamera.CFrame = CFrame.new(target, eye)
+end
+
+function getClosestPlayerToCursor(trg_part)
+    local nearest = nil
+    local last = math.huge
+    for i, v in pairs(game:GetService("Players"):GetPlayers()) do
+        if v ~= game.Players.LocalPlayer and v.Team ~= game.Players.LocalPlayer.Team and game.Players.LocalPlayer.Character and v.Character and v.Character:FindFirstChild(trg_part) then
+            if game.Players.LocalPlayer.Character:FindFirstChild(trg_part) then
+                local ePos, vissss = workspace.CurrentCamera:WorldToViewportPoint(v.Character[trg_part].Position)
+                local AccPos = Vector2.new(ePos.x, ePos.y)
+                local mousePos = Vector2.new(workspace.CurrentCamera.ViewportSize.x / 2, workspace.CurrentCamera.ViewportSize.y / 2)
+                local distance = (AccPos - mousePos).magnitude
+                if distance < last and vissss and distance < 400 then
+                    last = distance
+                    nearest = v
+                end
+            end
+        end
+    end
+    return nearest
+end

@@ -1,8 +1,8 @@
-		local WorkspacePlayers = game:GetService("Workspace").Game.Players
+                local WorkspacePlayers = game:GetService("Workspace").Game.Players
 		local Players = game:GetService('Players')
 		local localplayer = Players.LocalPlayer
 		local GuiService = game:GetService("GuiService")
-		local Light = game:GetService("Lighting")
+	        local Light = game:GetService("Lighting")
 		local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 		
 		local Window = OrionLib:MakeWindow({Name = "Tbao Hub | Evade", HidePremium = false,IntroText = "by thaibao7444", SaveConfig = false, ConfigFolder = "OrionTest"})

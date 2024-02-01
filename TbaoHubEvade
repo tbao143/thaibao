@@ -1,922 +1,785 @@
+		local WorkspacePlayers = game:GetService("Workspace").Game.Players
+		local Players = game:GetService('Players')
+		local localplayer = Players.LocalPlayer
+		local GuiService = game:GetService("GuiService")
+		local Light = game:GetService("Lighting")
+		local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+		
+		local Window = OrionLib:MakeWindow({Name = "Tbao Hub | Evade", HidePremium = false,IntroText = "by thaibao7444", SaveConfig = false, ConfigFolder = "OrionTest"})
 
-loadstring(game:HttpGet(("https://raw.githubusercontent.com/REDzHUB/LibraryV2/main/redzLib")))()
-MakeWindow({
-  Hub = {
-    Title = "Tbao Hub | Evade",
-    Animation = "by thaibao7444"
-  },
-  Key = {
-    KeySystem = false,
-    Title = "Tbao Hub | Evade",
-    Description = "",
-    KeyLink = "https://pastebin.com/x3dDjCXk",
-    Keys = {"EVADE"},
-    Notifi = {
-    }
-  }
-})
-MinimizeButton({
-  Image = "",
-  Size = {40, 40},
-  Color = Color3.fromRGB(255, 255, 255),
-  Corner = true,
-  Stroke = false,
-  StrokeColor = Color3.fromRGB(255, 0, 0)
-})
-getgenv().money = true
-getgenv().revivedie = true
-getgenv().autowistle = true
-getgenv().autochat = true
-getgenv().AutoDrink = true
-getgenv().NoCameraShake = true
-getgenv().Settings = {
-    moneyfarm = true,
-    afkfarm = true,
-    NoCameraShake = true,
-    Speed = 1450,
-    Jump = 3,
-    reviveTime = 3,
-}
- 
-local FindAI = function()
-    for _,v in pairs(WorkspacePlayers:GetChildren()) do
-        if not Players:FindFirstChild(v.Name) then
-            return v
-        end
-    end
-end
- 
-local GetDownedPlr = function()
-    for i,v in pairs(WorkspacePlayers:GetChildren()) do
-        if v:GetAttribute("Downed") then
-            return v
-        end
-    end
-end
- 
-local revive = function()
-    local downedplr = GetDownedPlr()
-    if downedplr ~= nil and downedplr:FindFirstChild('HumanoidRootPart') then
-        task.spawn(function()
-            while task.wait() do
-                if localplayer.Character then
-                    workspace.Game.Settings:SetAttribute("ReviveTime", 2.2)
-                    localplayer.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(downedplr:FindFirstChild('HumanoidRootPart').Position.X, downedplr:FindFirstChild('HumanoidRootPart').Position.Y + 3, downedplr:FindFirstChild('HumanoidRootPart').Position.Z)
-                    task.wait()
-                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), false)
-                    task.wait(4.5)
-                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
-                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
-                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
-                    break
-                end
-            end
-        end)
-    end
-end
- 
-task.spawn(function()
-    while task.wait() do
-        if Settings.AutoRespawn then
-             if localplayer.Character and localplayer.Character:GetAttribute("Downed") then
-                game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
-             end
-        end
- 
-        if Settings.NoCameraShake then
-            localplayer.PlayerScripts.CameraShake.Value = CFrame.new(0,0,0) * CFrame.new(0,0,0)
-        end
-        if Settings.moneyfarm then
-            if localplayer.Character and localplayer.Character:GetAttribute("Downed") then
-                game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
-                task.wait(3)
-            else
-                revive()
-                task.wait(1)
-            end
-        end
-        if Settings.moneyfarm == false and Settings.afkfarm and localplayer.Character:FindFirstChild('HumanoidRootPart') ~= nil then
-            localplayer.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(6007, 7005, 8005)
-        end
-    end
-end)
- 
-function camerashake()
-    while NoCameraShake == true do task.wait()
-        localplayer.PlayerScripts.CameraShake.Value = CFrame.new(0,0,0) * CFrame.new(0,0,0)
-    end
-end
- 
-function autodrink()
-	while AutoDrink == true do
-		local ohString1 = "Cola"
-		game:GetService("ReplicatedStorage").Events.UseUsable:FireServer(ohString1)
-		wait(6)
-	end
-end
- 
-function SpamChat()
-    while autochat == true do
-        local ohString1 = "Hydra Network on top"
-        local ohString2 = "All"
-        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(ohString1, ohString2)
-        wait(1)
-    end
-end
- 
-function autowistlefunction()
-    while autowistle == true do
-        local ohString1 = "Whistle"
-        local ohBoolean2 = true
-        game:GetService("Players").LocalPlayer.PlayerScripts.Events.KeybindUsed:Fire(ohString1, ohBoolean2)
-        game:GetService("ReplicatedStorage").Events.Whistle:FireServer()
-        wait(5)
-    end
-end
- 
-function god()
-    while revivedie == true do
-        game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
-        wait()
-    end
-end
- 
-function dofullbright()
-    Light.Ambient = Color3.new(1, 1, 1)
-    Light.ColorShift_Bottom = Color3.new(1, 1, 1)
-    Light.ColorShift_Top = Color3.new(1, 1, 1)
-    game.Lighting.FogEnd = 100000
-    game.Lighting.FogStart = 0
-    game.Lighting.ClockTime = 14
-    game.Lighting.Brightness = 2
-    game.Lighting.GlobalShadows = false
-end
- 
-function freemoney()
-    while money == true do
-        local ohString1 = "Free money <font color=\"rgb(100,255,100)\">($99999)</font>"
-        game:GetService("Players").LocalPlayer.PlayerGui.HUD.Messages.Use:Fire(ohString1)
-        wait(5)
-    end
-end
-local Main = MakeTab({Name = "Main"})
 
-local Toggle = AddButton(Main, {
-  Name = "Fly gui speed",
-  Default = false,
-  Callback = function(Value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()    
-  end
-})
-local Toggle = AddButton(Main, {
-  Name = "No clip",
-  Default = false,
-  Callback = function(Value)
-local Noclip = nil
-local Clip = nil
-function noclip()
- Clip = false
- local function Nocl()
-  if Clip == false and game.Players.LocalPlayer.Character ~= nil then
-   for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-    if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
-     v.CanCollide = false
-    end
-   end
-  end
-  wait(0.21) -- basic optimization
- end
- Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
-end
-function clip()
- if Noclip then Noclip:Disconnect() end
- Clip = true
-end
-noclip() -- to toggle noclip() and clip()
-  end
-})
-local Toggle = AddButton(Main, {
-  Name = "Full night",
-  Default = false,
-  Callback = function(value)
-Light.Ambient = Color3.new(1, 1, 1)
-    Light.ColorShift_Bottom = Color3.new(1, 1, 1)
-    Light.ColorShift_Top = Color3.new(1, 1, 1)
-    game.Lighting.FogEnd = 100000
-    game.Lighting.FogStart = 0
-    game.Lighting.ClockTime = 14
-    game.Lighting.Brightness = 2
-    game.Lighting.GlobalShadows = false
-  end
-})
-local Toggle = AddButton(Main, {
-  Name = "No fog [fix]",
-  Default = false,
-  Callback = function(Value)
-  end
-})
-local Toggle = AddButton(Main, {
-  Name = "Fps boost",
-  Default = false,
-  Callback = function(Value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubfpsboost"))()
-  end
-})
-local Toggle = AddButton(Main, {
-  Name = "Infinite jump",
-  Default = false,
-  Callback = function(Value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/BsGlitch/-nfJumps/main/BsGlitch"))()
-  end
-})
-local Toggle = AddButton(Main, {
-  Name = "Sever hop [low player]",
-  Default = false,
-  Callback = function(Value)
-local Http = game:GetService("HttpService")
-local TPS = game:GetService("TeleportService")
-local Api = "https://games.roblox.com/v1/games/"
+		getgenv().money = true
+		getgenv().revivedie = true
+		getgenv().autowistle = true
+		getgenv().autochat = true
+		getgenv().AutoDrink = true
+		getgenv().NoCameraShake = true
+		getgenv().Settings = {
+			moneyfarm = false,
+			afkfarm = false,
+			NoCameraShake = false,
+			Speed = 1450,
+			Jump = 3,
+			reviveTime = 3,
+		}
 
-local _place = game.PlaceId
-local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
-function ListServers(cursor)
-   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
-   return Http:JSONDecode(Raw)
-end
-
-local Server, Next; repeat
-   local Servers = ListServers(Next)
-   Server = Servers.data[1]
-   Next = Servers.nextPageCursor
-until Server
-
-TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
-  end
-})
-local Toggle = AddButton(Main, {
-  Name = "Rejoin",
-  Default = false,
-  Callback = function(Value)
-local ts = game:GetService("TeleportService")
-local p = game:GetService("Players").LocalPlayer
-ts:Teleport(game.PlaceId, p)
-  end
-})
-local Toggle = AddButton(Main, {
-  Name = "Remove textures",
-  Default = false,
-  Callback = function(Value)
-local ToDisable = {
-	Textures = false,
-	VisualEffects = true,
-	Parts = true,
-	Particles = true,
-	Sky = true
-}
-
-local ToEnable = {
-	FullBright = false
-}
-
-local Stuff = {}
-
-for _, v in next, game:GetDescendants() do
-	if ToDisable.Parts then
-		if v:IsA("Part") or v:IsA("Union") or v:IsA("BasePart") then
-			v.Material = Enum.Material.SmoothPlastic
-			table.insert(Stuff, 1, v)
-		end
-	end
-	
-	if ToDisable.Particles then
-		if v:IsA("ParticleEmitter") or v:IsA("Smoke") or v:IsA("Explosion") or v:IsA("Sparkles") or v:IsA("Fire") then
-			v.Enabled = false
-			table.insert(Stuff, 1, v)
-		end
-	end
-	
-	if ToDisable.VisualEffects then
-		if v:IsA("BloomEffect") or v:IsA("BlurEffect") or v:IsA("DepthOfFieldEffect") or v:IsA("SunRaysEffect") then
-			v.Enabled = false
-			table.insert(Stuff, 1, v)
-		end
-	end
-	
-	if ToDisable.Textures then
-		if v:IsA("Decal") or v:IsA("Texture") then
-			v.Texture = ""
-			table.insert(Stuff, 1, v)
-		end
-	end
-	
-	if ToDisable.Sky then
-		if v:IsA("Sky") then
-			v.Parent = nil
-			table.insert(Stuff, 1, v)
-		end
-	end
-end
-  end
-})
-local Toggle = AddButton(Main, {
-  Name = "No Camera Shake",
-  Default = false,
-  Callback = function(value)
-NoCameraShake = value
-        camerashake()
- end
-})
-local Toggle = AddButton(Main, {
-  Name = "Max health",
-  Default = false,
-  Callback = function(value)
-game.Players.LocalPlayer.Character.Humanoid.Health = 1000
- end
-})
-
-local Main = MakeTab({Name = "Esp"})
-
-local Toggle = AddButton(Main, {
-  Name = "Esp skeleton",
-  Default = false,
-  Callback = function(value)
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Blissful4992/ESPs/main/UniversalSkeleton.lua"))()
-local Skeletons = {}
-for _, Player in next, game.Players:GetChildren() do
-	table.insert(Skeletons, Library:NewSkeleton(Player, true));
-end
-game.Players.PlayerAdded:Connect(function(Player)
-	table.insert(Skeletons, Library:NewSkeleton(Player, true));
-end)
-  end
-})
-local Toggle = AddButton(Main, {
-  Name = "Esp name",
-  Default = false,
-  Callback = function(value)
-local c = workspace.CurrentCamera
-		local ps = game:GetService("Players")
-		local lp = ps.LocalPlayer
-		local rs = game:GetService("RunService")
-		local function getdistancefc(part)
-			return (part.Position - c.CFrame.Position).Magnitude
-		end
-		local function esp(p, cr)
-			local h = cr:WaitForChild("Humanoid")
-			local hrp = cr:WaitForChild("HumanoidRootPart")
-			local text = Drawing.new("Text")
-			text.Visible = false
-			text.Center = true
-			text.Outline = true
-			text.Font = 2
-			text.Color = Color3.fromRGB(255, 255, 255)
-			text.Size = 17
-			local c1
-			local c2
-			local c3
-			local function dc()
-				text.Visible = false
-				text:Remove()
-				if c1 then
-					c1:Disconnect()
-					c1 = nil
-				end
-				if c2 then
-					c2:Disconnect()
-					c2 = nil
-				end
-				if c3 then
-					c3:Disconnect()
-					c3 = nil
+		local FindAI = function()
+			for _,v in pairs(WorkspacePlayers:GetChildren()) do
+				if not Players:FindFirstChild(v.Name) then
+					return v
 				end
 			end
-			c2 =
-				cr.AncestryChanged:Connect(
-				function(_, parent)
-					if not parent then
-						dc()
+		end
+
+		local GetDownedPlr = function()
+			for i,v in pairs(WorkspacePlayers:GetChildren()) do
+				if v:GetAttribute("Downed") then
+					return v
+				end
+			end
+		end
+
+		local revive = function()
+			local downedplr = GetDownedPlr()
+			if downedplr ~= nil and downedplr:FindFirstChild('HumanoidRootPart') then
+				task.spawn(function()
+					while task.wait() do
+						if localplayer.Character then
+							workspace.Game.Settings:SetAttribute("ReviveTime", 2.2)
+							localplayer.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(downedplr:FindFirstChild('HumanoidRootPart').Position.X, downedplr:FindFirstChild('HumanoidRootPart').Position.Y + 3, downedplr:FindFirstChild('HumanoidRootPart').Position.Z)
+							task.wait()
+							game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), false)
+							task.wait(4.5)
+							game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
+							game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
+							game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
+							break
+						end
+					end
+				end)
+			end
+		end
+
+		task.spawn(function()
+			while task.wait() do
+				if Settings.AutoRespawn then
+					if localplayer.Character and localplayer.Character:GetAttribute("Downed") then
+						game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
 					end
 				end
-			)
-			c3 =
-				h.HealthChanged:Connect(
-				function(v)
-					if (v <= 0) or (h:GetState() == Enum.HumanoidStateType.Dead) then
-						dc()
-					end
+
+				if Settings.NoCameraShake then
+					localplayer.PlayerScripts.CameraShake.Value = CFrame.new(0,0,0) * CFrame.new(0,0,0)
 				end
-			)
-			c1 =
-				rs.RenderStepped:Connect(
-				function()
-					local hrp_pos, hrp_os = c:WorldToViewportPoint(hrp.Position)
-					if hrp_os then
-						text.Position = Vector2.new(hrp_pos.X, hrp_pos.Y)
-						text.Text = p.Name .. " (" .. tostring(math.floor(getdistancefc(hrp))) .. " m)"
-						text.Visible = true
+				if Settings.moneyfarm then
+					if localplayer.Character and localplayer.Character:GetAttribute("Downed") then
+						game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+						task.wait(3)
 					else
-						text.Visible = false
+						revive()
+						task.wait(1)
 					end
 				end
-			)
-		end
-		local function p_added(p)
-			if p.Character then
-				esp(p, p.Character)
-			end
-			p.CharacterAdded:Connect(
-				function(cr)
-					esp(p, cr)
+				if Settings.moneyfarm == false and Settings.afkfarm and localplayer.Character:FindFirstChild('HumanoidRootPart') ~= nil then
+					localplayer.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(6007, 7005, 8005)
 				end
-			)
-		end
-		for i, p in next, ps:GetPlayers() do
-			if p ~= lp then
-				p_added(p)
+			end
+		end)
+
+		function camerashake()
+			while NoCameraShake == true do task.wait()
+				localplayer.PlayerScripts.CameraShake.Value = CFrame.new(0,0,0) * CFrame.new(0,0,0)
 			end
 		end
-		ps.PlayerAdded:Connect(p_added)
- end
-})
-local Toggle = AddButton(Main, {
-  Name = "Esp box",
-  Default = false,
-  Callback = function(value)
--- Settings
-local Settings = {
-    Box_Color = Color3.fromRGB(255, 0, 0),
-    Box_Thickness = 2,
-    Team_Check = false,
-    Team_Color = false,
-    Autothickness = true
-}
 
---Locals
-local Space = game:GetService("Workspace")
-local Player = game:GetService("Players").LocalPlayer
-local Camera = Space.CurrentCamera
+		function autodrink()
+			while AutoDrink == true do
+				local ohString1 = "Cola"
+				game:GetService("ReplicatedStorage").Events.UseUsable:FireServer(ohString1)
+				wait(6)
+			end
+		end
 
--- Locals
-local function NewLine(color, thickness)
-    local line = Drawing.new("Line")
-    line.Visible = false
-    line.From = Vector2.new(0, 0)
-    line.To = Vector2.new(0, 0)
-    line.Color = color
-    line.Thickness = thickness
-    line.Transparency = 1
-    return line
-end
+		function SpamChat()
+			while autochat == true do
+				local ohString1 = "Tbao Hub On Top"
+				local ohString2 = "All"
+				game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(ohString1, ohString2)
+				wait(1)
+			end
+		end
 
-local function Vis(lib, state)
-    for i, v in pairs(lib) do
-        v.Visible = state
-    end
-end
+		function autowistlefunction()
+			while autowistle == true do
+				local ohString1 = "Whistle"
+				local ohBoolean2 = true
+				game:GetService("Players").LocalPlayer.PlayerScripts.Events.KeybindUsed:Fire(ohString1, ohBoolean2)
+				game:GetService("ReplicatedStorage").Events.Whistle:FireServer()
+				wait(5)
+			end
+		end
 
-local function Colorize(lib, color)
-    for i, v in pairs(lib) do
-        v.Color = color
-    end
-end
+		function god()
+			while revivedie == true do
+				game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+				wait()
+			end
+		end
 
-local Black = Color3.fromRGB(0, 0, 0)
+		function dofullbright()
+			Light.Ambient = Color3.new(1, 1, 1)
+			Light.ColorShift_Bottom = Color3.new(1, 1, 1)
+			Light.ColorShift_Top = Color3.new(1, 1, 1)
+			game.Lighting.FogEnd = 100000
+			game.Lighting.FogStart = 0
+			game.Lighting.ClockTime = 14
+			game.Lighting.Brightness = 2
+			game.Lighting.GlobalShadows = false
+		end
 
-local function Rainbow(lib, delay)
-    for hue = 0, 1, 1/30 do
-        local color = Color3.fromHSV(hue, 0.6, 1)
-        Colorize(lib, color)
-        wait(delay)
-    end
-    Rainbow(lib)
-end
---Main Draw Function
-local function Main(plr)
-    repeat wait() until plr.Character ~= nil and plr.Character:FindFirstChild("Humanoid") ~= nil
-    local R15
-    if plr.Character.Humanoid.RigType == Enum.HumanoidRigType.R15 then
-        R15 = true
-    else 
-        R15 = false
-    end
-    local Library = {
-        TL1 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
-        TL2 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
+		function freemoney()
+			while money == true do
+				local ohString1 = "Free money <font color=\"rgb(100,255,100)\">($99999)</font>"
+				game:GetService("Players").LocalPlayer.PlayerGui.HUD.Messages.Use:Fire(ohString1)
+				wait(5)
+			end
+		end
 
-        TR1 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
-        TR2 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
+		
 
-        BL1 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
-        BL2 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
 
-        BR1 = NewLine(Settings.Box_Color, Settings.Box_Thickness),
-        BR2 = NewLine(Settings.Box_Color, Settings.Box_Thickness)
-    }
-    coroutine.wrap(Rainbow)(Library, 0.15)
-    local oripart = Instance.new("Part")
-    oripart.Parent = Space
-    oripart.Transparency = 1
-    oripart.CanCollide = false
-    oripart.Size = Vector3.new(1, 1, 1)
-    oripart.Position = Vector3.new(0, 0, 0)
-    --Updater Loop
-    local function Updater()
-        local c 
-        c = game:GetService("RunService").RenderStepped:Connect(function()
-            if plr.Character ~= nil and plr.Character:FindFirstChild("Humanoid") ~= nil and plr.Character:FindFirstChild("HumanoidRootPart") ~= nil and plr.Character.Humanoid.Health > 0 and plr.Character:FindFirstChild("Head") ~= nil then
-                local Hum = plr.Character
-                local HumPos, vis = Camera:WorldToViewportPoint(Hum.HumanoidRootPart.Position)
-                if vis then
-                    oripart.Size = Vector3.new(Hum.HumanoidRootPart.Size.X, Hum.HumanoidRootPart.Size.Y*1.5, Hum.HumanoidRootPart.Size.Z)
-                    oripart.CFrame = CFrame.new(Hum.HumanoidRootPart.CFrame.Position, Camera.CFrame.Position)
-                    local SizeX = oripart.Size.X
-                    local SizeY = oripart.Size.Y
-                    local TL = Camera:WorldToViewportPoint((oripart.CFrame * CFrame.new(SizeX, SizeY, 0)).p)
-                    local TR = Camera:WorldToViewportPoint((oripart.CFrame * CFrame.new(-SizeX, SizeY, 0)).p)
-                    local BL = Camera:WorldToViewportPoint((oripart.CFrame * CFrame.new(SizeX, -SizeY, 0)).p)
-                    local BR = Camera:WorldToViewportPoint((oripart.CFrame * CFrame.new(-SizeX, -SizeY, 0)).p)
+		function RandomEmote()
+			OrionLib:MakeNotification({
+				Name = "Random Emoting...",
+				Content = "You pressed the Random Emote keybind",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+		end
+		--tabs
 
-                    if Settings.Team_Check then
-                        if plr.TeamColor == Player.TeamColor then
-                            Colorize(Library, Color3.fromRGB(0, 255, 0))
-                        else 
-                            Colorize(Library, Color3.fromRGB(255, 0, 0))
-                        end
-                    end
+		local MainTab= Window:MakeTab({
+			Name = "Main features",
+			Icon = "rbxassetid://4483345998",
+			PremiumOnly = false
+		})
 
-                    if Settings.Team_Color then
-                        Colorize(Library, plr.TeamColor.Color)
-                    end
+		local MiscTab= Window:MakeTab({
+			Name = "Extra",
+			Icon = "rbxassetid://4483345998",
+			PremiumOnly = false
+		})
 
-                    local ratio = (Camera.CFrame.p - Hum.HumanoidRootPart.Position).magnitude
-                    local offset = math.clamp(1/ratio*750, 2, 300)
+		local ESPTab = Window:MakeTab({
+			Name =  "Esp",
+			Icon = "rbxassetid://4483345998",
+			PremiumOnly = false
+		})
 
-                    Library.TL1.From = Vector2.new(TL.X, TL.Y)
-                    Library.TL1.To = Vector2.new(TL.X + offset, TL.Y)
-                    Library.TL2.From = Vector2.new(TL.X, TL.Y)
-                    Library.TL2.To = Vector2.new(TL.X, TL.Y + offset)
+		local TeleportTab= Window:MakeTab({
+			Name = "Teleport",
+			Icon = "rbxassetid://4483345998",
+			PremiumOnly = false
+		})
 
-                    Library.TR1.From = Vector2.new(TR.X, TR.Y)
-                    Library.TR1.To = Vector2.new(TR.X - offset, TR.Y)
-                    Library.TR2.From = Vector2.new(TR.X, TR.Y)
-                    Library.TR2.To = Vector2.new(TR.X, TR.Y + offset)
+		local FunTab= Window:MakeTab({
+			Name = "Fun",
+			Icon = "rbxassetid://4483345998",
+			PremiumOnly = false
+		})
 
-                    Library.BL1.From = Vector2.new(BL.X, BL.Y)
-                    Library.BL1.To = Vector2.new(BL.X + offset, BL.Y)
-                    Library.BL2.From = Vector2.new(BL.X, BL.Y)
-                    Library.BL2.To = Vector2.new(BL.X, BL.Y - offset)
+		local CreditsTab = Window:MakeTab({
+			Name = "Credits",
+			Icon = "rbxassetid://4483345998",
+			PremiumOnly = true
+		})
 
-                    Library.BR1.From = Vector2.new(BR.X, BR.Y)
-                    Library.BR1.To = Vector2.new(BR.X - offset, BR.Y)
-                    Library.BR2.From = Vector2.new(BR.X, BR.Y)
-                    Library.BR2.To = Vector2.new(BR.X, BR.Y - offset)
+		local MiscTab3 = MainTab:AddSection({
+			Name = "Auto Farms"
+		})
 
-                    Vis(Library, true)
+		MainTab:AddToggle({
+			Name = "Money farm",
+			Default = false,
+			Callback = function(Value)
+				Settings.moneyfarm = Value
+			end    
+		})
 
-                    if Settings.Autothickness then
-                        local distance = (Player.Character.HumanoidRootPart.Position - oripart.Position).magnitude
-                        local value = math.clamp(1/distance*100, 1, 4) --0.1 is min thickness, 6 is max
-                        for u, x in pairs(Library) do
-                            x.Thickness = value
-                        end
-                    else 
-                        for u, x in pairs(Library) do
-                            x.Thickness = Settings.Box_Thickness
-                        end
-                    end
-                else 
-                    Vis(Library, false)
-                end
-            else 
-                Vis(Library, false)
-                if game:GetService("Players"):FindFirstChild(plr.Name) == nil then
-                    for i, v in pairs(Library) do
-                        v:Remove()
-                        oripart:Destroy()
-                    end
-                    c:Disconnect()
-                end
-            end
-        end)
-    end
-    coroutine.wrap(Updater)()
-end
+		MainTab:AddToggle({
+			Name = "Afk farm",
+			Default = false,
+			Callback = function(Value)
+				Settings.afkfarm = Value
+			end    
+		})
 
--- Draw Boxes
-for i, v in pairs(game:GetService("Players"):GetPlayers()) do
-    if v.Name ~= Player.Name then
-      coroutine.wrap(Main)(v)
-    end
-end
+		--sliders
+		local MainTab3 = MainTab:AddSection({
+			Name = "Sliders"
+		})
 
-game:GetService("Players").PlayerAdded:Connect(function(newplr)
-    coroutine.wrap(Main)(newplr)
-end)
- end
-})
-local Toggle = AddButton(Main, {
-  Name = "Esp nextbot",
-  Default = false,
-  Callback = function(value)
-local esp_settings = {
-   textsize = 16,
-   colour = 255,255,255
-}
+		local Misctab5 = MiscTab:AddSection({
+			Name = "Sliders"
+		})
 
-local gui = Instance.new("BillboardGui")
-local esp = Instance.new("TextLabel",gui)
+		local TargetWalkspeed
+		MainTab:AddSlider({
+			Name = "Speed",
+			Min = 0,
+			Max = 250,
+			Default = 0,
+			Color = Color3.fromRGB(128, 128, 128),
+			Increment = 1,
+			ValueName = "Walk Speed",
+			Callback = function(Value)
+				TargetWalkspeed = Value
+			end   
+		})
 
-local plr = game.Players.LocalPlayer
+		MainTab:AddSlider({
+			Name = "Hip height",
+			Min = -1.40,
+			Max = 100,
+			Default = -1.40,
+			Color = Color3.fromRGB(128, 128, 128),
+			Increment = 1,
+			ValueName = "Hip Height",
+			Callback = function(HipValue)
+				game.Players.LocalPlayer.Character.Humanoid.HipHeight = HipValue
+			end    
+		})
 
-gui.Name = "ESP";
-gui.ResetOnSpawn = false
-gui.AlwaysOnTop = true;
-gui.LightInfluence = 0;
-gui.Size = UDim2.new(1.75, 0, 1.75, 0);
-esp.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
-esp.Text = "BOT"
-esp.Size = UDim2.new(0.0001, 0.00001, 0.0001, 0.00001);
-esp.BorderSizePixel = 4;
-esp.BorderColor3 = Color3.new(esp_settings.colour)
-esp.BorderSizePixel = 0
-esp.Font = "GothamSemibold"
-esp.TextSize = esp_settings.textsize
-esp.TextColor3 = Color3.fromRGB(esp_settings.colour)
+		MainTab:AddSlider({
+			Name = "Fov slider",
+			Min = 1,
+			Max = 120,
+			Default = 70,
+			Color = Color3.fromRGB(128, 128, 128),
+			Increment = 1,
+			ValueName = "Fov",
+			Callback = function(Fov)
+				local ohString1 = "FieldOfView"
+				local ohNumber2 = Fov
+				game:GetService("ReplicatedStorage").Events.UpdateSetting:FireServer(ohString1, ohNumber2)
+			end
+		})
 
-_G.Active = true
+		MainTab:AddSlider({
+			Name = "Jump power",
+			Min = 0,
+			Max = 120,
+			Default = 3,
+			Color = Color3.fromRGB(128, 128, 128),
+			Increment = 1,
+			ValueName = "Jump",
+			Callback = function(Value)
+				Settings.Jump = Value
+			end
+		})
 
-game:GetService("RunService").RenderStepped:Connect(function()
-   for i,v in pairs (workspace.Game.Players:GetDescendants()) do
-       if _G.Active and v:FindFirstChild("HRP") and v.HRP and v.HRP:FindFirstChild("ESP") == nil then
-           gui:Clone().Parent = v.HRP
-end
-   end
-end)
- end
-})
+		MiscTab:AddSlider({
+			Name = "Day & night slider",
+			Min = 0,
+			Max = 24,
+			Default = 14,
+			Color = Color3.fromRGB(128, 128, 128),
+			Increment = 0.1,
+			ValueName = "Time",
+			Callback = function(Time)
+				game.Lighting.ClockTime = Time
+			end
+		})
 
-local Main = MakeTab({Name = "Player"})
+		--toggles
 
-getgenv().Revive = false
-local Toggle = AddToggle(Main, {
-  Name = "Auto farm [afk]",
-  Default = false,
-  Callback = function(value)
-getgenv().Autofarm = value 
-if getgenv().Autofarm == true then
-while getgenv().Autofarm == true do
-wait()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(7000, 5000, 6000)
-end
-end
- end
-})
-local Toggle = AddToggle(Main, {
-  Name = "Auto respawn",
-  Default = false,
-  Callback = function(value)
-getgenv().Revive = value 
-if getgenv().Revive == true then
-while getgenv().Revive == true do
-wait()
-game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
-end
-end
- end
-})
-getgenv().God = false
-local Toggle = AddToggle(Main, {
-  Name = "God mode [antinextbot]",
-  Default = false,
-  Callback = function(value)
-getgenv().God = value
-if getgenv().God == true then
-while getgenv().God == true do
-wait()
-game:GetService("Players").LocalPlayer.Character.Humanoid.Health = 1000
-end
-end
- end
-})
-AddTextBox(Main, {
-  Name = "Speed enter",
-  Default = "",
-  PlaceholderText = "",
-  ClearText = true,
-  Callback = function(value)
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value 
-  end
-})
-AddTextBox(Main, {
-  Name = "Jump enter",
-  Default = "",
-  PlaceholderText = "",
-  ClearText = true,
-  Callback = function(Value)
-game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
-  end
-})
-local Toggle = AddButton(Main, {
-  Name = "Alpha Skin",
-  Default = false,
-  Callback = function(value)
-Events.UI.Purchase:InvokeServer("Skins", "AlphaTester")
- end
-})
-local Toggle = AddButton(Main, {
-  Name = "Boombox Skin",
-  Default = false,
-  Callback = function(value)
-Events.UI.Purchase:InvokeServer("Skins", "Boombox")
- end
-})
-local Toggle = AddButton(Main, {
-  Name = "Dev Test Emote",
-  Default = false,
-  Callback = function(value)
-Events.UI.Purchase:InvokeServer("Emotes", "Test")
- end
-})
-local Toggle = AddToggle(Main, {
-  Name = "Money farm",
-  Default = false,
-  Callback = function(value)
-Settings.moneyfarm = value
-function freemoney()
-    while money == true do
-        local ohString1 = "Free money <font color=\"rgb(100,255,100)\">($99999)</font>"
-        game:GetService("Players").LocalPlayer.PlayerGui.HUD.Messages.Use:Fire(ohString1)
-        wait(5)
-    end
-end
- end
-})
-local Main = MakeTab({Name = "Gui"})
+		local FunTab2 = FunTab:AddSection({
+			Name = "Toggles"
+		})
 
-local Toggle = AddButton(Main, {
-  Name = "Delete gui",
-  Default = false,
-  Callback = function(Value)
-DestroyScript()
- end
-})
+		local MiscTab3 = MainTab:AddSection({
+			Name = "Toggles"
+		})
 
-local Main = MakeTab({Name = "Credits"})
+		MainTab:AddToggle({
+			Name = "No camera shake",
+			Default = false,
+			Callback = function(Value)
+				NoCameraShake = Value
+				camerashake()
+			end    
+		})
 
-local Toggle = AddButton(Main, {
-  Name = "Me ?",
-  Default = false,
-  Callback = function(Value)
-game:GetService("StarterGui"):SetCore("SendNotification", { 
-	Title = "Tbao Hub";
-	Text = "by thaibao7444";
-	Icon = "rbxthumb://type=Asset&id=15485121479&w=150&h=150"})
-Duration = 5
- end
-})
+		MainTab:AddToggle({
+			Name = "Auto Drink Cola",
+			Default = false,
+			Callback = function(Value)
+				AutoDrink = Value
+				autodrink()
+			end    
+		})
 
-local Main = MakeTab({Name = "Misc"})
+		FunTab:AddToggle({
+			Name = "Spam chat",
+			Default = false,
+			Callback = function(Value)
+				autochat = Value
+				SpamChat()
+			end    
+		})
 
-local Toggle = AddButton(Main, {
-    Name = "Main Game",
-    Callback = function()
-        local TeleportService = game:GetService('TeleportService')
-        GameId = 9872472334
-        TeleportService:Teleport(GameId, game.Players.LocalPlayer)
-      end    
-})
-local Toggle = AddButton(Main, {
-    Name = "Casual",
-    Callback = function()
-        local TeleportService = game:GetService('TeleportService')
-        GameId = 10662542523
-        TeleportService:Teleport(GameId, game.Players.LocalPlayer)
-      end    
-})
-local Toggle = AddButton(Main, {
-    Name = "Social Space",
-    Callback = function()
-        local TeleportService = game:GetService('TeleportService')
-        GameId = 10324347967
-        TeleportService:Teleport(GameId, game.Players.LocalPlayer)
-      end    
-})
-local Toggle = AddButton(Main, {
-    Name = "Big Team",
-    Callback = function()
-        local TeleportService = game:GetService('TeleportService')
-        GameId = 10324346056
-        TeleportService:Teleport(GameId, game.Players.LocalPlayer)
-      end    
-})
-local Toggle = AddButton(Main, {
-    Name = "Team DeathMatch",
-    Callback = function()
-        local TeleportService = game:GetService('TeleportService')
-        GameId = 110539706691
-        TeleportService:Teleport(GameId, game.Players.LocalPlayer)
-      end    
-})
-local Toggle = AddButton(Main, {
-    Name = "Vc Only",
-    Callback = function()
-        local TeleportService = game:GetService('TeleportService')
-        GameId = 10808838353
-        TeleportService:Teleport(GameId, game.Players.LocalPlayer)
-      end    
-})
- AddKeybind(Main, {
-  Name = "Sever hop [low player]",
-  KeyCode = "E",
-  Default = false,
-  Callback = function(Value)
-local Http = game:GetService("HttpService")
-local TPS = game:GetService("TeleportService")
-local Api = "https://games.roblox.com/v1/games/"
-local _place = game.PlaceId
-local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
-function ListServers(cursor)
-   local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
-   return Http:JSONDecode(Raw)
-end
-local Server, Next; repeat
-   local Servers = ListServers(Next)
-   Server = Servers.data[1]
-   Next = Servers.nextPageCursor
-until Server
-TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
-  end
-})
-AddKeybind(Main, {
-  Name = "Auto drink coca",
-  KeyCode = "H",
-  Default = false,
-  Callback = function()
-function autodrink()
-	while AutoDrink == true do
-		local ohString1 = "Cola"
-		game:GetService("ReplicatedStorage").Events.UseUsable:FireServer(ohString1)
-		wait(6)
-	end
-end
-  end
-})
-AddKeybind(Main, {
-  Name = "Fly gui",
-  KeyCode = "P",
-  Default = false,
-  Callback = function(value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()    
-  end
-})
-AddKeybind(Main, {
-  Name = "Antiban",
-  KeyCode = "K",
-  Default = false,
-  Callback = function(Value)
- game:GetService("StarterGui"):SetCore("SendNotification", { 
-	Title = "Tbao Hub";
-	Text = "Antiban yes";
-	Icon = "rbxthumb://type=Asset&id=8881175113&w=150&h=150"})
-Duration = 5
-  end
-})
-local Toggle = AddToggle(Main, {
-  Name = "Free money",
-  Default = false,
-  Callback = function(value)
-        money = value
-        freemoney(value)
-function freemoney(value)
-    while money == true do
-        local ohString1 = "Free money <font color=\"rgb(100,255,100)\">($99999)</font>"
-        game:GetService("Players").LocalPlayer.PlayerGui.HUD.Messages.Use:Fire(ohString1)
-        wait(5)
-    end
-end
- end
-})
-AddKeybind(Main, {
-  Name = "Teleport",
-  KeyCode = "T",
-  Default = false,
-  Callback = function(Value)
-       plr = game.Players.LocalPlayer 
-        hum = plr.Character.HumanoidRootPart 
-        mouse = plr:GetMouse()
-        mouse.KeyDown:connect(function(key)
-            if key == "q" then
-            if mouse.Target then
-                hum.CFrame = CFrame.new(mouse.Hit.x, mouse.Hit.y + 5, mouse.Hit.z)
-                end
-            end
-        end)
- end
-})
-local Toggle = AddButton(Main, {
-  Name = "Main game",
-  Default = false,
-  Callback = function(Value)
-        game:GetService("ReplicatedStorage").Events.ReturnToMenu:FireServer()
- end
-})
+		FunTab:AddToggle({
+			Name = "Fake money giver",
+			Default = false,
+			Callback = function(Value)
+				money = Value
+				freemoney()
+			end    
+		})
+
+		MainTab:AddToggle({
+			Name = "Auto respawn",
+			Default = false,
+			Callback = function(Value)
+				Settings.AutoRespawn = Value
+			end    
+		})
+
+		FunTab:AddToggle({
+			Name = "Auto wistle",
+			Default = false,
+			Callback = function(Value)
+				autowistle = Value
+				autowistlefunction()
+			end    
+		})
+
+		--buttons
+		local FunTab3 = FunTab:AddSection({
+			Name = "Buttons"
+		})
+
+		local MiscTab2 = MiscTab:AddSection({
+			Name = "Buttons"
+		})
+
+		MiscTab:AddButton({
+			Name = "Chat spy",
+			Callback = function()
+				enabled = true
+				spyOnMyself = false
+				public = false
+				publicItalics = true
+				privateProperties = {
+					Color = Color3.fromRGB(0,255,255); 
+					Font = Enum.Font.SourceSansBold;
+					TextSize = 18;
+				}
+				local StarterGui = game:GetService("StarterGui")
+				local Players = game:GetService("Players")
+				local player = Players.LocalPlayer
+				local saymsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+				local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
+				local instance = (_G.chatSpyInstance or 0) + 1
+				_G.chatSpyInstance = instance
+
+				local function onChatted(p,msg)
+					if _G.chatSpyInstance == instance then
+						if p==player and msg:lower():sub(1,4)=="/spy" then
+							enabled = not enabled
+							wait(0.3)
+							privateProperties.Text = "{SPY "..(enabled and "EN" or "DIS").."ABLED}"
+							StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+						elseif enabled and (spyOnMyself==true or p~=player) then
+							msg = msg:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ')
+							local hidden = true
+							local conn = getmsg.OnClientEvent:Connect(function(packet,channel)
+								if packet.SpeakerUserId==p.UserId and packet.Message==msg:sub(#msg-#packet.Message+1) and (channel=="All" or (channel=="Team" and public==false and Players[packet.FromSpeaker].Team==player.Team)) then
+									hidden = false
+								end
+							end)
+							wait(1)
+							conn:Disconnect()
+							if hidden and enabled then
+								if public then
+									saymsg:FireServer((publicItalics and "/me " or '').."{SPY} [".. p.Name .."]: "..msg,"All")
+								else
+									privateProperties.Text = "{SPY} [".. p.Name .."]: "..msg
+									StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+								end
+							end
+						end
+					end
+				end
+
+				for _,p in ipairs(Players:GetPlayers()) do
+					p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+				end
+				Players.PlayerAdded:Connect(function(p)
+					p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+				end)
+				privateProperties.Text = "{SPY "..(enabled and "EN" or "DIS").."ABLED}"
+				StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+				local chatFrame = player.PlayerGui.Chat.Frame
+				chatFrame.ChatChannelParentFrame.Visible = true
+				chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
+			end    
+		})
+
+		ESPTab:AddButton({
+			Name = "Player esp",
+			Callback = function()
+				local c = workspace.CurrentCamera
+				local ps = game:GetService("Players")
+				local lp = ps.LocalPlayer
+				local rs = game:GetService("RunService")
+				local function getdistancefc(part)
+					return (part.Position - c.CFrame.Position).Magnitude
+				end
+				local function esp(p, cr)
+					local h = cr:WaitForChild("Humanoid")
+					local hrp = cr:WaitForChild("HumanoidRootPart")
+					local text = Drawing.new("Text")
+					text.Visible = false
+					text.Center = true
+					text.Outline = true
+					text.Font = 2
+					text.Color = Color3.fromRGB(255, 255, 255)
+					text.Size = 17
+					local c1
+					local c2
+					local c3
+					local function dc()
+						text.Visible = false
+						text:Remove()
+						if c1 then
+							c1:Disconnect()
+							c1 = nil
+						end
+						if c2 then
+							c2:Disconnect()
+							c2 = nil
+						end
+						if c3 then
+							c3:Disconnect()
+							c3 = nil
+						end
+					end
+					c2 =
+						cr.AncestryChanged:Connect(
+							function(_, parent)
+								if not parent then
+								dc()
+							end
+							end
+						)
+					c3 =
+						h.HealthChanged:Connect(
+							function(v)
+								if (v <= 0) or (h:GetState() == Enum.HumanoidStateType.Dead) then
+								dc()
+							end
+							end
+						)
+					c1 =
+						rs.RenderStepped:Connect(
+							function()
+								local hrp_pos, hrp_os = c:WorldToViewportPoint(hrp.Position)
+								if hrp_os then
+								text.Position = Vector2.new(hrp_pos.X, hrp_pos.Y)
+								text.Text = p.Name .. " (" .. tostring(math.floor(getdistancefc(hrp))) .. " m)"
+								text.Visible = true
+							else
+								text.Visible = false
+							end
+							end
+						)
+				end
+				local function p_added(p)
+					if p.Character then
+						esp(p, p.Character)
+					end
+					p.CharacterAdded:Connect(
+						function(cr)
+							esp(p, cr)
+						end
+					)
+				end
+				for i, p in next, ps:GetPlayers() do
+					if p ~= lp then
+						p_added(p)
+					end
+				end
+				ps.PlayerAdded:Connect(p_added)
+			end    
+		})
+
+		MiscTab:AddButton({
+			Name = "Inf jump",
+			Callback = function()
+				local InfiniteJumpEnabled = true
+				game:GetService("UserInputService").JumpRequest:connect(function()
+					if InfiniteJumpEnabled then
+						game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+					end
+				end)
+			end    
+		})
+
+		MiscTab:AddButton({
+			Name = "Q to teleport",
+			Callback = function()
+				plr = game.Players.LocalPlayer 
+				hum = plr.Character.HumanoidRootPart 
+				mouse = plr:GetMouse()
+				mouse.KeyDown:connect(function(key)
+					if key == "q" then
+						if mouse.Target then
+							hum.CFrame = CFrame.new(mouse.Hit.x, mouse.Hit.y + 5, mouse.Hit.z)
+						end
+					end
+				end)
+			end    
+		})
+
+		MiscTab:AddButton({
+			Name = "Full bright",
+			Callback = function()
+				dofullbright()
+			end    
+		})
+
+		MiscTab:AddButton({
+			Name = "Main Menu",
+			Callback = function()
+				game:GetService("ReplicatedStorage").Events.ReturnToMenu:FireServer()
+			end    
+		})
+
+		MiscTab:AddButton({
+			Name = "Low quality",
+			Callback = function()
+				local ohString1 = "LowQuality"
+				local ohBoolean2 = true
+				game:GetService("ReplicatedStorage").Events.UpdateSetting:FireServer(ohString1, ohBoolean2)
+			end    
+		})
+
+		FunTab:AddButton({
+			Name = "Free cam (shift + P)",
+			Callback = function()
+				loadstring(game:HttpGet("https://raw.githubusercontent.com/Robobo2022/script/main/Freecam.lua"))()
+			end    
+		})
+
+		TeleportTab:AddButton({
+			Name = "Main game",
+			Callback = function()
+				local TeleportService = game:GetService('TeleportService')
+				GameId = 9872472334
+				TeleportService:Teleport(GameId, game.Players.LocalPlayer)
+			end    
+		})
+
+
+		TeleportTab:AddButton({
+			Name = "Casual",
+			Callback = function()
+				local TeleportService = game:GetService('TeleportService')
+				GameId = 10662542523
+				TeleportService:Teleport(GameId, game.Players.LocalPlayer)
+			end    
+		})
+
+		TeleportTab:AddButton({
+			Name = "Social space",
+			Callback = function()
+				local TeleportService = game:GetService('TeleportService')
+				GameId = 10324347967
+				TeleportService:Teleport(GameId, game.Players.LocalPlayer)
+			end    
+		})
+
+		TeleportTab:AddButton({
+			Name = "Big team",
+			Callback = function()
+				local TeleportService = game:GetService('TeleportService')
+				GameId = 10324346056
+				TeleportService:Teleport(GameId, game.Players.LocalPlayer)
+			end    
+		})
+
+		TeleportTab:AddButton({
+			Name = "Team deathMatch",
+			Callback = function()
+				local TeleportService = game:GetService('TeleportService')
+				GameId = 110539706691
+				TeleportService:Teleport(GameId, game.Players.LocalPlayer)
+			end    
+		})
+
+		TeleportTab:AddButton({
+			Name = "Vc only",
+			Callback = function()
+				local TeleportService = game:GetService('TeleportService')
+				GameId = 10808838353
+				TeleportService:Teleport(GameId, game.Players.LocalPlayer)
+			end    
+		})
+
+		local MiscTab2 = MiscTab:AddSection({
+			Name = "Item Giver"
+		})
+
+		MiscTab:AddButton({
+			Name = "Test Emote",
+			Callback = function()
+				game:GetService("ReplicatedStorage").Events.UI.Purchase:InvokeServer("Emotes", "Test")
+			end    
+		})
+
+		--KeybindsButton
+
+		local MiscTab1 = MiscTab:AddSection({
+			Name = "KeyBinds"
+		})
+
+		local FunTab1 = FunTab:AddSection({
+			Name = "KeyBinds"
+		})
+
+		MiscTab:AddBind({
+			Name = "Drink cola",
+			Default = Enum.KeyCode.H,
+			Hold = false,
+			Callback = function()
+				local ohString1 = "Cola"
+				game:GetService("ReplicatedStorage").Events.UseUsable:FireServer(ohString1)
+			end    
+		})
+
+		MiscTab:AddBind({
+			Name = "Rejoin server",
+			Default = Enum.KeyCode.B,
+			Hold = false,
+			Callback = function()
+				local ts = game:GetService("TeleportService")
+				local p = game:GetService("Players").LocalPlayer
+				ts:Teleport(game.PlaceId, p)
+			end    
+		})
+
+		MiscTab:AddBind({
+			Name = "Random vote",
+			Default = Enum.KeyCode.X,
+			Hold = false,
+			Callback = function()
+				local RandomVote = math.random(3)
+				local ohNumber1 = (RandomVote)
+				game:GetService("ReplicatedStorage").Events.Vote:FireServer(ohNumber1)
+			end    
+		})
+
+		MiscTab:AddBind({
+			Name = "Respawn",
+			Default = Enum.KeyCode.R,
+			Hold = false,
+			Callback = function()
+				game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+			end    
+		})
+
+		FunTab:AddBind({
+			Name = "Random emote",
+			Default = Enum.KeyCode.Z,
+			Hold = false,
+			Callback = function()
+				local number = math.random(4)
+				local ohString1 = (number)
+				game:GetService("ReplicatedStorage").Events.Emote:FireServer(ohString1)
+				RandomEmote()
+			end    
+		})
+		--test
+
+		ESPTab:AddToggle({
+			Name = "Bots tracers",
+			Default = true,
+			Callback = function(Value)
+				getgenv().toggleespmpt = Value
+			end    
+		})
+
+		ESPTab:AddColorpicker({
+			Name = "Colour",
+			Default = Color3.fromRGB(255, 255, 255),
+			Callback = function(Value)
+				getgenv().mptespcolour = Value
+			end  
+		})
+
+		CreditsTab:AddParagraph("Owner/Main Dev","thaibao7444")
+		CreditsTab:AddParagraph("Credits","Tbao Hub")
+
+		local cam = workspace.CurrentCamera
+		local rs = game:GetService'RunService'
+
+		getgenv().toggleespmpt = true
+		function esp(plr)
+			if game:GetService'Players':GetPlayerFromCharacter(plr) == nil then
+				local rat = Drawing.new("Line")
+				rs.RenderStepped:Connect(function()
+					if plr:FindFirstChild'HumanoidRootPart' then
+						local vector,screen = cam:WorldToViewportPoint(plr.HumanoidRootPart.Position)
+						if screen then
+							rat.Visible = toggleespmpt
+							rat.From = Vector2.new(cam.ViewportSize.X / 2,cam.ViewportSize.Y / 1)
+							rat.To = Vector2.new(vector.X,vector.Y)
+							rat.Color = getgenv().mptespcolour
+							rat.Thickness = getgenv().mptespthickness
+						else
+							rat.Visible = false
+						end
+					else
+						pcall(function()
+							rat.Visible = false
+						end)
+					end
+					if not plr:FindFirstChild'HumanoidRootPart' or not plr:FindFirstChild'HumanoidRootPart':IsDescendantOf(game:GetService'Workspace') then
+						pcall(function()
+							rat:Remove()
+						end)
+					end
+				end)
+			end
+		end
+
+		for i,v in pairs(game:GetService'Workspace'.Game.Players:GetChildren()) do
+			esp(v)
+		end
+
+		game:GetService'Workspace'.Game.Players.ChildAdded:Connect(function(plr)
+			esp(plr)
+		end)
+
+		local old
+		old = hookmetamethod(game,"__namecall",newcclosure(function(self,...)
+			local Args = {...}
+			local method = getnamecallmethod()
+			if tostring(self) == 'Communicator' and method == "InvokeServer" and Args[1] == "update" then
+				return Settings.Speed, Settings.Jump 
+			end
+			return old(self,...)
+		end))
+
+		
+
+		game:GetService("RunService").RenderStepped:Connect(function()
+			pcall(function()
+				if game.Players.LocalPlayer.Character.Humanoid.MoveDirection.Magnitude > 0 then
+					game.Players.LocalPlayer.Character:TranslateBy(game.Players.LocalPlayer.Character.Humanoid.MoveDirection * TargetWalkspeed/100)
+				end
+			end)
+		end)
+
+		OrionLib:Init()

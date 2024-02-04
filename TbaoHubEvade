@@ -159,7 +159,7 @@
 		--tabs
 
 		local MainTab= Window:MakeTab({
-			Name = "Main features",
+			Name = "Main",
 			Icon = "rbxassetid://4483345998",
 			PremiumOnly = false
 		})
@@ -195,7 +195,7 @@
 		})
 
 		local MiscTab3 = MainTab:AddSection({
-			Name = "Auto Farms"
+			Name = "Auto Farm"
 		})
 
 		MainTab:AddToggle({
@@ -311,7 +311,7 @@
 		})
 
 		MainTab:AddToggle({
-			Name = "Auto Drink Cola",
+			Name = "Auto drink cola",
 			Default = false,
 			Callback = function(Value)
 				AutoDrink = Value
@@ -610,7 +610,7 @@
 		})
 
 		TeleportTab:AddButton({
-			Name = "Team deathMatch",
+			Name = "Team death match",
 			Callback = function()
 				local TeleportService = game:GetService('TeleportService')
 				GameId = 110539706691
@@ -628,11 +628,11 @@
 		})
 
 		local MiscTab2 = MiscTab:AddSection({
-			Name = "Item Giver"
+			Name = "Item giver"
 		})
 
 		MiscTab:AddButton({
-			Name = "Test Emote",
+			Name = "Test emote",
 			Callback = function()
 				game:GetService("ReplicatedStorage").Events.UI.Purchase:InvokeServer("Emotes", "Test")
 			end    

@@ -1,8 +1,7 @@
-
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/REDzHUB/LibraryV2/main/redzLib")))()
 MakeWindow({
   Hub = {
-    Title = "Tbao Hub | Murder mystery 2",
+    Title = "Tbao Hub | Murder Mystery 2",
     Animation = "by thaibao7444"
   },
   Key = {
@@ -21,72 +20,700 @@ MakeWindow({
 })
 
 
+MinimizeButton({
+  Image = "",
+  Size = {40, 40},
+  Color = Color3.fromRGB(10, 10, 10),
+  Corner = true,
+  Stroke = false,
+  StrokeColor = Color3.fromRGB(255, 0, 0)
+})
 
-  Main = MakeTab({Name = "Main"})
+local Main = MakeTab({Name = "Main"})
 
-AddTextBox(Main, {
-  Name = "Speed",
-  Default = "",
-  PlaceholderText = "",
-  ClearText = true,
-  Callback = function(value)
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value     
+local section = AddSection(Main, {"Kill"})
+
+
+local Part = Instance.new("Part", workspace)
+Part.Name = "Running Part"
+Part.Position = Vector3.new(0, 1000, 0)
+Part.Anchored = true
+Part.CanCollide = true
+Part.Size = Vector3.new(5, 1, 5)
+
+local Plr = game:GetService("Players").LocalPlayer
+
+local vim = game:GetService("VirtualInputManager")
+
+function GetMurderer()
+ for i, v in game:GetService("Players"):GetChildren() do
+  if v.Backpack:FindFirstChild"Knife" or v.Character and v.Character:FindFirstChild("Knife") then return v.Character end
+ end
+ return nil
+end
+
+AddButton(Main, {
+  Name = "Kill all",
+  Callback = function()
+    for i, v in game:GetService("Players"):GetChildren() do
+  if Plr.Backpack:FindFirstChild("Knife") then Plr.Backpack.Knife.Parent = Plr.Character end
+   Plr.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+   vim:SendMouseButtonEvent(0,0,0,true,game,false,0)
+   task.wait()
+   vim:SendMouseButtonEvent(0,0,0,false,game,false,0)
+   task.wait(.75)
+  end
+  end
+})
+
+
+
+
+AddButton(Main, {
+  Name = "Teleport to lobby",
+  Callback = function()
+    Plr.Character.HumanoidRootPart.CFrame = workspace.Lobby.Spawns.Spawn.CFrame
+  end
+})
+
+
+
+
+AddButton(Main, {
+  Name = "Grab gun",
+  Callback = function()
+    Plr.Character.HumanoidRootPart.CFrame = workspace.GunDrop.CFrame
+  end
+})
+
+
+local section = AddSection(Main, {"Fun"})
+
+AddToggle(Main, {
+  Name = "Auto escape murderer",
+  Callback = function(state)
+AE = state
  end
 })
 
-AddTextBox(Main, {
-  Name = "Jump",
-  Default = "",
-  PlaceholderText = "",
-  ClearText = true,
-  Callback = function(value)
-game.Players.LocalPlayer.Character.Humanoid.JumpPower = value    
-  end
+
+
+AddToggle(Main, {
+  Name = "Auto shoot murderer",
+  Callback = function(state)
+AH = state
+ end
 })
 
-AddTextBox(Main, {
-  Name = "Fov",
-  Default = "",
-  PlaceholderText = "",
-  ClearText = true,
-  Callback = function(value)
-local FovNumber = value
-local Camera = workspace.CurrentCamera
-Camera.FieldOfView = FovNumber  
-  end
+AddToggle(Main, {
+  Name = "Auto shoot gun",
+  Callback = function(state)
+ASM = state
+ end
 })
 
-local Toggle = AddButton(Main, {
+
+AddToggle(Main, {
+  Name = "Auto take gun",
+  Callback = function(state)
+ATG = state
+ end
+})
+
+
+
+workspace.ChildAdded:Connect(function(child)
+task.delay(.25, function()
+if child.Name == "GunDrop" and ATG then
+local c = Plr.Character.HumanoidRootPart.CFrame
+Plr.Character.HumanoidRootPart.CFrame = child.CFrame
+Plr.Character.HumanoidRootPart.CFrame = c
+end
+end)
+end)
+function MurdererLoop()
+ if ASM and Plr.Character and GetMurderer() and Plr.Character:FindFirstChild("Gun") or Plr.Backpack:FindFirstChild("Gun") then
+  if Plr.Backpack:FindFirstChild("Gun") then Plr.Backpack.Gun.Parent = Plr.Character end
+  local Murd = GetMurderer()
+  Plr.Character.HumanoidRootPart.CFrame = Murd.HumanoidRootPart.CFrame + Vector3.new(11, 0, 0)
+  Plr.Character.Gun.KnifeServer.ShootGun:InvokeServer(1, Murd.HumanoidRootPart.Position, "AH")
+ end
+ task.wait(.5)
+end
+function SecondLoop()
+ if GetMurderer() == Plr.Character or GetMurderer() == nil or not AE then return end
+ if (GetMurderer().HumanoidRootPart.Position-Plr.Character.HumanoidRootPart.Position).magnitude < 11 then
+  Plr.Character.HumanoidRootPart.CFrame = Part.CFrame + Vector3.new(0, 3, 0)
+ end
+end
+
+
+
+getgenv().God = false
+AddToggle(Main, {
+  Name = "God mode",
+  Callback = function(value)
+getgenv().God = value
+if getgenv().God == true then
+while getgenv().God == true do
+wait()
+game:GetService("Players").LocalPlayer.Character.Humanoid.Health = 100
+end
+end
+ end
+})
+
+getgenv().Autofarm = false
+AddToggle(Main, {
+  Name = "Auto afk",
+  Callback = function(value)
+getgenv().Autofarm = value
+ 
+if getgenv().Autofarm == true then
+while getgenv().Autofarm == true do
+wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 14, 0)
+end
+end
+ end
+})
+
+
+
+local Main = MakeTab({Name = "Visual"})
+
+local section = AddSection(Main, {"Player"})
+
+
+
+AddToggle(Main, {
   Name = "No clip",
-  Default = false,
-  Callback = function(Value)
-local Noclip = nil
-local Clip = nil
-function noclip()
- Clip = false
- local function Nocl()
-  if Clip == false and game.Players.LocalPlayer.Character ~= nil then
-   for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-    if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
-     v.CanCollide = false
-    end
-   end
-  end
-  wait(0.21) -- basic optimization
- end
- Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
-end
-function clip()
- if Noclip then Noclip:Disconnect() end
- Clip = true
-end
-noclip() -- to toggle noclip() and clip(
+  Callback = function(s)
+getgenv().Noclip = s
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if Noclip == true then
+            game:GetService("RunService").Stepped:wait()
+            game.Players.LocalPlayer.Character.Head.CanCollide = false
+            game.Players.LocalPlayer.Character.Torso.CanCollide = false
+        end
+    end)
  end
 })
-local Toggle = AddButton(Main, {
+
+ InfiniteJumpEnabled = false
+AddToggle(Main, {
+  Name = "Infinite jump",
+  Callback = function(s)
+getgenv().InfiniteJump = s
+game:GetService("UserInputService").JumpRequest:connect(function()
+
+	if InfiniteJumpEnabled then		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+	end
+end)
+ end
+})
+
+
+local section = AddSection(Main, {"Aim"})
+
+
+
+AddToggle(Main, {
+  Name = "Aim gun",
+  Callback = function(s)
+local Players = game.Players
+local LocalPlayer = Players.LocalPlayer
+local GetPlayers = Players.GetPlayers
+local Camera = workspace.CurrentCamera
+local WTSP = Camera.WorldToScreenPoint
+local FindFirstChild = game.FindFirstChild
+local Vector2_new = Vector2.new
+local Mouse = LocalPlayer.GetMouse(LocalPlayer)
+function ClosestChar()
+    local Max, Close = math.huge
+    for I,V in pairs(GetPlayers(Players)) do
+        if V ~= LocalPlayer and V.Team ~= LocalPlayer.Team and V.Character then
+            local Head = FindFirstChild(V.Character, "Head")
+            if Head then
+                local Pos, OnScreen = WTSP(Camera, Head.Position)
+                if OnScreen then
+                    local Dist = (Vector2_new(Pos.X, Pos.Y) - Vector2_new(Mouse.X, Mouse.Y)).Magnitude
+                    if Dist < Max then
+                        Max = Dist
+                        Close = V.Character
+                    end
+                end
+            end
+        end
+    end
+    return Close
+end
+
+local MT = getrawmetatable(game)
+local __namecall = MT.__namecall
+setreadonly(MT, false)
+MT.__namecall = newcclosure(function(self, ...)
+    local Method = getnamecallmethod()
+    if Method == "FindPartOnRay" and not checkcaller() and tostring(getfenv(0).script) == "GunInterface" then
+        local Character = ClosestChar()
+        if Character then
+            return Character.Head, Character.Head.Position
+        end
+    end
+
+    return __namecall(self, ...)
+end)
+setreadonly(MT, true)
+ end
+})
+
+
+
+AddToggle(Main, {
+  Name = "Aim knife",
+  Callback = function(s)
+local Players = game.Players
+local LocalPlayer = Players.LocalPlayer
+local GetPlayers = Players.GetPlayers
+local Camera = workspace.CurrentCamera
+local WTSP = Camera.WorldToScreenPoint
+local FindFirstChild = game.FindFirstChild
+local Vector2_new = Vector2.new
+local Mouse = LocalPlayer.GetMouse(LocalPlayer)
+function ClosestChar()
+    local Max, Close = math.huge
+    for I,V in pairs(GetPlayers(Players)) do
+        if V ~= LocalPlayer and V.Team ~= LocalPlayer.Team and V.Character then
+            local Head = FindFirstChild(V.Character, "Head")
+            if Head then
+                local Pos, OnScreen = WTSP(Camera, Head.Position)
+                if OnScreen then
+                    local Dist = (Vector2_new(Pos.X, Pos.Y) - Vector2_new(Mouse.X, Mouse.Y)).Magnitude
+                    if Dist < Max then
+                        Max = Dist
+                        Close = V.Character
+                    end
+                end
+            end
+        end
+    end
+    return Close
+end
+
+local MT = getrawmetatable(game)
+local __namecall = MT.__namecall
+setreadonly(MT, false)
+MT.__namecall = newcclosure(function(self, ...)
+    local Method = getnamecallmethod()
+    if Method == "FindPartOnRay" and not checkcaller() and tostring(getfenv(0).script) == "GunInterface" then
+        local Character = ClosestChar()
+        if Character then
+            return Character.Head, Character.Head.Position
+        end
+    end
+
+    return __namecall(self, ...)
+end)
+setreadonly(MT, true)
+ end
+})
+
+
+AddButton(Main, {
+  Name = "Hitbox",
+  Callback = function()
+function getplrsname()
+for i,v in pairs(game:GetChildren()) do
+if v.ClassName == "Players" then
+return v.Name
+end
+end
+end
+local players = getplrsname()
+local plr = game[players].LocalPlayer
+coroutine.resume(coroutine.create(function()
+while  wait(1) do
+coroutine.resume(coroutine.create(function()
+for _,v in pairs(game[players]:GetPlayers()) do
+if v.Name ~= plr.Name and v.Character then
+v.Character.LowerTorso.CanCollide = false
+v.Character.LowerTorso.Material = "Neon"
+v.Character.LowerTorso.Size = Vector3.new(3,3,3)
+v.Character.HumanoidRootPart.Size = Vector3.new(3,3,3)
+end
+end
+end))
+end
+end))
+ end
+})
+
+AddButton(Main, {
+  Name = "Rainbow gun",
+  Callback = function(s)
+local c = 1 function zigzag(X)  return math.acos(math.cos(X * math.pi)) / math.pi end game:GetService("RunService").RenderStepped:Connect(function()  if game.Workspace.Camera:FindFirstChild('Arms') then   for i,v in pairs(game.Workspace.Camera.Arms:GetDescendants()) do    if v.ClassName == 'MeshPart' then      v.Color = Color3.fromHSV(zigzag(c),1,1)     c = c + .0001    end   end  end end)
+net = true 
+notify = true
+ end
+})
+
+
+
+local Main = MakeTab({Name = "Player"})
+
+local Slider = AddSlider(Main, {
+  Name = "Speed",
+  MinValue = 10,
+  MaxValue = 300,
+  Default = 0,
+  Increase = 1,
+  Callback = function(value)
+    getgenv().Walkspeed = value
+    pcall(function() game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end)
+  end
+})
+
+
+AddToggle(Main, {
+  Name = "Loop speed",
+  Callback = function(state)
+getgenv().loopW = state
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if loopW == true then
+            pcall(function()
+                game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = Walkspeed
+            end)
+        end
+    end)
+ end
+})
+
+local Slider = AddSlider(Main, {
+  Name = "Jump",
+  MinValue = 10,
+  MaxValue = 300,
+  Default = 0,
+  Increase = 1,
+  Callback = function(value)
+    getgenv().Jumppower = value
+    pcall(function()
+        game:GetService("Players").LocalPlayer.Character.Humanoid.JumpPower = value
+    end)
+  end
+})
+
+AddToggle(Main, {
+  Name = "Loop jump",
+  Callback = function(state)
+getgenv().loopJ = state
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if loopJ == true then
+            pcall(function()
+                game:GetService("Players").LocalPlayer.Character.Humanoid.JumpPower = Jumppower
+            end)
+        end
+    end)
+ end
+})
+
+
+
+local Main = MakeTab({Name = "Esp"})
+
+
+local section = AddSection(Main, {"Esp highlight"})
+
+
+
+AddButton(Main, {
+  Name = "Esp highlight",
+  Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/kelve123/Ken_Murder_Mystery_esp/main/Ken%20Murder%20Mystery%202%20Esp'))()
+end
+})
+
+AddButton(Main, {
+  Name = "Esp highlight all",
+  Callback = function()
+local FillColor = Color3.fromRGB(65,255,0)
+local DepthMode = "AlwaysOnTop"
+local FillTransparency = 0.5
+local OutlineColor = Color3.fromRGB(255,255,255)
+local OutlineTransparency = 0
+
+local CoreGui = game:FindService("CoreGui")
+local Players = game:FindService("Players")
+local lp = Players.LocalPlayer
+local connections = {}
+
+local Storage = Instance.new("Folder")
+Storage.Parent = CoreGui
+Storage.Name = "Highlight_Storage"
+
+local function Highlight(plr)
+    local Highlight = Instance.new("Highlight")
+    Highlight.Name = plr.Name
+    Highlight.FillColor = FillColor
+    Highlight.DepthMode = DepthMode
+    Highlight.FillTransparency = FillTransparency
+    Highlight.OutlineColor = OutlineColor
+    Highlight.OutlineTransparency = 0
+    Highlight.Parent = Storage
+    
+    local plrchar = plr.Character
+    if plrchar then
+        Highlight.Adornee = plrchar
+    end
+
+    connections[plr] = plr.CharacterAdded:Connect(function(char)
+        Highlight.Adornee = char
+    end)
+end
+
+Players.PlayerAdded:Connect(Highlight)
+for i,v in next, Players:GetPlayers() do
+    Highlight(v)
+end
+
+Players.PlayerRemoving:Connect(function(plr)
+    local plrname = plr.Name
+    if Storage[plrname] then
+        Storage[plrname]:Destroy()
+    end
+    if connections[plr] then
+        connections[plr]:Disconnect()
+    end
+end)
+end
+})
+
+local section = AddSection(Main, {"Esp player"})
+
+AddButton(Main, {
+  Name = "Esp box",
+  Callback = function()
+local Player = game:GetService("Players").LocalPlayer
+local Camera = game:GetService("Workspace").CurrentCamera
+local Mouse = Player:GetMouse()
+
+local function DrawESP(plr)
+    local Box = Drawing.new("Quad")
+    Box.Visible = false
+    Box.PointA = Vector2.new(0, 0)
+    Box.PointB = Vector2.new(0, 0)
+    Box.PointC = Vector2.new(0, 0)
+    Box.PointD = Vector2.new(0, 0)
+    Box.Color = Color3.fromRGB(255, 255, 255)
+    Box.Thickness = 1
+    Box.Transparency = 1
+
+    local function Update()
+        local c
+        c = game:GetService("RunService").RenderStepped:Connect(function()
+            if plr.Character ~= nil and plr.Character:FindFirstChildOfClass("Humanoid") ~= nil and plr.Character.PrimaryPart ~= nil and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+                local pos, vis = Camera:WorldToViewportPoint(plr.Character.PrimaryPart.Position)
+                if vis then 
+                    local points = {}
+                    local c = 0
+                    for _,v in pairs(plr.Character:GetChildren()) do
+                        if v:IsA("BasePart") then
+                            c = c + 1
+                            local p, vis = Camera:WorldToViewportPoint(v.Position)
+                            if v == plr.Character.PrimaryPart then
+                                p, vis = Camera:WorldToViewportPoint((v.CFrame * CFrame.new(0, 0, -v.Size.Z)).p)
+                            elseif v.Name == "Head" then
+                                p, vis = Camera:WorldToViewportPoint((v.CFrame * CFrame.new(0, v.Size.Y/2, v.Size.Z/1.25)).p)
+                            elseif string.match(v.Name, "Left") then
+                                p, vis = Camera:WorldToViewportPoint((v.CFrame * CFrame.new(-v.Size.X/2, 0, 0)).p)
+                            elseif string.match(v.Name, "Right") then
+                                p, vis = Camera:WorldToViewportPoint((v.CFrame * CFrame.new(v.Size.X/2, 0, 0)).p)
+                            end
+                            points[c] = {p, vis}
+                        end
+                    end
+
+                    local TopY = math.huge
+                    local DownY = -math.huge
+                    local LeftX = math.huge
+                    local RightX = -math.huge
+
+                    local Left
+                    local Right
+                    local Top
+                    local Bottom
+
+                    local closest = nil
+                    for _,v in pairs(points) do
+                        if v[2] == true then
+                            local p = v[1]
+                            if p.Y < TopY then
+                                Top = p
+                                TopY = p.Y
+                            end
+                            if p.Y > DownY then
+                                Bottom = p
+                                DownY = p.Y
+                            end
+                            if p.X > RightX then
+                                Right = p
+                                RightX = p.X
+                            end
+                            if p.X < LeftX then
+                                Left = p
+                                LeftX = p.X
+                            end
+                        end
+                    end
+
+                    if Left ~= nil and Right ~= nil and Top ~= nil and Bottom ~= nil then
+                        Box.PointA = Vector2.new(Right.X, Top.Y)
+                        Box.PointB = Vector2.new(Left.X, Top.Y)
+                        Box.PointC = Vector2.new(Left.X, Bottom.Y)
+                        Box.PointD = Vector2.new(Right.X, Bottom.Y)
+
+                        Box.Visible = true
+                    else 
+                        Box.Visible = false
+                    end
+                else 
+                    Box.Visible = false
+                end
+            else
+                Box.Visible = false
+                if game.Players:FindFirstChild(plr.Name) == nil then
+                    c:Disconnect()
+                end
+            end
+        end)
+    end
+    coroutine.wrap(Update)()
+end
+
+for _,v in pairs(game:GetService("Players"):GetChildren()) do
+    if v.Name ~= Player.Name then 
+        DrawESP(v)
+    end
+end
+
+game:GetService("Players").PlayerAdded:Connect(function(v)
+    DrawESP(v)
+end)
+end
+})
+
+
+AddButton(Main, {
+  Name = "Esp name",
+  Callback = function()
+local c = workspace.CurrentCamera
+local ps = game:GetService("Players")
+local lp = ps.LocalPlayer
+local rs = game:GetService("RunService")
+
+local function esp(p,cr)
+	local h = cr:WaitForChild("Humanoid")
+	local hrp = cr:WaitForChild("Head")
+
+	local text = Drawing.new("Text")
+	text.Visible = false
+	text.Center = true
+	text.Outline = false 
+	text.Font = 3
+	text.Size = 16.16
+	text.Color = Color3.new(170,170,170)
+
+	local conection
+	local conection2
+	local conection3
+
+	local function dc()
+		text.Visible = false
+		text:Remove()
+		if conection then
+			conection:Disconnect()
+			conection = nil 
+		end
+		if conection2 then
+			conection2:Disconnect()
+			conection2 = nil 
+		end
+		if conection3 then
+			conection3:Disconnect()
+			conection3 = nil 
+		end
+	end
+
+	conection2 = cr.AncestryChanged:Connect(function(_,parent)
+		if not parent then
+			dc()
+		end
+	end)
+
+	conection3 = h.HealthChanged:Connect(function(v)
+		if (v<=0) or (h:GetState() == Enum.HumanoidStateType.Dead) then
+			dc()
+		end
+	end)
+
+	conection = rs.RenderStepped:Connect(function()
+		local hrp_pos,hrp_onscreen = c:WorldToViewportPoint(hrp.Position)
+		if hrp_onscreen then
+			text.Position = Vector2.new(hrp_pos.X, hrp_pos.Y - 27)
+			text.Text = "[ "..p.Name.." ]"
+			text.Visible = true
+		else
+			text.Visible = false
+		end
+	end)
+end
+
+local function p_added(p)
+	if p.Character then
+		esp(p,p.Character)
+	end
+	p.CharacterAdded:Connect(function(cr)
+		esp(p,cr)
+	end)
+end
+
+for i,p in next, ps:GetPlayers() do 
+	if p ~= lp then
+		p_added(p)
+	end
+end
+
+ps.PlayerAdded:Connect(p_added)
+ end
+})
+
+local Main = MakeTab({Name = "Misc"})
+
+local section = AddSection(Main, {"Chat"})
+
+
+function SpamChat()
+			while autochat == true do
+				local ohString1 = "Tbao Hub On Top"
+				local ohString2 = "All"	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(ohString1, ohString2)
+				wait(1)
+			end
+		end
+
+AddToggle(Main, {
+  Name = "Spam chat",
+  Callback = function()
+autochat = Value
+				SpamChat()
+ end
+})
+
+
+local section = AddSection(Main, {"Sever"})
+
+AddButton(Main, {
   Name = "Sever hop",
-  Default = false,
-  Callback = function(Value)
+  Callback = function()
 local Http = game:GetService("HttpService")
 local TPS = game:GetService("TeleportService")
 local Api = "https://games.roblox.com/v1/games/"
@@ -102,37 +729,25 @@ local Server, Next; repeat
    Next = Servers.nextPageCursor
 until Server
 TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
- end
+end
 })
-local Toggle = AddButton(Main, {
+
+
+AddButton(Main, {
   Name = "Rejoin",
-  Default = false,
-  Callback = function(Value)
+  Callback = function()
 local ts = game:GetService("TeleportService")
 local p = game:GetService("Players").LocalPlayer
 ts:Teleport(game.PlaceId, p)
- end
-})
-local Toggle = AddButton(Main, {
-  Name = "Delete gui",
-  Default = false,
-  Callback = function(Value)
-DestroyScript()
- end
+end
 })
 
-local Toggle = AddButton(Main, {
-  Name = "Infinite jump",
-  Default = false,
-  Callback = function(Value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/BsGlitch/-nfJumps/main/BsGlitch"))()
- end
-})
 
-local Toggle = AddButton(Main, {
-  Name = "Remove textures",
-  Default = false,
-  Callback = function(Value)
+local section = AddSection(Main, {"Fps"})
+
+AddButton(Main, {
+  Name = "Fps cap",
+  Callback = function()
 local ToDisable = {
 	Textures = false,
 	VisualEffects = true,
@@ -183,162 +798,13 @@ for _, v in next, game:GetDescendants() do
 		end
 	end
 end
- end
-})
-
-
- Main = MakeTab({Name = "Misc"})
-
-
-local Toggle = AddButton(Main, {
-  Name = "Esp all",
-  Default = false,
-  Callback = function(Value)
-loadstring(game:HttpGet('https://raw.githubusercontent.com/kelve123/Ken_Murder_Mystery_esp/main/Ken%20Murder%20Mystery%202%20Esp'))()
- end
-})
-
-local Toggle = AddButton(Main, {
-  Name = "Tp click item",
-  Default = false,
-  Callback = function(Value)
-mouse = game.Players.LocalPlayer:GetMouse()
-tool = Instance.new("Tool")
-tool.RequiresHandle = false
-tool.Name = "Click TP"
-tool.Activated:connect(function()
-local pos = mouse.Hit+Vector3.new(0,2.5,0)
-pos = CFrame.new(pos.X,pos.Y,pos.Z)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
-end)
-tool.Parent = game.Players.LocalPlayer.Backpack
- end
-})
-
-local Toggle = AddButton(Main, {
-  Name = "Invisible toggle",
-  Default = false,
-  Callback = function(Value)
-loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Invisible%20Gui'))()
- end
-})
-
-local Toggle = AddButton(Main, {
-  Name = "God mode",
-  Default = false,
-  Callback = function(Value)
-
- end
-})
-
-local Toggle = AddButton(Main, {
-  Name = "Tp player keyboard esp",
-  Default = false,
-  Callback = function(Value)
-getgenv().Keys = {
-"q",
-"e",
-"r",
-"t",
-"y",
-"u",
-"i",
-"o",
-"p",
-"f",
-"g",
-"h",
-"j",
-"k",
-"l",
-"z",
-"x",
-"c",
-"v",
-"b",
-"n",
-"m"
-}
-
-local usedKeys = {}
-
-local function addKeyValueToCharacter(char)
-    local keyValue = Instance.new("StringValue")
-    local randomKey = nil
-
-    repeat
-        randomKey = getgenv().Keys[math.random(1, #getgenv().Keys)]
-    until not usedKeys[randomKey]
-
-    keyValue.Name = "KeyValue"
-    keyValue.Value = randomKey
-    keyValue.Parent = char
-    usedKeys[randomKey] = true
-
-    local billboardGui = Instance.new("BillboardGui")
-    billboardGui.Name = "KeyBillboard"
-    billboardGui.Adornee = char.Head
-    billboardGui.AlwaysOnTop = true
-    billboardGui.LightInfluence = 0
-    billboardGui.Size = UDim2.new(2, 0, 2, 0) 
-    billboardGui.StudsOffset = Vector3.new(0, 3, 0) 
-    billboardGui.Parent = char.Head
-
-    local keyLabel = Instance.new("ImageLabel")
-    keyLabel.BackgroundTransparency = 1
-    keyLabel.Size = UDim2.new(1, 0, 1, 0)
-    keyLabel.Image = "https://www.roblox.com/asset-thumbnail/image?assetId=13045815860&width=420&height=420"
-    keyLabel.Parent = billboardGui
-
-    local textLabel = Instance.new("TextLabel")
-    textLabel.BackgroundTransparency = 1
-    textLabel.Size = UDim2.new(1, 0, 1, 0)
-    textLabel.Position = UDim2.new(0, 0, -0.05, 0)
-    textLabel.Font = Enum.Font.SourceSansBold
-    textLabel.TextColor3 = Color3.new(0, 0, 0)
-    textLabel.TextScaled = true
-    textLabel.Text = randomKey:upper()
-    textLabel.Parent = keyLabel
 end
-
-local function checkForNewCharacter(player)
-    if player.Character and player ~= game.Players.LocalPlayer then
-        addKeyValueToCharacter(player.Character)
-    end
-    player.CharacterAdded:Connect(addKeyValueToCharacter)
-end
-
-game.Players.PlayerAdded:Connect(function(player)
-    checkForNewCharacter(player)
-end)
-
-for _, player in ipairs(game.Players:GetPlayers()) do
-    checkForNewCharacter(player)
-end
-
-local userInputService = game:GetService("UserInputService")
-local textInputFocused = false
-
-userInputService.TextBoxFocused:Connect(function()
-    textInputFocused = true
-end)
-
-userInputService.TextBoxFocusReleased:Connect(function()
-    textInputFocused = false
-end)
-
-userInputService.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Keyboard and not textInputFocused then
-        local keyPressed = input.KeyCode
-
-        for _, player in ipairs(game.Players:GetPlayers()) do
-            if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("KeyValue") then
-                if player.Character.KeyValue.Value == keyPressed.Name:lower() then
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame
-                end
-            end
-        end
-    end
-end)
- end
 })
+
+local Main = MakeTab({Name = "Credits"})
+
+local section = AddSection(Main, {"by thaibao7444"})
+
+local section = AddSection(Main, {"owner Tbao Hub"})
+
+local section = AddSection(Main, {"YTB Tbao"})

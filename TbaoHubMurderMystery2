@@ -338,8 +338,8 @@ for _,v in pairs(game[players]:GetPlayers()) do
 if v.Name ~= plr.Name and v.Character then
 v.Character.LowerTorso.CanCollide = false
 v.Character.LowerTorso.Material = "Neon"
-v.Character.LowerTorso.Size = Vector3.new(5,5,5)
-v.Character.HumanoidRootPart.Size = Vector3.new(5,5,5)
+v.Character.LowerTorso.Size = Vector3.new(4,4,4)
+v.Character.HumanoidRootPart.Size = Vector3.new(4,4,4)
 end
 end
 end))
@@ -363,7 +363,7 @@ local Main = MakeTab({Name = "Player"})
 
 local Slider = AddSlider(Main, {
   Name = "Speed",
-  MinValue = 10,
+  MinValue = 25,
   MaxValue = 300,
   Default = 0,
   Increase = 1,
@@ -391,7 +391,7 @@ getgenv().loopW = state
 
 local Slider = AddSlider(Main, {
   Name = "Jump",
-  MinValue = 10,
+  MinValue = 25,
   MaxValue = 300,
   Default = 0,
   Increase = 1,

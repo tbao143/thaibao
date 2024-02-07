@@ -1,10 +1,11 @@
 
+
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Consistt/Ui/main/UnLeaked"))()
 
 
 library.rank = "developer"
-local Wm = library:Watermark("Tbao Hub | Name " .. library:GetUsername()"")
-local FpsWm = Wm:AddWatermark("Fps: " .. library.fps)
+local Wm = library:Watermark("Tbao Hub " .. library:GetUsername() .. "")
+local FpsWm = Wm:AddWatermark("fps: " .. library.fps)
 coroutine.wrap(function()
     while wait(.75) do
         FpsWm:Text("fps: " .. library.fps)

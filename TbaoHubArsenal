@@ -1,3 +1,17 @@
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Consistt/Ui/main/UnLeaked"))()
+
+
+library.rank = "developer"
+local Wm = library:Watermark("Tbao Hub | Name " .. library:GetUsername() .. " | Rank " .. library.rank)
+local FpsWm = Wm:AddWatermark("Fps: " .. library.fps)
+coroutine.wrap(function()
+    while wait(.75) do
+        FpsWm:Text("fps: " .. library.fps)
+    end
+end)()
+
+
 local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
 
 local PhantomForcesWindow = Library:NewWindow("Tbao Hub | Arsenal")
@@ -722,15 +736,3 @@ function getClosestPlayerToCursor(trg_part)
     end
     return nearest
 end
-
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Consistt/Ui/main/UnLeaked"))()
-
-
-library.rank = "developer"
-local Wm = library:Watermark("Tbao Hub | Name " .. library:GetUsername() .. " | Rank " .. library.rank)
-local FpsWm = Wm:AddWatermark("Fps: " .. library.fps)
-coroutine.wrap(function()
-    while wait(.75) do
-        FpsWm:Text("fps: " .. library.fps)
-    end
-end)()

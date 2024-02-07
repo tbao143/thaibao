@@ -3,7 +3,7 @@ local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Consi
 
 
 library.rank = "developer"
-local Wm = library:Watermark("Tbao Hub | Name " .. library:GetUsername() .. " | Rank " .. library.rank)
+local Wm = library:Watermark("Tbao Hub | Name " .. library:GetUsername() .. ")
 local FpsWm = Wm:AddWatermark("Fps: " .. library.fps)
 coroutine.wrap(function()
     while wait(.75) do

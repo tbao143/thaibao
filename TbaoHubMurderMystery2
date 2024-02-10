@@ -112,7 +112,7 @@ AE = state
 AddToggle(Main, {
   Name = "Auto shoot murderer",
   Callback = function(state)
-AH = state
+ASM = state
  end
 })
 

@@ -369,7 +369,41 @@ notify = true
  end
 })
 
+AddButton(Main, {
+  Name = "Get boomboxb",
+  Callback = function(s)
+_G.boomboxb = game:GetObjects('rbxassetid://740618400')[1]
+_G.boomboxb.Parent = game:GetService'Players'.LocalPlayer.Backpack
+loadstring(_G.boomboxb.Client.Source)() 
+loadstring(_G.boomboxb.Server.Source)()
+ end
+})
 
+AddButton(Main, {
+  Name = "Fake skin",
+  Callback = function(s)
+local WeaponOwnRange = {
+min=1,
+max=5
+}
+
+local DataBase, PlayerData = getrenv()._G.Database, getrenv()._G.PlayerData
+
+local newOwned = {}
+
+for i,v in next, DataBase.Item do
+newOwned[i] = math.random(WeaponOwnRange.min, WeaponOwnRange.max) -- newOwned[Weapon]: ItemCount
+end
+
+local PlayerWeapons = PlayerData.Weapons
+
+game:GetService("RunService"):BindToRenderStep("InventoryUpdate", 0, function()
+PlayerWeapons.Owned = newOwned
+end)
+
+game.Players.LocalPlayer.Character.Humanoid.Health = 0
+end
+})
 
 local Main = MakeTab({Name = "Player"})
 

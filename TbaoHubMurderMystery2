@@ -216,12 +216,12 @@ getgenv().Noclip = s
 AddToggle(Main, {
   Name = "Infinite jump",
   Callback = function(s)
-getgenv().InfiniteJump = s
-game:GetService("UserInputService").JumpRequest:connect(function()
-
-	if InfiniteJumpEnabled then		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
-	end
-end)
+getgenv().InfJ = s
+    game:GetService("UserInputService").JumpRequest:connect(function()
+        if InfJ == true then
+            game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+        end
+    end)
  end
 })
 

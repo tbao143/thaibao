@@ -1,5 +1,4 @@
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Consistt/Ui/main/UnLeaked"))()
-
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubEz"))()
 library.rank = "developer"
 local Wm = library:Watermark("Tbao Hub " .. library:GetUsername() .. "")
 local FpsWm = Wm:AddWatermark("fps: " .. library.fps)
@@ -8,7 +7,8 @@ coroutine.wrap(function()
         FpsWm:Text("fps: " .. library.fps)
     end
 end)()
-
+library:Introduction()
+wait(0)
 local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
 
 local PhantomForcesWindow = Library:NewWindow("Tbao Hub | Arsenal")

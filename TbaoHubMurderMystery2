@@ -212,7 +212,7 @@ getgenv().Noclip = s
  end
 })
 
- InfiniteJumpEnabled = false
+ 
 AddToggle(Main, {
   Name = "Infinite jump",
   Callback = function(s)

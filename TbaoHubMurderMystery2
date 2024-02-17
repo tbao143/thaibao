@@ -306,7 +306,7 @@ end
  end
 })
 
-local section = AddSection(Main, {"🤨 Note antireport player"})
+local section = AddSection(Main, {"Note antireport player"})
 
 
 AddButton(Main, {
@@ -345,12 +345,7 @@ ASM = state
  end
 })
 
-AddToggle(Main, {
-  Name = "Auto shoot gun",
-  Callback = function(state)
-ASM = state
- end
-})
+
 
 
 AddToggle(Main, {
@@ -692,6 +687,36 @@ getgenv().loopJ = state
  end
 })
 
+AddButton(Main, {
+  Name = "Freeze all",
+  Callback = function()
+for i, v in game:GetService("Players"):GetChildren() do
+  if v ~= Plr and not v.Backpack:FindFirstChild("Knife") or v.Character and not v.Character:FindFirstChild("Knife") then
+  if Plr.Backpack:FindFirstChild("Knife") then Plr.Backpack.Knife.Parent = Plr.Character end
+   Plr.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+   vim:SendMouseButtonEvent(0,0,0,true,game,false,0)
+   task.wait()
+   vim:SendMouseButtonEvent(0,0,0,false,game,false,0)
+   task.wait(.75)
+  end
+ end
+end
+})
+
+AddButton(Main, {
+  Name = "Unfreeze all",
+  Callback = function(state)
+for i, v in game:GetService("Players"):GetChildren() do
+  if v ~= Plr and not v.Backpack:FindFirstChild("Knife") or v.Character and not v.Character:FindFirstChild("Knife") then
+   Plr.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+   task.wait(.75)
+  end
+ end
+end
+})
+
+game:GetService("RunService").Heartbeat:Connect(MurdererLoop)
+game:GetService("RunService").Heartbeat:Connect(SecondLoop)
 
 
 local Main = MakeTab({Name = "Esp"})

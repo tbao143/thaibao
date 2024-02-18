@@ -1002,7 +1002,7 @@ function SpamChat()
 
 AddToggle(Main, {
   Name = "Spam chat",
-  Callback = function()
+  Callback = function(Value)
 autochat = Value
 				SpamChat()
  end

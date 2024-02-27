@@ -7,14 +7,14 @@ Tab = Window:MakeTab({Name = "Game Arsenal", Icon = "rbxassetid://15885360708",P
 Tab: AddButton({
 	Name = "Arsenal script old",
 	Callback = function(value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubArsenal"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubArsenalLol"))()
 end
 })
 
 Tab: AddButton({
 	Name = "Arsenal script new",
 	Callback = function(value)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubArsenalLol"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/ArsenalTbaoHubNew"))()
 end
 })
 

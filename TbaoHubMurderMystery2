@@ -1,14 +1,4 @@
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubEz"))()
-library.rank = "developer"
-local Wm = library:Watermark("Tbao Hub " .. library:GetUsername() .. "")
-local FpsWm = Wm:AddWatermark("fps: " .. library.fps)
-coroutine.wrap(function()
-    while wait(.75) do
-        FpsWm:Text("fps: " .. library.fps)
-    end
-end)()
-library:Introduction()
-wait(0)
+
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/REDzHUB/LibraryV2/main/redzLib")))()
 MakeWindow({
   Hub = {
@@ -686,6 +676,8 @@ getgenv().loopJ = state
     end)
  end
 })
+local section = AddSection(Main, {"Freeze"})
+
 
 AddButton(Main, {
   Name = "Freeze all",
@@ -717,6 +709,40 @@ end
 
 game:GetService("RunService").Heartbeat:Connect(MurdererLoop)
 game:GetService("RunService").Heartbeat:Connect(SecondLoop)
+
+local section = AddSection(Main, {"Teleporter"})
+
+local plrs = game.Players
+
+-- Fetch all player names
+local playerNames = {}
+local players = plrs:GetPlayers()
+
+for _, player in ipairs(players) do
+    table.insert(playerNames, player.Name)
+end
+
+local Dropdown = AddDropdown(Main, {
+  Name = playerNames[1] or "No Players",
+  Options = playerNames,
+  Default = "2",
+  Callback = function(selectedplrName)
+    plrs:FindFirstChild(selectedplrName)
+        local targetPlayer = plrs:FindFirstChild(selectedplrName)
+        if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            -- Teleporting your character to the selected player's position
+            local targetPosition = targetPlayer.Character.HumanoidRootPart.Position
+            local localPlayerRoot = plrs.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            
+            if localPlayerRoot then
+                localPlayerRoot.CFrame = CFrame.new(targetPosition)
+            end
+        end
+        print(selectedplrName)
+
+  end
+})
+
 
 
 local Main = MakeTab({Name = "Esp"})

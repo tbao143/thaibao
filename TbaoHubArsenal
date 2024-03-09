@@ -17,6 +17,12 @@ Tab: AddButton({
 loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/ArsenalTbaoHubNew"))()
 end
 })
+Tab: AddButton({
+	Name = "PWNERS V3 arsenal",
+	Callback = function(value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/ArsenalPWNERSV3"))()
+end
+})
 
 Tab: AddButton({
 	Name = "Delete ui",

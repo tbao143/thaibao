@@ -18,9 +18,16 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/
 end
 })
 Tab: AddButton({
-	Name = "PWNERS V3 arsenal",
+	Name = "PWNERS V3 arsenal new",
 	Callback = function(value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/ArsenalPWNERSV3"))()
+end
+})
+
+Tab: AddButton({
+	Name = "Arsenal Pc",
+	Callback = function(value)
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/ArsenalPC"))()
 end
 })
 

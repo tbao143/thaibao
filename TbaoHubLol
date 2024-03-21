@@ -26,7 +26,7 @@ end
 end)
 end)
 
-KillingCheats:CreateTextbox("Zom", function(value)
+KillingCheats:CreateTextbox("Zoom", function(value)
 workspace.CurrentCamera.FieldOfView = value
 end)
 

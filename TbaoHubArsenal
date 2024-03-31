@@ -18,12 +18,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/
 end
 })
 
-Tab: AddButton({
-	Name = "Arsenal Pc",
-	Callback = function(value)
- loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/ArsenalPC"))()
-end
-})
+
 
 Tab: AddButton({
 	Name = "Delete ui",

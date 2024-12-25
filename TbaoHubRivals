@@ -1,6 +1,113 @@
 
 
 
+    
+
+local repo = 'https://raw.githubusercontent.com/deividcomsono/LinoriaLib/main/'
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+local Options = getgenv().Linoria.Options
+local Toggles = getgenv().Linoria.Toggles
+
+Library.ShowToggleFrameInKeybinds = true 
+Library.ShowCustomCursor = true 
+Library.NotifySide = "Right" 
+
+local Window = Library:CreateWindow({
+
+	Title = 'Tbao Hub | Rivals',
+	Center = true,
+	AutoShow = true,
+	Resizable = true,
+	ShowCustomCursor = true,
+	NotifySide = "Right",
+	TabPadding = 8,
+	MenuFadeTime = 0.2
+})
+
+
+local Tabs = {
+	Discord = Window:AddTab('Info'),
+    Main = Window:AddTab('Main'),
+    Esp = Window:AddTab('Esp'),
+                ['UI Settings'] = Window:AddTab('UI Settings'),
+}
+
+
+
+local LeftGroupBox = Tabs.Main:AddLeftGroupbox('Aimbot')
+
+local cl = Tabs.Discord:AddLeftGroupbox('Discord')
+
+local MyButton = cl:AddButton({
+    Text = 'Copy link discord',
+    Func = function()
+setclipboard("discord.gg/bYb3EweNk7")
+    end,
+    DoubleClick = false,
+})
+
+
+
+
+getgenv().BloodLossNotificationEnabled = false 
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+
+local function notifyBloodLoss(player)
+    if getgenv().BloodLossNotificationEnabled then
+        if player and player.Character then
+            local humanoid = player.Character:FindFirstChild("Humanoid")
+            if humanoid then
+                local health = math.floor(humanoid.Health)
+                Library:Notify("Name: " .. player.Name .. " Health: " .. health)
+            else
+                Library:Notify(player.Name .. " is bleeding, but health is unknown")
+            end
+        else
+            Library:Notify("Blood loss detected, but the player is invalid")
+        end
+    end
+end
+
+
+local function trackPlayer(player)
+    if player == LocalPlayer then return end
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+
+   
+    humanoid:GetPropertyChangedSignal("Health"):Connect(function()
+        if humanoid.Health < humanoid.MaxHealth and humanoid.Health > 0 then
+            notifyBloodLoss(player)
+        end
+    end)
+
+   
+    player.CharacterAdded:Connect(function(newCharacter)
+        local newHumanoid = newCharacter:WaitForChild("Humanoid")
+        newHumanoid:GetPropertyChangedSignal("Health"):Connect(function()
+            if newHumanoid.Health < newHumanoid.MaxHealth and newHumanoid.Health > 0 then
+                notifyBloodLoss(player)
+            end
+        end)
+    end)
+end
+
+
+for _, player in ipairs(Players:GetPlayers()) do
+    trackPlayer(player)
+end
+
+Players.PlayerAdded:Connect(trackPlayer)
+
+
+
+
+
+
 local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/linemaster2/esp-library/main/library.lua"))();
 
 
@@ -36,40 +143,37 @@ ESP.ShowSkeletons = false;
         TracerPosition = "Bottom",
     }
     
-
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-
-
-
-local Window = OrionLib:MakeWindow({IntroText = "By: thaibao7444",Name = "Tbao Hub | Rivals", HidePremium = false, SaveConfig = true, ConfigFolder = ""})
-
-
-Tab = Window:MakeTab({Name = "Info", Icon = "rbxassetid://4483345998",PremiumOnly = false })
-
-
-Tab:AddParagraph("By: thaibao7444","Discord: discord.gg/bYb3EweNk7")
+    
+    
 
 
 
+local fov = 100
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local Cam = game.Workspace.CurrentCamera
 
-Tab:AddButton({
-	Name = "Copy link discord",
-	Callback = function()
-setclipboard("discord.gg/bYb3EweNk7")
-  	end    
-})
+local FOVring = Drawing.new("Circle")
+FOVring.Visible = false
+FOVring.Thickness = 2
+FOVring.Color = Color3.fromRGB(255, 0, 0) 
+FOVring.Filled = false
+FOVring.Radius = fov
+FOVring.Position = Cam.ViewportSize / 2
 
+local function updateDrawings()
+    local camViewportSize = Cam.ViewportSize
+    FOVring.Position = camViewportSize / 2
+end
 
-local Tab = Window:MakeTab({
-	Name = "Main",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
+local function onKeyDown(input)
+    if input.KeyCode == Enum.KeyCode.Delete then
+        RunService:UnbindFromRenderStep("FOVUpdate")
+        FOVring:Remove()
+    end
+end
 
-
-local Section = Tab:AddSection({
-	Name = "Aimbot"
-})
 
 
 
@@ -77,6 +181,8 @@ local Section = Tab:AddSection({
 local aimbotEnabled = false
 local wallCheckEnabled = false
 local aimAtPart = "HumanoidRootPart"
+local teamCheckEnabled = false
+local headSizeEnabled = false
 local function getClosestTarget()
     local Cam = workspace.CurrentCamera
     local Players = game:GetService("Players")
@@ -127,7 +233,6 @@ local function getClosestTarget()
     return nearestTarget
 end
 
-
 local function lookAt(targetPosition)
     local Cam = workspace.CurrentCamera
     if targetPosition then
@@ -167,310 +272,164 @@ local function aimAtTarget()
     end)
 end
 
-Tab:AddToggle({
-	Name = "Aimbot",
-	Default = false,
-	Callback = function(Value)
-aimbotEnabled = Value
+local f = Tabs.Main:AddLeftGroupbox('Aim')
+
+
+
+
+f:AddToggle('MyToggle', {
+    Text = 'Silent aim',
+    Default = false,
+    Callback = function(state)
+        getgenv().enabled = state
+    end
+})
+
+
+
+
+
+f:AddDropdown('MyDropdown', {
+    Values = { 'Head', 'HumanoidRootPart', 'Torso' },
+    Default = 3, 
+    Multi = false,
+    Text = 'Aim part',
+})
+
+
+Options.MyDropdown:OnChanged(function(selected)
+    getgenv().aimpart = selected
+end)
+
+
+
+
+LeftGroupBox:AddToggle('MyToggle', {
+    Text = 'Aimbot',
+    Default = false,
+    Callback = function(Value)
+        aimbotEnabled = Value
 		if aimbotEnabled then
 			aimAtTarget()
 		end
-	end    
-})
-
-Tab:AddToggle({
-	Name = "Walk check",
-	Default = false,
-	Callback = function(Value)
-wallCheckEnabled = Value
-	end    
+    end
 })
 
 
 
-Tab:AddDropdown({
-	Name = "Aim part",
-	Default = "1",
-	Options = {"Head", "HumanoidRootPart"},
-	Callback = function(value)
+
+LeftGroupBox:AddToggle('MyToggle', {
+    Text = 'Walk check',
+    Default = false,
+
+    Callback = function(Value)
+        wallCheckEnabled = Value
+    end
+})
+
+
+LeftGroupBox:AddLabel('Aimbot key'):AddKeyPicker('KeyPicker', {
+    Default = 'Q', 
+    SyncToggleState = true, 
+    Mode = 'Toggle', 
+
+    Text = '', 
+    NoUI = false, 
+})
+
+Options.KeyPicker:OnClick(function(Value)
+   aimbotEnabled = Value
+		if aimbotEnabled then
+			aimAtTarget()
+		end
+end)
+
+
+LeftGroupBox:AddDropdown('MyDropdown', {
+    Values = { 'HumanoidRootPart', 'Head' },
+    Default = 2, 
+    Multi = false, 
+
+    Text = 'Aim part',
+   
+})
+
+Options.MyDropdown:OnChanged(function()
         if aimAtPart == "HumanoidRootPart" then
 			aimAtPart = "Head"
 		else
 			aimAtPart = "HumanoidRootPart"
 		end	
-	end    
-})
+end)
+
+
+local gay = Tabs.Main:AddRightGroupbox('Fov')
 
 
 
+gay:AddToggle('MyToggle', {
+    Text = 'Show fov' ,
+    Default = false,
+    
 
-
-local Section = Tab:AddSection({
-	Name = "Silent aim"
-})
-
-
-
-
-getgenv().SilentAim = false              
-getgenv().AimPart = "HumanoidRootPart"   
-
-
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-local Players = game:GetService("Players")
-local Cam = game.Workspace.CurrentCamera
-local replicated_storage = game:GetService("ReplicatedStorage")
-local utility = require(replicated_storage:FindFirstChild("Modules").Utility)
-
-
-local FOVring = Drawing.new("Circle")
-FOVring.Visible = false 
-FOVring.Thickness = 2
-FOVring.Color = Color3.fromRGB(255, 0, 0)
-FOVring.Filled = false
-FOVring.Radius = 100 
-FOVring.Position = Cam.ViewportSize / 2
-
-
-local function updateFOV()
-    FOVring.Position = Cam.ViewportSize / 2
-end
-
-local function onKeyDown(input)
-    if input.KeyCode == Enum.KeyCode.Delete then
-        RunService:UnbindFromRenderStep("FOVUpdate")
-        FOVring:Remove()
+    Callback = function(Value)
+        FOVring.Visible = Value
     end
-end
+})
 
+gay:AddLabel('Color'):AddColorPicker('ColorPicker', {
+    Default = Color3.new(0, 1, 0), 
+    Title = 'Fov color', 
+    Transparency = 0, 
 
-RunService:BindToRenderStep("FOVUpdate", Enum.RenderPriority.Camera.Value, updateFOV)
-UserInputService.InputBegan:Connect(onKeyDown)
-
-local function getPlayersOrEntities()
-    local entities = {}
-    for _, child in ipairs(workspace:GetChildren()) do
-        if child:FindFirstChildOfClass("Humanoid") then
-            table.insert(entities, child)
-        elseif child.Name == "HurtEffect" then
-            for _, hurtPlayer in ipairs(child:GetChildren()) do
-                if hurtPlayer.ClassName ~= "Highlight" then
-                    table.insert(entities, hurtPlayer)
-                end
-            end
-        end
+    Callback = function(Value)
+        FOVring.Color = Value	
     end
-    return entities
-end
+})
 
-local function isEnemy(player)
-    if not getgenv().TeamCheck then
-        return true
+
+gay:AddSlider('MySlider', {
+    Text = 'Fov value',
+    Default = 90,
+    Min = 88,
+    Max = 300,
+    Rounding = 1,
+    Compact = false,
+
+    Callback = function(Value)
+        FOVring.Radius = Value
     end
-    return player.Team ~= Players.LocalPlayer.Team
-end
+})
 
+gay:AddSlider('MySlider', {
+    Text = 'Fov thickness',
+    Default = 10,
+    Min = 1,
+    Max = 300,
+    Rounding = 1,
+    Compact = false,
 
-local function getClosestPlayer()
-    if not getgenv().SilentAim then return nil end
-
-    local closest, closestDistance = nil, math.huge
-    local localPlayer = Players.LocalPlayer
-    local character = localPlayer.Character
-
-    if not character then return nil end
-
-    for _, player in ipairs(getPlayersOrEntities()) do
-        if player == localPlayer then continue end
-        if not player:FindFirstChild(getgenv().AimPart) then continue end
-        if not isEnemy(player) then continue end
-
-        local position, onScreen = Cam:WorldToViewportPoint(player[getgenv().AimPart].Position)
-        if not onScreen then continue end
-
-        local center = Vector2.new(Cam.ViewportSize.X / 2, Cam.ViewportSize.Y / 2)
-        local distance = (center - Vector2.new(position.X, position.Y)).Magnitude
-
-        if distance < closestDistance and distance <= FOVring.Radius then
-            closest = player
-            closestDistance = distance
-        end
+    Callback = function(Value)
+        FOVring.Thickness = Value
     end
-
-    return closest
-end
-
-
-local oldRaycast = utility.Raycast
-utility.Raycast = function(...)
-    local arguments = { ... }
-
-    if #arguments > 0 and arguments[4] == 999 then
-        local closest = getClosestPlayer()
-        if closest then
-            arguments[3] = closest[getgenv().AimPart].Position
-        end
-    end
-
-    return oldRaycast(table.unpack(arguments))
-end
-
-
-
-
-
-Tab:AddToggle({
-	Name = "Silent aim",
-	Default = false,
-	Callback = function(value)
-getgenv().SilentAim = value
-	end    
-})
-
-
-Tab:AddDropdown({
-	Name = "Aim part",
-	Default = "1",
-	Options = {"HumanoidRootPart", "Head"},
-	Callback = function(value)
-getgenv().AimPart = value
-	end    
-})
-
-Tab:AddToggle({
-	Name = "Fov",
-	Default = false,
-	Callback = function(value)
-FOVring.Visible = value
-	end    
-})
-
-
-Tab:AddSlider({
-	Name = "Fov value",
-	Min = 0,
-	Max = 500,
-	Default = 100,
-	Color = Color3.fromRGB(255,255,255),
-	Increment = 1,
-	ValueName = "",
-	Callback = function(value)
-FOVring.Radius = value 
-	end    
-})
-
-
-
-Tab:AddColorpicker({
-	Name = "Fov color",
-	Default = Color3.fromRGB(255, 0, 0),
-	Callback = function(value)
-FOVring.Color = value
-	end	  
-})
-
-
-
-local Tab = Window:MakeTab({
-	Name = "Visuals",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
-
-local Section = Tab:AddSection({
-	Name = "Visuals"
-})
-
-
-local RunService = game:GetService("RunService")
-local Lighting = game:GetService("Lighting")
-
-
-getgenv().ColorEnabled = false 
-getgenv().RainbowEnabled = false 
-
-
-local targetColor = false 
-
-
-if Lighting:FindFirstChildOfClass("Sky") then
-    Lighting:FindFirstChildOfClass("Sky"):Destroy()
-end
-
-
-local function setWorldColor()
-    if getgenv().RainbowEnabled then
-
-        local hue = tick() % 5 / 5
-        targetColor = Color3.fromHSV(hue, 1, 1)
-    end
-
-    if getgenv().ColorEnabled or getgenv().RainbowEnabled then
-        Lighting.Ambient = targetColor
-        Lighting.OutdoorAmbient = targetColor
-        Lighting.FogColor = targetColor
-        Lighting.ColorShift_Bottom = targetColor
-        Lighting.ColorShift_Top = targetColor
-    else
-
-        Lighting.Ambient = Color3.fromRGB(127, 127, 127)
-        Lighting.OutdoorAmbient = Color3.fromRGB(127, 127, 127)
-        Lighting.FogColor = Color3.fromRGB(255, 255, 255)
-        Lighting.ColorShift_Bottom = Color3.fromRGB(0, 0, 0)
-        Lighting.ColorShift_Top = Color3.fromRGB(0, 0, 0)
-    end
-end
-
-
-RunService.RenderStepped:Connect(setWorldColor)
-
-Tab:AddToggle({
-	Name = "Fog",
-	Default = false,
-	Callback = function(state)
-getgenv().ColorEnabled = state 
-	end    
-})
-
-
-Tab:AddToggle({
-	Name = "Fog rainbow",
-	Default = false,
-	Callback = function(state)
-getgenv().RainbowEnabled = state 
-	end    
 })
 
 
 
 
-Tab:AddColorpicker({
-	Name = "Fog color",
-	Default = Color3.fromRGB(255, 0, 0),
-	Callback = function(Value)
-targetColor = Value
-	end	  
-})
-
-local Section = Tab:AddSection({
-	Name = "Crosshair"
-})
+local visuals = Tabs.Main:AddLeftGroupbox("Visuals")
 
 
 local CrosshairEnabled = false
 
 
-Tab:AddToggle({
-	Name = "Crosshair",
-	Default = false,
-	Callback = function(value)
-CrosshairEnabled = value 
-	end    
+visuals:AddToggle('MyToggle', {
+    Text = 'Crosshair',
+    Default = false,
+    Callback = function(state)
+        CrosshairEnabled = state
+    end
 })
-
-
-
 
 getgenv().crosshair = {
     enabled = true,
@@ -584,25 +543,30 @@ runservice.PostSimulation:Connect(function()
     end
 end)
 
-local IJ = false
-Tab:AddToggle({
-	Name = "Inf jump",
-	Default = false,
-	Callback = function(state)
-		IJ = state
-      game:GetService("UserInputService").JumpRequest:Connect(function()
-          if IJ then
-              game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
-          end
-      end)
-	end    
+
+visuals:AddToggle('MyToggle', {
+    Text = 'Show check player notifications',
+    Default = false,
+    Callback = function(state)
+        getgenv().BloodLossNotificationEnabled = state 
+    end
 })
 
-Tab:AddToggle({
-	Name = "No clip",
-	Default = false,
-	Callback = function(Value)
-		getgenv().NoclipEnabled = Value 
+
+
+local a = Tabs.Main:AddLeftGroupbox('Player')
+
+
+
+
+
+
+a:AddToggle('MyToggle', {
+    Text = 'No clip',
+    Default = false,
+
+    Callback = function(Value)
+        getgenv().NoclipEnabled = Value 
         local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local function noclip()
@@ -622,94 +586,434 @@ local function noclipLoop()
     end)
 end
 noclipLoop()
-	end    
+    end
+})
+
+local IJ = false
+a:AddToggle('MyToggle', {
+    Text = 'Inf jump',
+    Default = false,
+
+    Callback = function(state)
+             IJ = state
+      game:GetService("UserInputService").JumpRequest:Connect(function()
+          if IJ then
+              game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
+          end
+      end)
+    end
 })
 
 
 
-Tab = Window:MakeTab({Name = "Esp", Icon = "rbxassetid://4483345998",PremiumOnly = false })
+local xrayOn = false
+a:AddToggle('MyToggle', {
+    Text = 'X ray',
+    Default = false,
 
-Tab:AddToggle({
-	Name = "Enabled",
-	Default = true,
-	Callback = function(Value)
-		ESP.Enabled = Value;
-	end    
+    Callback = function(enabled)
+        xrayOn = enabled
+  if xrayOn then
+    for _, descendant in pairs(workspace:GetDescendants()) do
+      if descendant:IsA("BasePart") then
+        if not descendant:FindFirstChild("OriginalTransparency") then
+          local originalTransparency = Instance.new("NumberValue")
+          originalTransparency.Name = "OriginalTransparency"
+          originalTransparency.Value = descendant.Transparency
+          originalTransparency.Parent = descendant
+        end
+        descendant.Transparency = 0.5
+      end
+    end
+  else
+    for _, descendant in pairs(workspace:GetDescendants()) do
+      if descendant:IsA("BasePart") then
+        if descendant:FindFirstChild("OriginalTransparency") then
+          descendant.Transparency = descendant.OriginalTransparency.Value
+          descendant.OriginalTransparency:Destroy()
+        end
+      end
+    end
+  end
+    end
+})
+
+local fullBrightEnabled = false
+a:AddToggle('MyToggle', {
+    Text = 'Fullbright',
+    Default = false,
+
+    Callback = function(enabled)
+             fullBrightEnabled = enabled 
+    local Light = game:GetService("Lighting")
+    local function doFullBright()
+        if fullBrightEnabled then
+            Light.Ambient = Color3.new(1, 1, 1)
+            Light.ColorShift_Bottom = Color3.new(1, 1, 1)
+            Light.ColorShift_Top = Color3.new(1, 1, 1)
+        else
+            Light.Ambient = Color3.new(0.5, 0.5, 0.5)
+            Light.ColorShift_Bottom = Color3.new(0, 0, 0)
+            Light.ColorShift_Top = Color3.new(0, 0, 0)
+        end
+    end
+    doFullBright()
+    Light.LightingChanged:Connect(doFullBright)
+    end
 })
 
 
-Tab:AddToggle({
-	Name = "Team check",
-	Default = false,
-	Callback = function(Value)
-	ESP.Teamcheck = Value;	
-	end    
+
+
+
+
+
+
+
+local RunService = game:GetService("RunService")
+local Lighting = game:GetService("Lighting")
+
+local colorEnabled = false 
+local targetColor = Color3.new(0, 0.0, 1) 
+local function setWorldColor()
+    if colorEnabled then
+        Lighting.Ambient = targetColor
+        Lighting.OutdoorAmbient = targetColor
+        Lighting.FogColor = targetColor
+        Lighting.ColorShift_Bottom = targetColor
+        Lighting.ColorShift_Top = targetColor
+        if Lighting:FindFirstChildOfClass("Sky") then
+            local sky = Lighting:FindFirstChildOfClass("Sky")
+        end
+    else
+        Lighting.Ambient = Color3.fromRGB(127, 127, 127)
+        Lighting.OutdoorAmbient = Color3.fromRGB(127, 127, 127)
+        Lighting.FogColor = Color3.fromRGB(255, 255, 255)
+        Lighting.ColorShift_Bottom = Color3.fromRGB(0, 0, 0)
+        Lighting.ColorShift_Top = Color3.fromRGB(0, 0, 0)
+    end
+end
+RunService.RenderStepped:Connect(setWorldColor)
+
+
+
+a:AddToggle('MyToggle', {
+    Text = 'Atmosphere',
+    Default = false,
+
+    Callback = function(Value)
+colorEnabled = Value 
+    end
 })
 
-Tab:AddToggle({
-	Name = "Box",
-	Default = false,
-	Callback = function(Value)
-		ESP.ShowBox = Value;
-	end    
+a:AddLabel('Color'):AddColorPicker('ColorPicker', {
+    Default = Color3.new(0, 1, 0), 
+    Title = 'Color', 
+    Transparency = 0, 
+
+    Callback = function(Value)
+                targetColor = Value 
+    end
 })
 
-Tab:AddToggle({
-	Name = "Name",
-	Default = false,
-	Callback = function(Value)
-		ESP.ShowName = Value;
-	end    
+local Players = game:GetService("Players")
+local function isNumber(str)
+  if tonumber(str) ~= nil or str == 'inf' then
+    return true
+  end
+end
+
+getgenv().TPSpeed = 3
+getgenv().TPWalk = false
+
+
+a:AddToggle('MyToggle', {
+    Text = 'Tp walk',
+    Default = false,
+
+    Callback = function(s)
+getgenv().TPWalk = s
+local hb = game:GetService("RunService").Heartbeat
+local player = game:GetService("Players")
+local lplr = player.LocalPlayer
+local chr = lplr.Character
+local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
+while getgenv().TPWalk and hb:Wait() and chr and hum and hum.Parent do
+  if hum.MoveDirection.Magnitude > 0 then
+    if getgenv().TPSpeed and isNumber(getgenv().TPSpeed) then
+      chr:TranslateBy(hum.MoveDirection * tonumber(getgenv().TPSpeed))
+    else
+      chr:TranslateBy(hum.MoveDirection)
+    end
+  end
+end
+    end
 })
 
-Tab:AddToggle({
-	Name = "Health",
-	Default = false,
-	Callback = function(Value)
-		ESP.ShowHealth = Value;
-	end    
+a:AddSlider('MySlider', {
+    Text = 'Tp speed',
+    Default = 1,
+    Min = 1,
+    Max = 20,
+    Rounding = 1,
+    Compact = false,
+
+    Callback = function(value)
+        getgenv().TPSpeed = value
+    end
 })
 
-Tab:AddToggle({
-	Name = "Tracer",
-	Default = false,
-	Callback = function(Value)
-		ESP.ShowTracer = Value;
-	end    
+
+
+
+local kk = Tabs.Esp:AddLeftGroupbox('Esp')
+
+
+kk:AddToggle('MyToggle', {
+    Text = 'Enabled',
+    Default = false,
+
+    Callback = function(Value)
+        ESP.Enabled = Value;
+    end
 })
 
-Tab:AddToggle({
-	Name = "Distance",
-	Default = false,
-	Callback = function(Value)
-		ESP.ShowDistance = Value;
-	end    
+
+kk:AddToggle('MyToggle', {
+    Text = 'Box',
+    Default = false,
+
+    Callback = function(Value)
+        ESP.ShowBox = Value;
+    end
 })
 
-Tab:AddToggle({
-	Name = "Skeletons",
-	Default = false,
-	Callback = function(Value)
-		ESP.ShowSkeletons = Value;
-	end    
+
+
+kk:AddToggle('MyToggle', {
+    Text = 'Name',
+    Default = false,
+
+    Callback = function(Value)
+        ESP.ShowName = Value;
+    end
 })
 
-Tab:AddDropdown({
-	Name = "Tracer",
-	Default = "Bottom",
-	Options = {"Bottom", "Top", "Middle"},
-	Callback = function(Value)
-		ESP.TracerPosition = Value;
-	end    
+
+kk:AddToggle('MyToggle', {
+    Text = 'Health',
+    Default = false,
+
+    Callback = function(Value)
+        ESP.ShowHealth = Value;
+    end
 })
 
-Tab:AddDropdown({
-	Name = "Box",
-	Default = "2D",
-	Options = {"2D", "Corner Box Esp"},
-	Callback = function(Value)
-		ESP.BoxType = Value
-	end    
+kk:AddToggle('MyToggle', {
+    Text = 'Tracer',
+    Default = false,
+
+    Callback = function(Value)
+        ESP.ShowTracer = Value;
+    end
 })
+
+
+
+
+kk:AddToggle('MyToggle', {
+    Text = 'Distance',
+    Default = false,
+
+    Callback = function(Value)
+        ESP.ShowDistance = Value;
+    end
+})
+
+
+kk:AddToggle('MyToggle', {
+    Text = 'Skeletons',
+    Default = false,
+
+    Callback = function(Value)
+        ESP.ShowSkeletons = Value;
+    end
+})
+
+ 
+local v = Tabs.Esp:AddRightGroupbox('Esp setting')
+
+v:AddDropdown('MyDropdown', {
+    Values = { 'Corner Box Esp', '2D' },
+    Default = 2, 
+    Multi = false, 
+
+    Text = 'Box esp',
+   
+})
+
+Options.MyDropdown:OnChanged(function(Value)
+    ESP.BoxType = Value
+end)
+
+
+
+v:AddDropdown('MyDropdown', {
+    Values = { 'Middle', 'Bottom', 'Top' },
+    Default = 1, 
+    Multi = false, 
+
+    Text = 'Tracer esp',
+   
+})
+
+Options.MyDropdown:OnChanged(function(Value)
+    ESP.TracerPosition = Value;
+end)
+
+v:AddToggle('MyToggle', {
+    Text = 'Team check',
+    Default = false,
+
+    Callback = function(Value)
+        ESP.Teamcheck = Value;
+    end
+})
+
+
+
+Library:SetWatermarkVisibility(true)
+
+
+local FrameTimer = tick()
+local FrameCounter = 0;
+local FPS = 60;
+
+local WatermarkConnection = game:GetService('RunService').RenderStepped:Connect(function()
+	FrameCounter += 1;
+
+	if (tick() - FrameTimer) >= 1 then
+		FPS = FrameCounter;
+		FrameTimer = tick();
+		FrameCounter = 0;
+	end;
+
+	Library:SetWatermark(('Tbao Hub | %s fps | %s ms'):format(
+		math.floor(FPS),
+		math.floor(game:GetService('Stats').Network.ServerStatsItem['Data Ping']:GetValue())
+	));
+end);
+
+Library.KeybindFrame.Visible = false; 
+
+Library:OnUnload(function()
+	WatermarkConnection:Disconnect()
+	Library.Unloaded = true
+end)
+
+local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
+
+
+MenuGroup:AddButton('Unload', function() Library:Unload() end)
+MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'RightShift', NoUI = true, Text = 'Menu keybind' })
+
+
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+
+
+SaveManager:IgnoreThemeSettings()
+
+
+SaveManager:SetIgnoreIndexes({ 'MenuKeybind' })
+
+
+ThemeManager:SetFolder('TbaoHub')
+SaveManager:SetFolder('TbaoHub/Rivals')
+
+SaveManager:BuildConfigSection(Tabs['UI Settings'])
+
+
+ThemeManager:ApplyToTab(Tabs['UI Settings'])
+
+
+SaveManager:LoadAutoloadConfig()
+
+
+
+getgenv().enabled = false
+getgenv().aimpart = "HumanoidRootPart"
+
+
+local replicated_storage = game:GetService("ReplicatedStorage")
+local players = game:GetService("Players")
+local camera = workspace.CurrentCamera
+local utility = require(replicated_storage:FindFirstChild("Modules").Utility)
+
+local function getPlayersOrEntities()
+    local entities = {}
+    for _, child in ipairs(workspace:GetChildren()) do
+        if child:FindFirstChildOfClass("Humanoid") then
+            table.insert(entities, child)
+        elseif child.Name == "HurtEffect" then
+            for _, hurtPlayer in ipairs(child:GetChildren()) do
+                if hurtPlayer.ClassName ~= "Highlight" then
+                    table.insert(entities, hurtPlayer)
+                end
+            end
+        end
+    end
+    return entities
+end
+
+local function isEnemy(player)
+    if not getgenv().teamcheck then
+        return true 
+    end
+    return player.Team ~= players.LocalPlayer.Team 
+end
+
+local function getClosestPlayer()
+    if not getgenv().enabled then return nil end
+
+    local closest, closestDistance = nil, math.huge
+    local localPlayer = players.LocalPlayer
+    local character = localPlayer.Character
+
+    if not character then return nil end
+
+    for _, player in ipairs(getPlayersOrEntities()) do
+        if player == localPlayer then continue end
+        if not player:FindFirstChild(getgenv().aimpart) then continue end
+        if not isEnemy(player) then continue end 
+
+        local position, onScreen = camera:WorldToViewportPoint(player[getgenv().aimpart].Position)
+        if not onScreen then continue end 
+
+        local center = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
+        local distance = (center - Vector2.new(position.X, position.Y)).Magnitude
+
+        if distance < closestDistance then
+            closest = player
+            closestDistance = distance
+        end
+    end
+
+    return closest
+end
+
+local oldRaycast = utility.Raycast
+utility.Raycast = function(...)
+    local arguments = { ... }
+
+    if #arguments > 0 and arguments[4] == 999 then
+        local closest = getClosestPlayer()
+        if closest then
+            arguments[3] = closest[getgenv().aimpart].Position
+        end
+    end
+
+    return oldRaycast(table.unpack(arguments))
+end
 
 

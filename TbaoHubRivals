@@ -1,8 +1,3 @@
-
-
-
-    
-
 local repo = 'https://raw.githubusercontent.com/deividcomsono/LinoriaLib/main/'
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
@@ -1015,5 +1010,4 @@ utility.Raycast = function(...)
 
     return oldRaycast(table.unpack(arguments))
 end
-
 

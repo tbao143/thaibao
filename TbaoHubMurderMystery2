@@ -1,8 +1,0 @@
-local CoreGui = game:GetService("StarterGui")
-    CoreGui:SetCore("SendNotification", {
-        Title = "Tbao Hub",
-        Text = "patched",
-        Icon = "rbxthumb://type=Asset&id=15485121479&w=150&h=150",
-        Duration = 7,
-        Callback = AllowRunServiceBind,
-    })

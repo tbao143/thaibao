@@ -1,6 +1,5 @@
 local Games = {
     ["121864768012064"] = "https://raw.githubusercontent.com/tbao143/thaibao/refs/heads/main/TbaoHubFishIt",
-    ["122826953758426"] = "https://raw.githubusercontent.com/tbao143/thaibao/refs/heads/main/TbaoHubRaiseAnimals",
     ["17625359962"] = "https://raw.githubusercontent.com/tbao143/thaibao/refs/heads/main/TbaoHubRivals",
     ["117398147513099"] = "https://raw.githubusercontent.com/tbao143/thaibao/refs/heads/main/TbaoHubRivals",
 }
